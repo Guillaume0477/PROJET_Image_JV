@@ -1,0 +1,8 @@
+v0.0
+
+- debut projet
+
+v0.1
+
+- ennemies suivent le personnage
+
