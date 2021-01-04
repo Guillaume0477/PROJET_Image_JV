@@ -49,14 +49,14 @@ def HandCalibrate(cap):
         #Move the square down
         elif key == ord('s'):
             squareOffset[0] = min(squareOffset[0]+10, np.shape(frame)[0]-1-squareSize[0])
-        #Increase square size
+        #Reduce square size
         elif key == ord('a'):
             squareSize[0] = max(100, squareSize[0]-20)
             if(squareSize[0] != squareSize[1]):
                 squareSize[1] = squareSize[0]
                 squareOffset[1] = min(squareOffset[1]+10, np.shape(frame)[1]-1-squareSize[1])
                 squareOffset[0] = min(squareOffset[0]+10, np.shape(frame)[0]-1-squareSize[0])
-        #Reduce square size
+        #Increase square size
         elif key == ord('e'):
             squareSize[0] = np.min([squareSize[0]+20, np.shape(frame)[0]-1, squareSize[1]+20, np.shape(frame)[1]-1])
             if(squareSize[0] != squareSize[1]):
