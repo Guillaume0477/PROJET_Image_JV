@@ -62,7 +62,12 @@ def HandCalibrate(cap):
             if(squareSize[0] != squareSize[1]):
                 squareSize[1] = squareSize[0]
                 squareOffset[1] = max(0, squareOffset[1]-10)
-                squareOffset[0] = max(0,squareOffset[0]-10)     
+                squareOffset[0] = max(0,squareOffset[0]-10)
+            if (squareOffset[1] + squareSize[1] >= np.shape(frame)[1]):
+                squareOffset[1] -=10
+            if (squareOffset[0] + squareSize[0] >= np.shape(frame)[0]):
+                squareOffset[0] -=10
+            
 
         ymin = floor(squareOffset[1] + squareSize[1]/3)
         ymax = floor(squareOffset[1] + 2*squareSize[1]/3)
