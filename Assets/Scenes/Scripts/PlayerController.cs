@@ -14,10 +14,9 @@ public class PlayerController : MonoBehaviour {
 	public float force;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
-	private Rigidbody rb_player;
 	// private Rigidbody ennemy_cube1_rb;
 	// private GameObject ennemy_cube1;
-	private bool isLaunched = false;
+	private Rigidbody rb_player;
 	private GameObject balle;
 	private int count_ball = 0;
 	private Collider collider;

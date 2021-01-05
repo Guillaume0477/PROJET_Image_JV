@@ -9,8 +9,8 @@ public class PlayerStats : MonoBehaviour {
 	// Create public variables for player speed, and for the Text UI game objects
     public int healthbase = 100;
 	public int healthmax = 100;
+	public int mana = 100;
 
-	// At the start of the game..
 	void ApplyDammage (int TheDammage)
 	{
         healthbase -= TheDammage;
@@ -20,9 +20,23 @@ public class PlayerStats : MonoBehaviour {
         }
     }
 
-	// Each physics step..
+	void ApplyMana (int Mana)
+	{
+        mana -= Mana;
+        
+        if(mana <= 0){
+            ManaLeft();
+        }
+    }
+
 	void Dead ()
 	{
-        Debug.Log("Player died");
+        Debug.Log("Player died !");
+	}
+
+	// Each physics step..
+	void ManaLeft ()
+	{
+        Debug.Log("No more mana !");
 	}
 }
