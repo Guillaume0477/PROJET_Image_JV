@@ -16,7 +16,7 @@ def main():
     while play :
         #Get the frame
         ret,frame = cap.read()
-
+        sFrame = np.shape(frame)
         tolerance = 60
 
         xmin = squareOffset[0]
@@ -33,7 +33,13 @@ def main():
         frame[xmin:xmax,ymin:ymax,1] = segR
         frame[xmin:xmax,ymin:ymax,2] = segR
         
-        squareOffset, squareSize = Track.trackHand(segR, squareOffset, squareSize, np.shape(frame))
+        squareOffset, squareSize = Track.trackHand(segR, squareOffset, squareSize, sFrame)
+
+        print(squareSize, np.sum(segR))
+        #TODO Faire une recherche de main si non détection ? (carré petit et noir)
+        if (squareSize[0] == 100) and (np.sum(segR) < 0.1*100*100):
+            squareOffset, squareSize = Track.LookForHand(sFrame)
+
 
         #Detect user quit command
         key = cv2.waitKey(1)

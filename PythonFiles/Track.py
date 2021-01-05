@@ -43,7 +43,7 @@ def trackHand(im, squareOffset, squareSize, fullSize):
             elif k == 3 :
                 squareOffset[1] = min(squareOffset[1]+moveInc, fullSize[1]-1-squareSize[1])
 
-    elif (sumValMini > 2) or (np.sum(checkValsMini[0:2]) == 2) or (np.sum(checkValsMini[2:4] == 2)) :
+    if (sumValMini > 2) or (np.sum(checkValsMini[0:2]) == 2) or (np.sum(checkValsMini[2:4] == 2)) :
         squareSize[0] = max(100, squareSize[0]-sizeInc)
         if(squareSize[0] != squareSize[1]):
             squareSize[1] = squareSize[0]
@@ -51,4 +51,16 @@ def trackHand(im, squareOffset, squareSize, fullSize):
             squareOffset[0] = min(squareOffset[0]+int(sizeInc/2), fullSize[0]-1-squareSize[0])
         
 
+    return squareOffset, squareSize
+
+
+def LookForHand(sFrame):
+
+    squareSize = np.array([0,0])
+    squareOffset = np.array([0,0])
+    squareSize[0] = min(sFrame[0], sFrame[1])
+    squareSize[1] = squareSize[0]
+    squareOffset[0] = 0
+    squareOffset[1] = int((sFrame[1] - squareSize[1])/2)
+    
     return squareOffset, squareSize
