@@ -35,8 +35,6 @@ def main():
         
         squareOffset, squareSize = Track.trackHand(segR, squareOffset, squareSize, sFrame)
 
-        print(squareSize, np.sum(segR))
-        #TODO Faire une recherche de main si non détection ? (carré petit et noir)
         if (squareSize[0] == 100) and (np.sum(segR) < 0.1*100*100):
             squareOffset, squareSize = Track.LookForHand(sFrame)
 
