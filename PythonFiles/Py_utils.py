@@ -8,5 +8,4 @@ def Cleaning(im):
     im = cv2.erode(im, structElemEro)
     im = cv2.dilate(im, structElemDil)
 
-
     return im
