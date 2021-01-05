@@ -14,13 +14,16 @@ def trackHand(im, squareOffset, squareSize, fullSize):
 
     sumLines = np.array([np.sum(im[0,:]), np.sum(im[s[0]-1,:]), np.sum(im[:,0]), np.sum(im[:,s[1]-1])])/255
 
-    checkVals = np.concatenate([sumLines[0:2] > float(s[0])/3.0, sumLines[2:4] > float(s[1])/3.0], axis = 0)
-    checkValsMini = np.concatenate([sumLines[0:2] < float(s[0])/5.0, sumLines[2:4] < float(s[1])/5.0], axis = 0)
+    checkVals = np.concatenate([sumLines[0:2] > float(s[0])/5.0, sumLines[2:4] > float(s[1])/5.0], axis = 0)
+    checkValsMini = np.concatenate([sumLines[0:2] < float(s[0])/7.0, sumLines[2:4] < float(s[1])/7.0], axis = 0)
     
     sumVal = np.sum(checkVals)
     sumValMini = np.sum(checkValsMini)
 
-    if (sumVal > 2) or (np.sum(checkVals[0:2]) == 2) or (np.sum(checkVals[2:4] == 2)) :
+    print( checkVals, checkValsMini)
+    print( np.sum(checkVals[2:4]))
+    
+    if (sumVal > 2) or (np.sum(checkVals[0:2]) == 2) or (np.sum(checkVals[2:4]) == 2) :
         #Improve the size
         squareSize[0] = np.min([squareSize[0]+sizeInc, fullSize[0]-1, squareSize[1]+sizeInc, fullSize[1]-1])
         if(squareSize[0] != squareSize[1]):
@@ -43,7 +46,7 @@ def trackHand(im, squareOffset, squareSize, fullSize):
             elif k == 3 :
                 squareOffset[1] = min(squareOffset[1]+moveInc, fullSize[1]-1-squareSize[1])
 
-    if (sumValMini > 2) or (np.sum(checkValsMini[0:2]) == 2) or (np.sum(checkValsMini[2:4] == 2)) :
+    elif (sumValMini > 2) or (np.sum(checkValsMini[0:2]) == 2) or (np.sum(checkValsMini[2:4]) == 2) :
         squareSize[0] = max(100, squareSize[0]-sizeInc)
         if(squareSize[0] != squareSize[1]):
             squareSize[1] = squareSize[0]

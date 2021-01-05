@@ -1,5 +1,7 @@
 import Calibrage
 import Track
+import DetectParams
+import Py_utils as utils
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
@@ -28,7 +30,9 @@ def main():
         segR = np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,0], colorHand[0]-tolerance, colorHand[0]+tolerance))
         segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,1], colorHand[1]-tolerance, colorHand[1]+tolerance))
         segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,2], colorHand[2]-tolerance, colorHand[2]+tolerance))
-
+        
+        segR = utils.Cleaning(segR)
+        
         frame[xmin:xmax,ymin:ymax,0] = segR
         frame[xmin:xmax,ymin:ymax,1] = segR
         frame[xmin:xmax,ymin:ymax,2] = segR
