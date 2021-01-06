@@ -17,7 +17,7 @@ public class PlayerControllerScript: MonoBehaviour
 	UdpClient client; //2
 	int port; //3
 
-	public GameObject Player; //4
+	public PlayerController Player; //4
 	AudioSource jumpSound; //5
 	bool jump; //6
 
