@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour {
     public GameObject projectile;
 	public float force;
 	public PlayerStats playerStats;
+	public GameBar healthBar;
+	public GameBar manaBar;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	// private Rigidbody ennemy_cube1_rb;
@@ -29,6 +31,8 @@ public class PlayerController : MonoBehaviour {
 		// Assign the Rigidbody component to our private rb variable
 		rb_player = GetComponent<Rigidbody>();
 
+		healthBar.SetMaxValue(playerStats.healthMax);
+		manaBar.SetMaxValue(playerStats.manaMax);
         // //Ennemy cubes creation
         // ennemy_cube1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         // Vector3 ennemy_cube1_position_initiale = new Vector3(-23.20401f, 0.5124857f, -23.86554f);
@@ -39,15 +43,21 @@ public class PlayerController : MonoBehaviour {
 	// Each physics step..
 	void FixedUpdate ()
 	{
-		//The ennemies follow the player
-        // ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
-		player_movement();
-
-		fire_ball();
-		Debug.Log("Health : " + playerStats.getHealth());
+		if(playerStats.getHealth() >= 0)
+		{
+			healthBar.SetValue(playerStats.getHealth());
+			//The ennemies follow the player
+			// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
+			player_movement();
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
+				fire_ball();
+			}
+		}
 	}
 	
-	void player_movement(){
+	void player_movement()
+	{
  		//Make the RB moving with Z Q S D
 		// Set some local float variables equal to the value of our Horizontal and Vertical Inputs
 		float moveHorizontal = Input.GetAxis ("Horizontal");
@@ -59,10 +69,12 @@ public class PlayerController : MonoBehaviour {
 		transform.Rotate(YRotation * sensibility * Time.deltaTime * moveHorizontal);
 	}
 
-	void fire_ball(){
-        if (Input.GetKeyDown(KeyCode.Space) && (playerStats.getMana() != 0))
+	void fire_ball()
+	{
+		if(playerStats.getMana() != 0)
 		{
-			if(count_ball == 0){
+			if(count_ball == 0)
+			{
 				balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
 				balle.tag = "Boule";
 				balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
@@ -78,10 +90,12 @@ public class PlayerController : MonoBehaviour {
 				count_ball = 1;
 				Destroy(balle, 1.0f);
 				playerStats.ApplyMana(Mana);
-				// Debug.Log("Mana : " + playerStats.getMana());
+				manaBar.SetValue(playerStats.getMana());
 			}
-			else{
-				if(balle == null){
+			else
+			{
+				if(balle == null)
+				{
 					count_ball = 0;
 				}
 			}
