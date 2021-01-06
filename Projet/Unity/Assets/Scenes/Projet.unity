@@ -430,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8e955184e17259b08aa97274d9d43b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 700333198}
+  Target: {fileID: 700333199}
   ennemy_speed: 5
   attackRange: 2.2
   attackRepeatTime: 1
@@ -448,7 +448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d60927e68dcccd8b5a123334863d7dca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ennemyHealth: 100
 --- !u!1 &312648934
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,6 +485,7 @@ MonoBehaviour:
   projectile: {fileID: 4066997632453498107, guid: 3ef398aaebd03c45883dca3e912ef175,
     type: 3}
   force: 20
+  playerStats: {fileID: 700333199}
 --- !u!54 &312648936
 Rigidbody:
   m_ObjectHideFlags: 0

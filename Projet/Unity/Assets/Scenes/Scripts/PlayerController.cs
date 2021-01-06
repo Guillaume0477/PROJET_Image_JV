@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
 	public float sensibility;
     public GameObject projectile;
 	public float force;
+	public PlayerStats playerStats;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	// private Rigidbody ennemy_cube1_rb;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb_player;
 	private GameObject balle;
 	private int count_ball = 0;
+	private int Mana = 50;
 	private Collider collider;
 
 	// At the start of the game..
@@ -37,7 +39,16 @@ public class PlayerController : MonoBehaviour {
 	// Each physics step..
 	void FixedUpdate ()
 	{
-        //Make the RB moving with Z Q S D
+		//The ennemies follow the player
+        // ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
+		player_movement();
+
+		fire_ball();
+		Debug.Log("Health : " + playerStats.getHealth());
+	}
+	
+	void player_movement(){
+ 		//Make the RB moving with Z Q S D
 		// Set some local float variables equal to the value of our Horizontal and Vertical Inputs
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
@@ -46,11 +57,10 @@ public class PlayerController : MonoBehaviour {
 
 		Vector3 YRotation = Vector3.right + new Vector3(-1.0f, 1.0f, 0.0f);
 		transform.Rotate(YRotation * sensibility * Time.deltaTime * moveHorizontal);
+	}
 
-        //The ennemies follow the player
-        // ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
-		
-        if (Input.GetKeyDown(KeyCode.Space))
+	void fire_ball(){
+        if (Input.GetKeyDown(KeyCode.Space) && (playerStats.getMana() != 0))
 		{
 			if(count_ball == 0){
 				balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
@@ -67,6 +77,8 @@ public class PlayerController : MonoBehaviour {
 				
 				count_ball = 1;
 				Destroy(balle, 1.0f);
+				playerStats.ApplyMana(Mana);
+				// Debug.Log("Mana : " + playerStats.getMana());
 			}
 			else{
 				if(balle == null){
@@ -75,7 +87,20 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 	}
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// When this game object intersects a collider with 'is trigger' checked, 
 	// store a reference to that collider in a variable named 'other'..
 	void OnTriggerEnter(Collider other) 

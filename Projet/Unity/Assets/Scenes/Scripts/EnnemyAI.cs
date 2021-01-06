@@ -7,16 +7,15 @@ using System.Collections;
 
 public class EnnemyAI : MonoBehaviour {
 	// Create public variables for player speed, and for the Text UI game objects
-    public Transform Target;
-    public float ennemy_speed = 5;    
-    public float attackRange = 2.2f;
-    public float attackRepeatTime = 1;
-    public int TheDammage = 10;
-    public float Damping = 6;
+    public PlayerStats Target;
+    public float ennemy_speed;    
+    public float attackRange;
+    public float attackRepeatTime;
+    public int TheDammage;
+    public float Damping;
 
     private float Distance;
     private float attackTime = 1;
-
 
 	// At the start of the game..
 	void Start ()
@@ -27,7 +26,7 @@ public class EnnemyAI : MonoBehaviour {
 	// Each physics step..
 	void Update ()
 	{
-        Distance = Vector3.Distance(Target.position, transform.position);
+        Distance = Vector3.Distance(Target.transform.position, transform.position);
 
         lookAt();
 
@@ -42,19 +41,19 @@ public class EnnemyAI : MonoBehaviour {
 
     void chase()
     {
-        transform.position = Vector3.MoveTowards(transform.position, Target.position, ennemy_speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, Target.transform.position, ennemy_speed * Time.deltaTime);
     }
 
     void lookAt()
     {
-        Quaternion rotation = Quaternion.LookRotation(Target.position - transform.position);
+        Quaternion rotation = Quaternion.LookRotation(Target.transform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * Damping);
     }
 
     void attack()
     {
         if (Time.time > attackTime){
-            Target.SendMessage("ApplyDammage", TheDammage);
+            Target.ApplyDammage(TheDammage);
             attackTime = Time.time + attackRepeatTime;
         }
     }
