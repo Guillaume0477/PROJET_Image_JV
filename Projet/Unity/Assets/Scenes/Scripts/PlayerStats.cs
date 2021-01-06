@@ -7,26 +7,48 @@ using System.Collections;
 
 public class PlayerStats : MonoBehaviour {
 	// Create public variables for player speed, and for the Text UI game objects
-    public int healthbase = 100;
-	public int healthmax = 100;
-	public int mana = 100;
+    private int health = 100;
+	private int mana = 100;
+	private int manaMax = 100;
+	
+	// public void set_health(int health){
+	// 	this.health = health;
+	// }
 
-	void ApplyDammage (int TheDammage)
+	// public PlayerStats(int health, int mana)
+	// {
+	// 	this.health = health;
+	// 	this.mana = mana;
+	// }
+
+	public void ApplyDammage (int TheDammage)
 	{
-        healthbase -= TheDammage;
+        health -= TheDammage;
         
-        if(healthbase <= 0){
+        if(health <= 0){
             Dead();
+			health = 0;
         }
     }
 
-	void ApplyMana (int Mana)
+	public void ApplyMana (int Mana)
 	{
         mana -= Mana;
         
         if(mana <= 0){
             ManaLeft();
+			mana = 0;
         }
+    }
+
+	public int getHealth ()
+	{
+		return(health);
+    }
+
+	public int getMana ()
+	{
+		return(mana);
     }
 
 	void Dead ()

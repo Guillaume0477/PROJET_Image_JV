@@ -5,13 +5,10 @@ using UnityEngine.UI;
 
 using System.Collections;
 
-public class EnnemyStats : MonoBehaviour {
+public class EnnemyStats : MonoBehaviour 
+{
+    private int ennemyHealth = 100;
 
-	private PlayerController player;
-	// Create public variables for player speed, and for the Text UI game objects
-    public int ennemyHealth = 100;
-
-	// At the start of the game..
 	void OnCollisionEnter (Collision col)
 	{
         if(col.gameObject.tag == "Boule"){
@@ -19,7 +16,6 @@ public class EnnemyStats : MonoBehaviour {
         }
     }
 
-	// Each physics step..
 	void Update ()
 	{
         if(ennemyHealth <= 0){
