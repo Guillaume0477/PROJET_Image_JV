@@ -19,9 +19,6 @@ def trackHand(im, squareOffset, squareSize, fullSize):
     
     sumVal = np.sum(checkVals)
     sumValMini = np.sum(checkValsMini)
-
-    print( checkVals, checkValsMini)
-    print( np.sum(checkVals[2:4]))
     
     if (sumVal > 2) or (np.sum(checkVals[0:2]) == 2) or (np.sum(checkVals[2:4]) == 2) :
         #Improve the size

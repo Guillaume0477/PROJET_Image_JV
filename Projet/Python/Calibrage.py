@@ -26,7 +26,7 @@ def HandCalibrate(cap):
             ymax = floor(squareOffset[1] + 2*squareSize[1]/3)
             xmin = floor(squareOffset[0] + 4*squareSize[0]/7)
             xmax = floor(squareOffset[0] + 6*squareSize[0]/7)
-            color = np.mean(np.mean(frame[xmin:xmax, ymin:ymax,:], axis = 0),axis = 0)
+            color = np.mean(np.mean(frame[xmin:xmax, ymin:ymax,:], axis = 0), axis = 0)
 
             #Transform the color from BGR to RGB
             #color[0], color[2] = color[2], color[0]
@@ -88,5 +88,5 @@ def HandCalibrate(cap):
     # #Destroy windows
     # cap.release()
     # cv2.destroyAllWindows()
-    print(color)
+
     return color, [squareOffset, squareSize]
