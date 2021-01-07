@@ -11,16 +11,6 @@ public class PlayerStats : MonoBehaviour {
 	private int mana = 100;
 	public int manaMax = 100;
 	public int healthMax = 100;
-	
-	// public void set_health(int health){
-	// 	this.health = health;
-	// }
-
-	// public PlayerStats(int health, int mana)
-	// {
-	// 	this.health = health;
-	// 	this.mana = mana;
-	// }
 
 	public void ApplyDammage (int TheDammage)
 	{

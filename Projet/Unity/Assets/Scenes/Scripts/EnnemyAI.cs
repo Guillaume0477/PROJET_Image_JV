@@ -13,6 +13,8 @@ public class EnnemyAI : MonoBehaviour {
     public float attackRepeatTime;
     public int TheDammage;
     public float Damping;
+    public EnnemyStats ennemyStats;
+    public EnnemyBar ennemyBar;
 
     private float Distance;
     private float attackTime = 1;
@@ -21,6 +23,7 @@ public class EnnemyAI : MonoBehaviour {
 	void Start ()
 	{
         attackTime = Time.time;
+        ennemyBar.SetMaxValue(ennemyStats.ennemyHealth);
     }
 
 	// Each physics step..
@@ -29,7 +32,8 @@ public class EnnemyAI : MonoBehaviour {
         Distance = Vector3.Distance(Target.transform.position, transform.position);
 
         lookAt();
-
+        setHealthBar();
+        
         if(Distance < attackRange){
             attack();
         }
@@ -56,5 +60,9 @@ public class EnnemyAI : MonoBehaviour {
             Target.ApplyDammage(TheDammage);
             attackTime = Time.time + attackRepeatTime;
         }
+    }
+
+    void setHealthBar(){
+        ennemyBar.SetValue(ennemyStats.getHealth());
     }
 }

@@ -7,7 +7,8 @@ using System.Collections;
 
 public class EnnemyStats : MonoBehaviour 
 {
-    private int ennemyHealth = 100;
+    public int ennemyHealth = 100;
+
 
 	void OnCollisionEnter (Collision col)
 	{
@@ -26,4 +27,9 @@ public class EnnemyStats : MonoBehaviour
 	void Dead(){
 		Destroy (gameObject, 0.001f);
 	}
+
+	public int getHealth ()
+	{
+		return(ennemyHealth);
+    }
 }
