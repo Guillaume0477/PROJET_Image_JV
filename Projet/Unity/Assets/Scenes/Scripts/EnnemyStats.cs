@@ -13,6 +13,7 @@ public class EnnemyStats : MonoBehaviour
 	{
         if(col.gameObject.tag == "Boule"){
             ennemyHealth -= 50;
+			Destroy(col.gameObject);
         }
     }
 

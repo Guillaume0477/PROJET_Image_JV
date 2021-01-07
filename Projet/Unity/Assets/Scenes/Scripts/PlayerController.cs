@@ -9,8 +9,8 @@ public class PlayerController : MonoBehaviour {
 	// public float ennemy_speed;
     public GameObject projectile;
 	public PlayerStats playerStats;
-	public GameBar healthBar;
-	public GameBar manaBar;
+	public PlayerBar healthBar;
+	public PlayerBar manaBar;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	// private Rigidbody ennemy_cube1_rb;
@@ -18,8 +18,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb_player;
 	private GameObject balle;
 	private int count_ball = 0;
-	private int Mana = 50;
-	private Collider collider;
+	private int Mana = 10;
 	// Create public variables for player speed, and for the Text UI game objects
 	private float player_speed = 10;
 	private float sensibility = 80;
@@ -78,20 +77,12 @@ public class PlayerController : MonoBehaviour {
 				balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
 				balle.tag = "Boule";
 				balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
-				
-				// if(collider.gameObject.tag == "Ennemy")
-				// {
-				// 	Destroy(balle);
-				// } else
-				// {
-				// 	Destroy(balle, 2.0f);
-				// }
-				
+
 				count_ball = 1;
 				Destroy(balle, 1.0f);
 				playerStats.ApplyMana(Mana);
 				manaBar.SetValue(playerStats.getMana());
-			}
+			} 
 			else
 			{
 				if(balle == null)
@@ -102,19 +93,14 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	void OnCollisionEnter (Collision collision)
+    {
+        if(collision.gameObject.tag == "Enemy_T1" || collision.gameObject.tag == "Enemy_T2" || collision.gameObject.tag == "Enemy_T3")
+        {
+            collision.gameObject.transform.position = new Vector3(transform.position.x + Random.Range(-10f, 10f), 0f, transform.position.z + Random.Range(-10f, 10f));
+            print("collision worked");
+        }
+    }
 	// When this game object intersects a collider with 'is trigger' checked, 
 	// store a reference to that collider in a variable named 'other'..
 	void OnTriggerEnter(Collider other) 
