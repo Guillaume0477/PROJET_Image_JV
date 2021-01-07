@@ -12,6 +12,7 @@ def HandCalibrate(cap):
     squareOffset = [200,200]
 
     color = [0,0,0]
+    hueValue = 0
 
     while acq :
         #Get the frame
@@ -27,6 +28,8 @@ def HandCalibrate(cap):
             xmin = floor(squareOffset[0] + 4*squareSize[0]/7)
             xmax = floor(squareOffset[0] + 6*squareSize[0]/7)
             color = np.mean(np.mean(frame[xmin:xmax, ymin:ymax,:], axis = 0), axis = 0)
+
+            hsvValue = np.mean(np.mean(cv2.cvtColor(frame[xmin:xmax, ymin:ymax,:], cv2.COLOR_BGR2HSV), axis = 0), axis = 0)
 
             #Transform the color from BGR to RGB
             #color[0], color[2] = color[2], color[0]
@@ -89,4 +92,4 @@ def HandCalibrate(cap):
     # cap.release()
     # cv2.destroyAllWindows()
 
-    return color, [squareOffset, squareSize]
+    return color, hsvValue, [squareOffset, squareSize]

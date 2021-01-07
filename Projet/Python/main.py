@@ -12,7 +12,7 @@ def main():
     play = True
 
 
-    colorHand, [squareOffset, squareSize] = Calibrage.HandCalibrate(cap)
+    colorHand, hueValue, [squareOffset, squareSize] = Calibrage.HandCalibrate(cap)
     found = True
 
 
@@ -29,12 +29,25 @@ def main():
         ymax = squareOffset[1] +  squareSize[1]
 
 
-        segR = np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,0], colorHand[0]-tolerance, colorHand[0]+tolerance))
-        segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,1], colorHand[1]-tolerance, colorHand[1]+tolerance))
-        segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,2], colorHand[2]-tolerance, colorHand[2]+tolerance))
+        print(hueValue[2])
+
+        #print(cv2.cvtColor(frame[xmin:xmax,ymin:ymax,:], cv2.COLOR_BGR2HSV)[:,:,0])
+        hsvIm = cv2.cvtColor(frame[xmin:xmax,ymin:ymax,:], cv2.COLOR_BGR2HSV)
+        # print(hsvIm)
+        # exit()
+        segR = np.array(cv2.inRange(hsvIm[:,:,0], hueValue[0]-5, hueValue[0]+5))/255
+        segR *= np.array(cv2.inRange(hsvIm[:,:,1], hueValue[1]-60, hueValue[1]+60))/255
+        # segR *= np.array(cv2.inRange(hsvIm[:,:,2], int(hueValue[2]-60), int(hueValue[2]+60)))/255
+        segR = np.uint8(segR*255)
+        print(np.max(segR))
+        cv2.imshow('segR', segR)
+
+        # segR = np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,0], colorHand[0]-tolerance, colorHand[0]+tolerance))
+        # segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,1], colorHand[1]-tolerance, colorHand[1]+tolerance))
+        # segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,2], colorHand[2]-tolerance, colorHand[2]+tolerance))
         
         segR = utils.Cleaning(segR)
-        color = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
+        #color = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
         squareOffset, squareSize = Track.trackHand(segR, squareOffset, squareSize, sFrame)
 
 
