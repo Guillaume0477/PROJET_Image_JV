@@ -7,8 +7,7 @@ using System.Collections;
 
 public class EnnemyStats : MonoBehaviour 
 {
-    public int ennemyHealth = 100;
-
+    private int ennemyHealth = 100;
 
 	void OnCollisionEnter (Collision col)
 	{

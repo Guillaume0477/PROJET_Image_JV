@@ -9,8 +9,8 @@ public class PlayerStats : MonoBehaviour {
 	// Create public variables for player speed, and for the Text UI game objects
     private int health = 100;
 	private int mana = 100;
-	public int manaMax = 100;
-	public int healthMax = 100;
+	private int healthMax = 100;
+	private int manaMax = 100;
 
 	public void ApplyDammage (int TheDammage)
 	{
@@ -40,6 +40,16 @@ public class PlayerStats : MonoBehaviour {
 	public int getMana ()
 	{
 		return(mana);
+    }
+
+	public int getHealthMax ()
+	{
+		return(healthMax);
+    }
+
+	public int getManaMax ()
+	{
+		return(manaMax);
     }
 
 	void Dead ()

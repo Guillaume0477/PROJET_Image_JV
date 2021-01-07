@@ -6,12 +6,8 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	// Create public variables for player speed, and for the Text UI game objects
-	public float player_speed;
 	// public float ennemy_speed;
-	public float sensibility;
     public GameObject projectile;
-	public float force;
 	public PlayerStats playerStats;
 	public GameBar healthBar;
 	public GameBar manaBar;
@@ -24,6 +20,10 @@ public class PlayerController : MonoBehaviour {
 	private int count_ball = 0;
 	private int Mana = 50;
 	private Collider collider;
+	// Create public variables for player speed, and for the Text UI game objects
+	private float player_speed = 10;
+	private float sensibility = 80;
+	private float force = 20;
 
 	// At the start of the game..
 	void Start ()
@@ -31,8 +31,8 @@ public class PlayerController : MonoBehaviour {
 		// Assign the Rigidbody component to our private rb variable
 		rb_player = GetComponent<Rigidbody>();
 
-		healthBar.SetMaxValue(playerStats.healthMax);
-		manaBar.SetMaxValue(playerStats.manaMax);
+		healthBar.SetMaxValue(playerStats.getHealthMax());
+		manaBar.SetMaxValue(playerStats.getManaMax());
         // //Ennemy cubes creation
         // ennemy_cube1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         // Vector3 ennemy_cube1_position_initiale = new Vector3(-23.20401f, 0.5124857f, -23.86554f);
