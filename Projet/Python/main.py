@@ -12,14 +12,16 @@ def main():
     play = True
 
 
-    colorHand, [squareOffset, squareSize] = Calibrage.HandCalibrate(cap)
+    colorHand, hueValue, [squareOffset, squareSize] = Calibrage.HandCalibrate(cap)
+    found = True
 
 
     while play :
+
         #Get the frame
         ret,frame = cap.read()
         sFrame = np.shape(frame)
-        tolerance = 60
+        tolerance = 30
 
         xmin = squareOffset[0]
         xmax = squareOffset[0] + squareSize[0]
@@ -27,20 +29,48 @@ def main():
         ymax = squareOffset[1] +  squareSize[1]
 
 
-        segR = np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,0], colorHand[0]-tolerance, colorHand[0]+tolerance))
-        segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,1], colorHand[1]-tolerance, colorHand[1]+tolerance))
-        segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,2], colorHand[2]-tolerance, colorHand[2]+tolerance))
+        print(hueValue[2])
+
+        #print(cv2.cvtColor(frame[xmin:xmax,ymin:ymax,:], cv2.COLOR_BGR2HSV)[:,:,0])
+        hsvIm = cv2.cvtColor(frame[xmin:xmax,ymin:ymax,:], cv2.COLOR_BGR2HSV)
+        # print(hsvIm)
+        # exit()
+        segR = np.array(cv2.inRange(hsvIm[:,:,0], hueValue[0]-5, hueValue[0]+5))/255
+        segR *= np.array(cv2.inRange(hsvIm[:,:,1], hueValue[1]-60, hueValue[1]+60))/255
+        # segR *= np.array(cv2.inRange(hsvIm[:,:,2], int(hueValue[2]-60), int(hueValue[2]+60)))/255
+        segR = np.uint8(segR*255)
+        print(np.max(segR))
+        cv2.imshow('segR', segR)
+
+        # segR = np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,0], colorHand[0]-tolerance, colorHand[0]+tolerance))
+        # segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,1], colorHand[1]-tolerance, colorHand[1]+tolerance))
+        # segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,2], colorHand[2]-tolerance, colorHand[2]+tolerance))
         
         segR = utils.Cleaning(segR)
+        #color = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
+        squareOffset, squareSize = Track.trackHand(segR, squareOffset, squareSize, sFrame)
+
+
+        if (np.sum(segR)/255 < 0.1*squareSize[0]*squareSize[1]):
+            if squareSize[0] == 100:
+                squareOffset, squareSize = Track.LookForHand(sFrame)
+            found = False
+        else :
+            found = True
+
+        if found :
+            Params = DetectParams.getParameters(frame, segR)
+
+            segR[int(Params[2][0]), :] = 127
+            segR[:, int(Params[2][1])] = 127
+        
         
         frame[xmin:xmax,ymin:ymax,0] = segR
         frame[xmin:xmax,ymin:ymax,1] = segR
         frame[xmin:xmax,ymin:ymax,2] = segR
         
-        squareOffset, squareSize = Track.trackHand(segR, squareOffset, squareSize, sFrame)
 
-        if (squareSize[0] == 100) and (np.sum(segR) < 0.1*100*100):
-            squareOffset, squareSize = Track.LookForHand(sFrame)
+
 
 
         #Detect user quit command
