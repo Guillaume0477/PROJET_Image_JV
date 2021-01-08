@@ -58,7 +58,7 @@ def LookForHand(sFrame):
 
     squareSize = np.array([0,0])
     squareOffset = np.array([0,0])
-    squareSize[0] = min(sFrame[0], sFrame[1])
+    squareSize[0] = min(sFrame[0]-1, sFrame[1]-1)
     squareSize[1] = squareSize[0]
     squareOffset[0] = 0
     squareOffset[1] = int((sFrame[1] - squareSize[1])/2)

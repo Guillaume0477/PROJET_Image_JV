@@ -5,14 +5,17 @@ def Cleaning(im):
     
     #Closing
     structElemEro = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5,5))
-    structElemDil = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
-    im = cv2.erode(im, structElemEro)
-    im = cv2.dilate(im, structElemDil)
+    structElemDil = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5,5))
+    # im = cv2.erode(im, structElemEro)
 
-    #Median filter
-    ksize = 9
+    # #Median filter
+    ksize = 5
     kernel = np.ones([ksize, ksize])
     im = cv2.medianBlur(im, ksize)
+
+
+    im = cv2.dilate(im, structElemDil)
+
 
     return im
 
