@@ -27,3 +27,4 @@ def getGravityCenter(seg):
     centery = np.sum(idy*Sy[idy]) / np.sum(Sy[idy])
 
     return [centerx, centery]
+    
