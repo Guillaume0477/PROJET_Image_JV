@@ -17,7 +17,7 @@ public class EnnemyAI : MonoBehaviour {
     private float attackRange = 2.2f;
     private float attackRepeatTime = 1;
     private float Damping = 6;
-    private int TheDammage = 20;
+    private float TheDammage = 20;
 
 	// At the start of the game..
 	void Start ()
@@ -29,17 +29,20 @@ public class EnnemyAI : MonoBehaviour {
 	// Each physics step..
 	void Update ()
 	{
-        Distance = Vector3.Distance(Target.transform.position, transform.position);
+        if(Target.getHealth() > 0)
+        {
+            Distance = Vector3.Distance(Target.transform.position, transform.position);
 
-        lookAt();
-        setHealthBar();
+            lookAt();
+            setHealthBar();
 
-        if(Distance < attackRange){
-            attack();
-        }
+            if(Distance < attackRange){
+                attack();
+            }
 
-        else{
-            chase();
+            else{
+                chase();
+            }
         }
     }
 

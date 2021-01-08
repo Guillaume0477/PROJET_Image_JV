@@ -9,13 +9,13 @@ public class EnnemyBar : MonoBehaviour
 {
     public Slider slider;
 
-    public void SetMaxValue(int maxValue)
+    public void SetMaxValue(float maxValue)
     {
         slider.maxValue = maxValue;
         slider.value = maxValue;
     }
 
-    public void SetValue(int value)
+    public void SetValue(float value)
     {
         slider.value = value;
     }

@@ -18,7 +18,8 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb_player;
 	private GameObject balle;
 	private int count_ball = 0;
-	private int Mana = 10;
+	private float manaDecreased = 50;
+	private float manaIncreased = 0.1f;
 	// Create public variables for player speed, and for the Text UI game objects
 	private float player_speed = 10;
 	private float sensibility = 80;
@@ -42,7 +43,11 @@ public class PlayerController : MonoBehaviour {
 	// Each physics step..
 	void FixedUpdate ()
 	{
-		if(playerStats.getHealth() >= 0)
+		if(playerStats.getHealth() == 0)
+		{
+			healthBar.SetValue(0);
+		} 
+		else
 		{
 			healthBar.SetValue(playerStats.getHealth());
 			//The ennemies follow the player
@@ -52,6 +57,8 @@ public class PlayerController : MonoBehaviour {
 			{
 				fire_ball();
 			}
+			manaBar.SetValue(playerStats.getMana());
+			playerStats.RegenerateMana(manaIncreased);
 		}
 	}
 	
@@ -70,7 +77,7 @@ public class PlayerController : MonoBehaviour {
 
 	void fire_ball()
 	{
-		if(playerStats.getMana() != 0)
+		if ((playerStats.getMana() != 0) && (playerStats.getMana() >=  manaDecreased))
 		{
 			if(count_ball == 0)
 			{
@@ -80,8 +87,7 @@ public class PlayerController : MonoBehaviour {
 
 				count_ball = 1;
 				Destroy(balle, 1.0f);
-				playerStats.ApplyMana(Mana);
-				manaBar.SetValue(playerStats.getMana());
+				playerStats.ApplyMana(manaDecreased);
 			} 
 			else
 			{
@@ -90,26 +96,6 @@ public class PlayerController : MonoBehaviour {
 					count_ball = 0;
 				}
 			}
-		}
-	}
-
-	void OnCollisionEnter (Collision collision)
-    {
-        if(collision.gameObject.tag == "Enemy_T1" || collision.gameObject.tag == "Enemy_T2" || collision.gameObject.tag == "Enemy_T3")
-        {
-            collision.gameObject.transform.position = new Vector3(transform.position.x + Random.Range(-10f, 10f), 0f, transform.position.z + Random.Range(-10f, 10f));
-            print("collision worked");
-        }
-    }
-	// When this game object intersects a collider with 'is trigger' checked, 
-	// store a reference to that collider in a variable named 'other'..
-	void OnTriggerEnter(Collider other) 
-	{
-		// ..and if the game object we intersect has the tag 'Pick Up' assigned to it..
-		if (other.gameObject.CompareTag ("Pick Up"))
-		{
-			// Make the other game object (the pick up) inactive, to make it disappear
-			other.gameObject.SetActive (false);
 		}
 	}
 }
