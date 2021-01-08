@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 	public PlayerStats playerStats;
 	public PlayerBar healthBar;
 	public PlayerBar manaBar;
+	public Text manaLacking;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	// private Rigidbody ennemy_cube1_rb;
@@ -18,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb_player;
 	private GameObject balle;
 	private int count_ball = 0;
-	private float manaDecreased = 50;
+	private float manaDecreased = 30;
 	private float manaIncreased = 0.1f;
 	// Create public variables for player speed, and for the Text UI game objects
 	private float player_speed = 10;
@@ -46,17 +47,31 @@ public class PlayerController : MonoBehaviour {
 		if(playerStats.getHealth() == 0)
 		{
 			healthBar.SetValue(0);
-		} 
+		}
 		else
 		{
 			healthBar.SetValue(playerStats.getHealth());
 			//The ennemies follow the player
 			// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
 			player_movement();
+			
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				fire_ball();
+				if(playerStats.getMana() >=  manaDecreased)
+				{
+					fire_ball();
+				}
+				else
+				{
+					manaLacking.enabled = true;
+				}
 			}
+
+			if(playerStats.getMana() >=  manaDecreased)
+			{
+				manaLacking.enabled = false;
+			}
+
 			manaBar.SetValue(playerStats.getMana());
 			playerStats.RegenerateMana(manaIncreased);
 		}
@@ -77,25 +92,22 @@ public class PlayerController : MonoBehaviour {
 
 	void fire_ball()
 	{
-		if ((playerStats.getMana() != 0) && (playerStats.getMana() >=  manaDecreased))
-		{
-			if(count_ball == 0)
-			{
-				balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
-				balle.tag = "Boule";
-				balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
+		// if(count_ball == 0)
+		// {
+		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+		balle.tag = "Boule";
+		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
 
-				count_ball = 1;
-				Destroy(balle, 1.0f);
-				playerStats.ApplyMana(manaDecreased);
-			} 
-			else
-			{
-				if(balle == null)
-				{
-					count_ball = 0;
-				}
-			}
-		}
+		count_ball = 1;
+		Destroy(balle, 1.0f);
+		playerStats.ApplyMana(manaDecreased);
+		// }
+		// else
+		// {
+		// 	if(balle == null)
+		// 	{
+		// 		count_ball = 0;
+		// 	}
+		// }
 	}
 }

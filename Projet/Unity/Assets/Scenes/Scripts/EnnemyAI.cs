@@ -44,6 +44,10 @@ public class EnnemyAI : MonoBehaviour {
                 chase();
             }
         }
+        else{
+            //Freeze la scene quand le personnage est mort
+            Time.timeScale = 0;
+        }
     }
 
     void chase()
