@@ -110,3 +110,4 @@ def HandCalibrate(cap):
     # cv2.destroyAllWindows()
 
     return color, hsvValue, [squareOffset, squareSize]
+

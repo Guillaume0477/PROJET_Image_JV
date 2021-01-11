@@ -7,7 +7,6 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 def main():
     #Config cam
     cap = cv2.VideoCapture(0)
@@ -25,10 +24,10 @@ def main():
         sFrame = np.shape(frame)
         tolerance = 30
 
-        xmin = squareOffset[0]
-        xmax = squareOffset[0] + squareSize[0]
-        ymin = squareOffset[1]
-        ymax = squareOffset[1] +  squareSize[1]
+    xmin = squareOffset[0]
+    xmax = squareOffset[0] + squareSize[0]
+    ymin = squareOffset[1]
+    ymax = squareOffset[1] +  squareSize[1]
 
         bounds = [xmin, xmax, ymin, ymax]
 
@@ -77,28 +76,24 @@ def main():
 
             # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
 
-        
-        
+
         frame[xmin:xmax,ymin:ymax,0] = segR
         frame[xmin:xmax,ymin:ymax,1] = segR
         frame[xmin:xmax,ymin:ymax,2] = segR
-        
+
+
+    #Detect user quit command
+    #key = 
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     play = False
+
+    #Show the frame
+    cv2.imshow('Capture Video', frame)
+
+#Destroy windows
+cap.release()
+cv2.destroyAllWindows()
 
 
 
-
-        #Detect user quit command
-        key = cv2.waitKey(1)
-        if key & 0xFF == ord('q'):
-            play = False
-
-        #Show the frame
-        cv2.imshow('Capture Video', frame)
-
-    #Destroy windows
-    cap.release()
-    cv2.destroyAllWindows()
-    return 0
-
-
-main()
+# main()

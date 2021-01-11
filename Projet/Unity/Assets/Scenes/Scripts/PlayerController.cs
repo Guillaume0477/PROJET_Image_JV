@@ -85,7 +85,6 @@ public class PlayerController : MonoBehaviour {
 				{
 					manaLacking.enabled = false;
 				}
-
 				manaBar.SetValue(playerStats.getMana());
 				playerStats.RegenerateMana(manaIncreased);
 			}
@@ -105,7 +104,7 @@ public class PlayerController : MonoBehaviour {
 		transform.Rotate(YRotation * sensibility * Time.deltaTime * moveHorizontal);
 	}
 
-	void fire_ball()
+	public void fire_ball()
 	{
 		// if(count_ball == 0)
 		// {

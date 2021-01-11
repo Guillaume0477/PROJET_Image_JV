@@ -75,8 +75,8 @@ public class PlayerControllerScript: MonoBehaviour
 	public void Jump()
 	{
 
-	print("JUMP");
-	//Player.GetComponent<Animator>().SetTrigger ("Jump"); //1
+	print("FIRE");
+	Player.fire_ball(); //1
 	//jumpSound.PlayDelayed(44100); // Play Jump Sound with a 1 second delay to match the animation
 	}
 
