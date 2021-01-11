@@ -19,7 +19,7 @@ def main():
 
 
     while play :
-
+        
         #Get the frame
         ret,frame = cap.read()
         sFrame = np.shape(frame)
@@ -33,7 +33,11 @@ def main():
         bounds = [xmin, xmax, ymin, ymax]
 
         segR = Segment.getHSVColorSeg(frame, bounds, hueValue)
-        segR = utils.Cleaning(segR)
+
+        #segRbis = Segment.getBGRColorSeg(frame,bounds, colorHand)
+        # cv2.imshow('s',segRbis)
+
+        # segR = utils.Cleaning(segR)
         
         
         # Segment.GetGradient(segR)
@@ -53,9 +57,8 @@ def main():
         # # segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,1], colorHand[1]-tolerance, colorHand[1]+tolerance))
         # # segR *= np.array(cv2.inRange(frame[xmin:xmax,ymin:ymax,2], colorHand[2]-tolerance, colorHand[2]+tolerance))
         
-        # segR = utils.Cleaning(segR)
-        #color = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
         
+
         squareOffset, squareSize = Track.trackHand(segR, squareOffset, squareSize, sFrame)
 
 
@@ -71,6 +74,9 @@ def main():
 
             segR[int(Params[2][0]), :] = 127
             segR[:, int(Params[2][1])] = 127
+
+            # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
+
         
         
         frame[xmin:xmax,ymin:ymax,0] = segR
