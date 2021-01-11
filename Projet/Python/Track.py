@@ -14,14 +14,11 @@ def trackHand(im, squareOffset, squareSize, fullSize):
 
     sumLines = np.array([np.sum(im[0,:]), np.sum(im[s[0]-1,:]), np.sum(im[:,0]), np.sum(im[:,s[1]-1])])/255
 
-    checkVals = np.concatenate([sumLines[0:2] > float(s[0])/5.0, sumLines[2:4] > float(s[1])/5.0], axis = 0)
-    checkValsMini = np.concatenate([sumLines[0:2] < float(s[0])/7.0, sumLines[2:4] < float(s[1])/7.0], axis = 0)
+    checkVals = np.concatenate([sumLines[0:2] > float(s[0])/10.0, sumLines[2:4] > float(s[1])/10.0], axis = 0)
+    checkValsMini = np.concatenate([sumLines[0:2] < float(s[0])/15.0, sumLines[2:4] < float(s[1])/15.0], axis = 0)
     
     sumVal = np.sum(checkVals)
     sumValMini = np.sum(checkValsMini)
-
-    print( checkVals, checkValsMini)
-    print( np.sum(checkVals[2:4]))
     
     if (sumVal > 2) or (np.sum(checkVals[0:2]) == 2) or (np.sum(checkVals[2:4]) == 2) :
         #Improve the size
@@ -61,7 +58,7 @@ def LookForHand(sFrame):
 
     squareSize = np.array([0,0])
     squareOffset = np.array([0,0])
-    squareSize[0] = min(sFrame[0], sFrame[1])
+    squareSize[0] = min(sFrame[0]-1, sFrame[1]-1)
     squareSize[1] = squareSize[0]
     squareOffset[0] = 0
     squareOffset[1] = int((sFrame[1] - squareSize[1])/2)
