@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour {
 	private float sensibility = 80;
 	private float force = 20;
 
+	//launch the game or not (for the menu)
+	private float start_game = 0;
+
 	// At the start of the game..
 	void Start ()
 	{
@@ -34,6 +37,7 @@ public class PlayerController : MonoBehaviour {
 
 		healthBar.SetMaxValue(playerStats.getHealthMax());
 		manaBar.SetMaxValue(playerStats.getManaMax());
+
         // //Ennemy cubes creation
         // ennemy_cube1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         // Vector3 ennemy_cube1_position_initiale = new Vector3(-23.20401f, 0.5124857f, -23.86554f);
@@ -50,30 +54,41 @@ public class PlayerController : MonoBehaviour {
 		}
 		else
 		{
-			healthBar.SetValue(playerStats.getHealth());
-			//The ennemies follow the player
-			// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
-			player_movement();
-			
-			if (Input.GetKeyDown(KeyCode.Space))
+			if (start_game == 0)
 			{
+				// if (Input.GetKeyDown(KeyCode.E))
+				// {
+				// 	start_game = 1;
+				// }
+				start_game = 1;
+			}
+			else
+			{
+				healthBar.SetValue(playerStats.getHealth());
+				//The ennemies follow the player
+				// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
+				player_movement();
+				
+				if (Input.GetKeyDown(KeyCode.Space))
+				{
+					if(playerStats.getMana() >=  manaDecreased)
+					{
+						fire_ball();
+					}
+					else
+					{
+						manaLacking.enabled = true;
+					}
+				}
+
 				if(playerStats.getMana() >=  manaDecreased)
 				{
-					fire_ball();
+					manaLacking.enabled = false;
 				}
-				else
-				{
-					manaLacking.enabled = true;
-				}
-			}
 
-			if(playerStats.getMana() >=  manaDecreased)
-			{
-				manaLacking.enabled = false;
+				manaBar.SetValue(playerStats.getMana());
+				playerStats.RegenerateMana(manaIncreased);
 			}
-
-			manaBar.SetValue(playerStats.getMana());
-			playerStats.RegenerateMana(manaIncreased);
 		}
 	}
 	
@@ -109,5 +124,9 @@ public class PlayerController : MonoBehaviour {
 		// 		count_ball = 0;
 		// 	}
 		// }
+	}
+	public float getStart_game()
+	{
+		return(start_game);
 	}
 }
