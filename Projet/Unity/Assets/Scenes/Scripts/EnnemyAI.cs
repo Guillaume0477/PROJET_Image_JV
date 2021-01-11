@@ -8,34 +8,49 @@ using System.Collections;
 public class EnnemyAI : MonoBehaviour {
 	// Create public variables for player speed, and for the Text UI game objects
     public PlayerStats Target;
-    public float ennemy_speed;    
-    public float attackRange;
-    public float attackRepeatTime;
-    public int TheDammage;
-    public float Damping;
+    public EnnemyStats ennemyStats;
+    public EnnemyBar ennemyBar;
+    public PlayerController player;
 
     private float Distance;
     private float attackTime = 1;
+    private float ennemy_speed = 5;    
+    private float attackRange = 2.2f;
+    private float attackRepeatTime = 1;
+    private float Damping = 6;
+    private float TheDammage = 20;
 
 	// At the start of the game..
 	void Start ()
 	{
         attackTime = Time.time;
+        ennemyBar.SetMaxValue(ennemyStats.getHealth());
     }
 
 	// Each physics step..
 	void Update ()
 	{
-        Distance = Vector3.Distance(Target.transform.position, transform.position);
+        if(player.getStart_game() != 0)
+        {
+            if(Target.getHealth() > 0)
+            {
+                Distance = Vector3.Distance(Target.transform.position, transform.position);
 
-        lookAt();
+                lookAt();
+                setHealthBar();
 
-        if(Distance < attackRange){
-            attack();
-        }
+                if(Distance < attackRange){
+                    attack();
+                }
 
-        else{
-            chase();
+                else{
+                    chase();
+                }
+            }
+            else{
+                //Freeze la scene quand le personnage est mort
+                Time.timeScale = 0;
+            }
         }
     }
 
@@ -56,5 +71,9 @@ public class EnnemyAI : MonoBehaviour {
             Target.ApplyDammage(TheDammage);
             attackTime = Time.time + attackRepeatTime;
         }
+    }
+
+    void setHealthBar(){
+        ennemyBar.SetValue(ennemyStats.getHealth());
     }
 }

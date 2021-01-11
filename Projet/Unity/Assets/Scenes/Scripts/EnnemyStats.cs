@@ -7,12 +7,13 @@ using System.Collections;
 
 public class EnnemyStats : MonoBehaviour 
 {
-    private int ennemyHealth = 100;
+    private float ennemyHealth = 100;
 
 	void OnCollisionEnter (Collision col)
 	{
         if(col.gameObject.tag == "Boule"){
             ennemyHealth -= 50;
+			Destroy(col.gameObject);
         }
     }
 
@@ -26,4 +27,9 @@ public class EnnemyStats : MonoBehaviour
 	void Dead(){
 		Destroy (gameObject, 0.001f);
 	}
+
+	public float getHealth ()
+	{
+		return(ennemyHealth);
+    }
 }
