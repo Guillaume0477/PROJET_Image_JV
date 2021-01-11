@@ -20,6 +20,7 @@ public class PlayerControllerScript: MonoBehaviour
 	public PlayerController Player; //4
 	AudioSource jumpSound; //5
 	bool jump; //6
+	bool fire2;
 
 
 	// 2. Initialize variables
@@ -28,6 +29,7 @@ public class PlayerControllerScript: MonoBehaviour
 	{
 	port = 5065; //1 
 	jump = false; //2 
+	fire2 = false;
 	jumpSound = gameObject.GetComponent<AudioSource>(); //3
 
 	InitUDP(); //4
@@ -57,10 +59,20 @@ public class PlayerControllerScript: MonoBehaviour
 		IPEndPoint anyIP = new IPEndPoint(IPAddress.Parse("0.0.0.0"), port); //3
 		byte[] data = client.Receive(ref anyIP); //4
 
-		string text = Encoding.UTF8.GetString(data); //5
-		print (">> " + text);
+		//print(data);
 
-		jump = true; //6
+		string text = Encoding.UTF8.GetString(data); //5
+		if (text == "JUMP!"){
+			print (">> " + text);
+			jump = true;
+		}
+		if (text == "FIRE!"){
+			print (">> " + text);
+			fire2 = true;
+		}
+
+
+		 //6
 
 		} 
 		catch(Exception e)
@@ -75,7 +87,13 @@ public class PlayerControllerScript: MonoBehaviour
 	public void Jump()
 	{
 
-	print("FIRE");
+	Player.fire_ball(); //1
+	//jumpSound.PlayDelayed(44100); // Play Jump Sound with a 1 second delay to match the animation
+	}
+
+	public void Fire2()
+	{
+
 	Player.fire_ball(); //1
 	//jumpSound.PlayDelayed(44100); // Play Jump Sound with a 1 second delay to match the animation
 	}
@@ -89,6 +107,11 @@ public class PlayerControllerScript: MonoBehaviour
 	{
 		Jump ();
 		jump = false;
+	}
+	if(fire2 == true)
+	{
+		Fire2 ();
+		fire2 = false;
 	}
 	}
 

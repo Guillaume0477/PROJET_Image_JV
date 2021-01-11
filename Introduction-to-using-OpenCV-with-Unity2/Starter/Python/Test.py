@@ -23,10 +23,15 @@ while capture.isOpened():
 
 
     key = cv2.waitKey(1)
-    if key == ord('g'):
+    if key == ord('j'):
         last = []
         sock.sendto( ("JUMP!").encode(), (UDP_IP, UDP_PORT) )
         print("_"*10, "Jump Action Triggered!", "_"*10)
+
+    if key == ord('f'):
+        last = []
+        sock.sendto( ("FIRE!").encode(), (UDP_IP, UDP_PORT) )
+        print("_"*10, "Fire Action Triggered!", "_"*10)
 
     # Capture frames from the camera
     ret, frame = capture.read()
