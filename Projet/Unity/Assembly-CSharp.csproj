@@ -63,7 +63,6 @@
      <Compile Include="Assets\Scenes\Scripts\PlayerBar.cs" />
      <Compile Include="Assets\Scenes\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scenes\Scripts\PlayerStats.cs" />
-     <Compile Include="Assets\Scenes\Scripts\Projectile.cs" />
      <Compile Include="Assets\Scenes\Scripts\SettingsMenu.cs" />
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

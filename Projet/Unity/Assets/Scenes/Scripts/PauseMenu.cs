@@ -7,20 +7,16 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public string sceneToLoad;
+    public RectTransform menu;
 
-    public void Start()
-    {
-        gameObject.SetActive(true);
-    }
     public void GoBackToGame()
     {
-        gameObject.SetActive(false);
+        menu.gameObject.SetActive(false);
         Time.timeScale = 1;
     }
 
     public void GoBackToMainMenu()
     {
-        // gameObject.SetActive(false);
         SceneManager.LoadScene(sceneToLoad);
     }
 

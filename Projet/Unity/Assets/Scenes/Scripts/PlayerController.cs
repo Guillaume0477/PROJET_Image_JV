@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour {
 	public PlayerBar healthBar;
 	public PlayerBar manaBar;
 	public Text manaLacking;
-	public string menuToLoad;
+	public RectTransform pauseMenu;
+	public RectTransform deathMenu;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	// private Rigidbody ennemy_cube1_rb;
@@ -25,8 +26,6 @@ public class PlayerController : MonoBehaviour {
 	private float player_speed = 10;
 	private float sensibility = 80;
 	private float force = 20;
-
-	private bool isPaused = false;
 
 	// At the start of the game..
 	void Start ()
@@ -50,6 +49,7 @@ public class PlayerController : MonoBehaviour {
 		if(playerStats.getHealth() == 0)
 		{
 			healthBar.SetValue(0);
+			Dead();
 		}
 		else
 		{
@@ -60,12 +60,7 @@ public class PlayerController : MonoBehaviour {
 			
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
-				isPaused = !isPaused;
-			}
-
-			if(isPaused)
-			{
-				SceneManager.LoadScene(menuToLoad);
+				pauseMenu.gameObject.SetActive(true);
 				Time.timeScale = 0.0f;
 			}
 
@@ -106,8 +101,6 @@ public class PlayerController : MonoBehaviour {
 
 	void fire_ball()
 	{
-		// if(count_ball == 0)
-		// {
 		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
 		balle.tag = "Boule";
 		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
@@ -115,13 +108,11 @@ public class PlayerController : MonoBehaviour {
 		count_ball = 1;
 		Destroy(balle, 1.0f);
 		playerStats.ApplyMana(manaDecreased);
-		// }
-		// else
-		// {
-		// 	if(balle == null)
-		// 	{
-		// 		count_ball = 0;
-		// 	}
-		// }
+	}
+
+	void Dead ()
+	{
+        deathMenu.gameObject.SetActive(true);
+		Time.timeScale = 0;
 	}
 }
