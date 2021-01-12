@@ -98,6 +98,6 @@ def getConvexEnvelop(gradIm):
 
     ids = np.argwhere(gradIm > 0)
 
-    
 
-    return convexEnvelop
+
+    return 0
