@@ -107,7 +107,7 @@ def main():
             if not os.path.exists(pathToWrite):
                 os.mkdir(pathToWrite)
             #Write segmentation as an image
-            cv2.imwrite(pathToWrite + "imTest_" + str(label) + "_" + str(d.date()) + '_' + str(d.time())[:8] + ".png", segR)
+            cv2.imwrite(pathToWrite + "imTest_" + str(d.date()) + '_' + str(d.time())[:8] + "_" + str(label) +".png", segR)
 
         #Show the frame
         cv2.imshow('Capture Video', frame)
