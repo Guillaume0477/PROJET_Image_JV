@@ -5,52 +5,56 @@ from math import floor
 import Segment
 import Py_utils
 
-def UpdateTol(frame, hsvValue):#cap, squareOffset, squareSize):
 
-    sizeIm = np.shape(frame)
-    tolH = 5
 
-    for k in [2,5,7,10,12,50]:
-        s = Segment.getHSVColorSeg(frame, [0, sizeIm[0]-1, 0, sizeIm[1]-1], hsvValue, k)
-        # s = Py_utils.Cleaning(s)
-        cv2.imshow(str(k), s)
+# def UpdateTol(frame, hsvValue):#cap, squareOffset, squareSize):
 
-    return 0
+#     sizeIm = np.shape(frame)
+#     tolH = 5
+
+#     for k in [2,5,7,10,12,50]:
+#         s = Segment.getHSVColorSeg(frame, [0, sizeIm[0]-1, 0, sizeIm[1]-1], hsvValue, k)
+#         # s = Py_utils.Cleaning(s)
+#         cv2.imshow(str(k), s)
+
+#     return 0
+
 
 def HandCalibrate(cap):
 
     print("Put your hand inside the square and push 'G'")
 
+    #Boolean for aquisition
     acq = True
 
+    #Size and offset of the square which shoul contain hand
     squareSize = [100,100]
     squareOffset = [200,200]
 
+    #Color parameters
     color = [0,0,0]
-    hueValue = 0
+    hueValue = [0,0,0]
 
     while acq :
         #Get the frame
         ret,frame = cap.read()
 
-        #Detect user quit command
+        #Detect user command
         key = cv2.waitKey(1)
         
+        #Aquisition of the parameters
         if key == ord('g'):
-
             ymin = floor(squareOffset[1] + squareSize[1]/3)
             ymax = floor(squareOffset[1] + 2*squareSize[1]/3)
             xmin = floor(squareOffset[0] + 4*squareSize[0]/7)
             xmax = floor(squareOffset[0] + 6*squareSize[0]/7)
+
+            #Get the mean bgr color
             color = np.mean(np.mean(frame[xmin:xmax, ymin:ymax,:], axis = 0), axis = 0)
 
-<<<<<<< HEAD
-            hsvValue = np.mean(np.mean(cv2.cvtColor(frame[xmin:xmax, ymin:ymax,:], cv2.COLOR_BGR2HSV), axis = 0), axis = 0)
-=======
-            
+            #get the mean hsv color
             hsvValue = np.mean(np.mean(cv2.cvtColor(frame[xmin:xmax, ymin:ymax,:], cv2.COLOR_BGR2HSV), axis = 0), axis = 0)
             #tolH = UpdateTol(frame[squareOffset[0]:squareOffset[0]+squareSize[0], squareOffset[1]:squareOffset[1]+squareSize[1],:], hsvValue)
->>>>>>> 2f9cc01e8f003bc63949591e888f231fcdf4b8c7
 
             #Transform the color from BGR to RGB
             #color[0], color[2] = color[2], color[0]
@@ -114,7 +118,3 @@ def HandCalibrate(cap):
     # cv2.destroyAllWindows()
 
     return color, hsvValue, [squareOffset, squareSize]
-<<<<<<< HEAD
-=======
-
->>>>>>> 2f9cc01e8f003bc63949591e888f231fcdf4b8c7
