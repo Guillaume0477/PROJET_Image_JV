@@ -40,7 +40,9 @@ def main():
         segR = Segment.getHSVColorSeg(frame, bounds, hueValue)
 
         # # Cleaning of the space to better segment hand
-        #segR = utils.Cleaning(segR)
+        # segR = utils.Cleaning(segR)
+
+        # test = Segment.GetGradient(segR)
 
         # # Tests using distance transform
         # seginter = cv2.distanceTransform(segR, cv2.DIST_L2, 3)
@@ -97,9 +99,9 @@ def main():
         #Acquire new data
         if key == ord('@'):
             #Label of the position recorded (if several to be labeled later, set -1)
-            label = -1
+            label = 3
             #Path to write images
-            pathToWrite = "Images/"
+            pathToWrite = "TrainImages/"
             #Current date and time
             d = datetime.now()
 

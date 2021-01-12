@@ -32,25 +32,3 @@ def getBGRColorSeg(im, bounds, refColor):
     segR *= np.array(cv2.inRange(frame[:,:,2], refColor[2]-tolerance, refColor[2]+tolerance))
     
     return segR
-
-def GetGradient(BWim):
-    # Gradient à partir des filtres de Sobel
-    SobelHcontours = np.array([[-1,-1,-1], [0,0,0], [1,1,1]])
-    SobelVcontours = np.array([[-1,0,1], [-1,0,1], [-1,0,1]])
-
-    #Segmentation des contours horizontaux
-    gradH = cv2.filter2D(BWim, -1, SobelHcontours)
-    #Segmentation des contours verticaux
-    gradV = cv2.filter2D(BWim, -1, SobelVcontours)
-
-    # cv2.imshow('H',gradH)
-    # cv2.imshow('V', gradV)
-
-    # # Utilisation de gaussienne pour filtre passe bas
-    # gauss = cv2.GaussianBlur(BWim, (5, 5), 2)
-
-    # cv2.imshow('gauss', gauss)
-
-
-    return 0
-    

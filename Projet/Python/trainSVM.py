@@ -2,14 +2,17 @@ import numpy as np
 import cv2
 import os
 import DetectParams
+from sklearn import svm, metrics
+from sklearn.multiclass import OneVsOneClassifier, OneVsRestClassifier
 
 def GetParametersFromFiles(file):
+    #Read the image
     im = cv2.imread(file, cv2.IMREAD_GRAYSCALE)
-
+    #Get indexes of the label and extract the label
     id1 = file.rfind('_')
     id2 = file.rfind('.')
     label = int(file[id1+1:id2])
-
+    #Get the parameters from the image
     params = DetectParams.getParameters(im, im)
 
     return label, params
@@ -32,12 +35,32 @@ def GetParametersFromDir(dirPath):
 
     return L, Params
 
+
+
 def main():
     #Path where images are located
-    pathToRead = "Images/"
+    pathToRead = "TrainImages/"
+    pathToReadTest = "TestImages/"
 
+    #Get the labels and parameters to train the SVM
     L, Params = GetParametersFromDir(pathToRead)
+    LTest, ParamsTest = GetParametersFromDir(pathToReadTest)
 
-    print(Params, L)
+    #Reshape l'organisation des données
+    Params = np.reshape(Params, [np.shape(Params)[0], np.shape(Params)[2]])
+    ParamsTest = np.reshape(ParamsTest, [np.shape(ParamsTest)[0], np.shape(ParamsTest)[2]])
+
+    #Creation de la SVM
+    mySVM = OneVsRestClassifier(svm.SVC(kernel = 'linear'))
+    mySVM.fit(Params, L)
+
+    Pred = mySVM.predict(ParamsTest)
+
+    print(LTest)
+    print(Pred)
+
+    print(metrics.classification_report(LTest, Pred))
+
+    return 0
 
 main()

@@ -63,3 +63,41 @@ def getSignedDistance(seg, G):
     else : d[1] = Gy[1]
 
     return d
+
+
+def GetGradient(BWim):
+    # Gradient à partir des filtres de Sobel
+    SobelHcontours = np.array([[-1,-1,-1], [0,0,0], [1,1,1]])
+    SobelVcontours = np.array([[-1,0,1], [-1,0,1], [-1,0,1]])
+
+    #Segmentation des contours horizontaux
+    gradH = cv2.filter2D(np.int16(BWim/255), -1, SobelHcontours)
+    #Segmentation des contours verticaux
+    gradV = cv2.filter2D(np.int16(BWim/255), -1, SobelVcontours)
+    #Norme du gradient
+    im = (gradH*gradH + gradV*gradV)
+    im = (im+np.min(im))/(np.max(im)+np.min(im))*255
+
+    # cv2.imshow("extr", im)
+    # cv2.imshow('H',np.abs(gradH)/np.max(np.abs(gradV))*255)
+    # cv2.imshow('V', np.abs(gradV)/np.max(np.abs(gradV))*255)
+
+
+    # # Utilisation de gaussienne pour filtre passe bas
+    # gauss = cv2.GaussianBlur(BWim, (5, 5), 2)
+
+    # cv2.imshow('gauss', gauss)
+
+    # # Test pour la détection du bout des doigts
+    # test = np.array([[0,1,0], [1,1,1], [1,1,1]])
+    # extr = cv2.filter2D(np.array(BWim/255), -1, test)
+
+    return im
+
+def getConvexEnvelop(gradIm):
+
+    ids = np.argwhere(gradIm > 0)
+
+    
+
+    return convexEnvelop
