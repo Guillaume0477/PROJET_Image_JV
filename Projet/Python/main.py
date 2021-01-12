@@ -20,7 +20,6 @@ def main():
     colorHand, hueValue, [squareOffset, squareSize] = Calibrage.HandCalibrate(cap)
     found = True
 
-    memNum = 0
     # seginter = np.ones(squareSize)
 
     while play :
@@ -37,12 +36,14 @@ def main():
         bounds = [xmin, xmax, ymin, ymax]
 
         #Segmentation of the hand inside the square according to hsv
-        segR = Segment.getHSVColorSeg(frame, bounds, hueValue)
+        #segR = Segment.getHSVColorSeg(frame, bounds, hueValue)
+        #segR = Segment.getBGRColorSeg(frame, bounds, colorHand)
+
+        segR, B, G, R, S, H, V = Segment.getHSRBGRColorSeg(frame, bounds, colorHand, hueValue)
+
 
         # # Cleaning of the space to better segment hand
-        # segR = utils.Cleaning(segR)
-
-        # test = Segment.GetGradient(segR)
+        segR = utils.Cleaning(segR)
 
         # # Tests using distance transform
         # seginter = cv2.distanceTransform(segR, cv2.DIST_L2, 3)
@@ -78,6 +79,9 @@ def main():
         frame[xmin:xmax,ymin:ymax,0] = segR
         frame[xmin:xmax,ymin:ymax,1] = segR
         frame[xmin:xmax,ymin:ymax,2] = segR
+        # frame[:,:,0] = segR
+        # frame[:,:,1] = segR
+        # frame[:,:,2] = segR
         
         # # Tests due to distance transform
         # seginter = np.zeros(squareSize)
@@ -113,6 +117,15 @@ def main():
 
         #Show the frame
         cv2.imshow('Capture Video', frame)
+        cv2.imshow('B', B)
+        cv2.imshow('G', G)
+        cv2.imshow('R', R)
+        cv2.imshow('H', H)
+        cv2.imshow('S', S)
+        cv2.imshow('V', V)
+
+
+        
 
         
 

@@ -35,7 +35,7 @@ def getGravityCenter(seg):
     centery = np.sum(idy*Sy[idy]) / np.sum(Sy[idy])
 
     return [centerx, centery]
-
+    
 def getSignedDistance(seg, G):
     d = [0,0]
 

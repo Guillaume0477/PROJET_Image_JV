@@ -6,37 +6,68 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerStats : MonoBehaviour {
-	// Create public variables for player speed, and for the Text UI game objects
-    public int healthbase = 100;
-	public int healthmax = 100;
-	public int mana = 100;
+	
+	public Text deathText;
 
-	void ApplyDammage (int TheDammage)
+	// Create public variables for player speed, and for the Text UI game objects
+    private float health = 100;
+	private float mana = 100;
+	private float healthMax = 100;
+	private float manaMax = 100;
+
+	public void ApplyDammage (float TheDammage)
 	{
-        healthbase -= TheDammage;
-        
-        if(healthbase <= 0){
+        health -= TheDammage;
+
+        if(health <= 0)
+		{
             Dead();
+			health = 0;
         }
     }
 
-	void ApplyMana (int Mana)
+	public void ApplyMana (float Mana)
 	{
         mana -= Mana;
         
-        if(mana <= 0){
-            ManaLeft();
+        if(mana <= 0)
+		{
+			mana = 0;
         }
+    }
+
+	public void RegenerateMana (float Mana)
+	{
+        mana += Mana;
+        
+        if(mana >= 100)
+		{
+			mana = 100;
+        }
+    }
+
+	public float getHealth ()
+	{
+		return(health);
+    }
+
+	public float getMana ()
+	{
+		return(mana);
+    }
+
+	public float getHealthMax ()
+	{
+		return(healthMax);
+    }
+
+	public float getManaMax ()
+	{
+		return(manaMax);
     }
 
 	void Dead ()
 	{
-        Debug.Log("Player died !");
-	}
-
-	// Each physics step..
-	void ManaLeft ()
-	{
-        Debug.Log("No more mana !");
+        deathText.enabled = true;
 	}
 }

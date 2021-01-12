@@ -7,55 +7,73 @@ using System.Collections;
 
 public class EnnemyAI : MonoBehaviour {
 	// Create public variables for player speed, and for the Text UI game objects
-    public Transform Target;
-    public float ennemy_speed = 5;    
-    public float attackRange = 2.2f;
-    public float attackRepeatTime = 1;
-    public int TheDammage = 10;
-    public float Damping = 6;
+    public PlayerStats Target;
+    public EnnemyStats ennemyStats;
+    public EnnemyBar ennemyBar;
+    public PlayerController player;
 
     private float Distance;
     private float attackTime = 1;
-
+    private float ennemy_speed = 5;    
+    private float attackRange = 2.2f;
+    private float attackRepeatTime = 1;
+    private float Damping = 6;
+    private float TheDammage = 20;
 
 	// At the start of the game..
 	void Start ()
 	{
         attackTime = Time.time;
+        ennemyBar.SetMaxValue(ennemyStats.getHealth());
     }
 
 	// Each physics step..
 	void Update ()
 	{
-        Distance = Vector3.Distance(Target.position, transform.position);
+        if(player.getStart_game() != 0)
+        {
+            if(Target.getHealth() > 0)
+            {
+                Distance = Vector3.Distance(Target.transform.position, transform.position);
 
-        lookAt();
+                lookAt();
+                setHealthBar();
 
-        if(Distance < attackRange){
-            attack();
-        }
+                if(Distance < attackRange){
+                    attack();
+                }
 
-        else{
-            chase();
+                else{
+                    chase();
+                }
+            }
+            else{
+                //Freeze la scene quand le personnage est mort
+                Time.timeScale = 0;
+            }
         }
     }
 
     void chase()
     {
-        transform.position = Vector3.MoveTowards(transform.position, Target.position, ennemy_speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, Target.transform.position, ennemy_speed * Time.deltaTime);
     }
 
     void lookAt()
     {
-        Quaternion rotation = Quaternion.LookRotation(Target.position - transform.position);
+        Quaternion rotation = Quaternion.LookRotation(Target.transform.position - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * Damping);
     }
 
     void attack()
     {
         if (Time.time > attackTime){
-            Target.SendMessage("ApplyDammage", TheDammage);
+            Target.ApplyDammage(TheDammage);
             attackTime = Time.time + attackRepeatTime;
         }
+    }
+
+    void setHealthBar(){
+        ennemyBar.SetValue(ennemyStats.getHealth());
     }
 }
