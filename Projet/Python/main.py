@@ -64,9 +64,9 @@ def main():
             #Get the parameters of the position and shape of the hand
             Params = DetectParams.getParameters(frame, segR)
 
-            #Display gravity center on screen
-            segR[int(Params[2][0]), :] = 127
-            segR[:, int(Params[2][1])] = 127
+            # #Display gravity center on screen
+            # segR[int(Params[2][0]), :] = 127
+            # segR[:, int(Params[2][1])] = 127
 
             # # Tests to update hsv channel while playing to be adaptative
             # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
