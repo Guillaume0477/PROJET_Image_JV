@@ -54,10 +54,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scenes\Scripts\CollisionGround.cs" />
+     <Compile Include="Assets\Scenes\Scripts\CommandsMenu.cs" />
      <Compile Include="Assets\Scenes\Scripts\EnnemyAI.cs" />
      <Compile Include="Assets\Scenes\Scripts\EnnemyBar.cs" />
      <Compile Include="Assets\Scenes\Scripts\EnnemyStats.cs" />
      <Compile Include="Assets\Scenes\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scenes\Scripts\PauseMenu.cs" />
      <Compile Include="Assets\Scenes\Scripts\PlayerBar.cs" />
      <Compile Include="Assets\Scenes\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scenes\Scripts\PlayerStats.cs" />

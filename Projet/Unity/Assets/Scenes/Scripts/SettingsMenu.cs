@@ -6,21 +6,18 @@ using UnityEngine.UI;
 public class SettingsMenu : MonoBehaviour
 {
     public Dropdown resolutionDropDown;
+    public RectTransform commands;
     Resolution[] resolutions;
 
     public void Start()
     {
-        Resolution currentResolution = Screen.currentResolution;
         resolutions = Screen.resolutions;
 
         resolutionDropDown.ClearOptions();
 
         List<string> options = new List<string>();
 
-        string currentOption = currentResolution.width + "x" + currentResolution.height;
-        options.Add(currentOption);
-
-        for (int i = 0; i < resolutions.Length ; i++)
+        for (int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + "x" + resolutions[i].height;
             options.Add(option);
@@ -33,7 +30,7 @@ public class SettingsMenu : MonoBehaviour
         Screen.fullScreen = isFullScreen;
     }
 
-    public void GoBack()
+    public void GoBackSettings()
     {
         gameObject.SetActive(false);
     }
@@ -42,5 +39,10 @@ public class SettingsMenu : MonoBehaviour
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
+
+    public void Commands()
+    {
+        commands.gameObject.SetActive(true);
     }
 }

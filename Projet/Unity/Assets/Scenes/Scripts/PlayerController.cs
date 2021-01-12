@@ -1,9 +1,8 @@
 using UnityEngine;
-
 // Include the namespace required to use Unity UI
 using UnityEngine.UI;
-
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 	// public float ennemy_speed;
@@ -12,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 	public PlayerBar healthBar;
 	public PlayerBar manaBar;
 	public Text manaLacking;
+	public string menuToLoad;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	// private Rigidbody ennemy_cube1_rb;
@@ -26,8 +26,7 @@ public class PlayerController : MonoBehaviour {
 	private float sensibility = 80;
 	private float force = 20;
 
-	//launch the game or not (for the menu)
-	private float start_game = 0;
+	private bool isPaused = false;
 
 	// At the start of the game..
 	void Start ()
@@ -54,41 +53,41 @@ public class PlayerController : MonoBehaviour {
 		}
 		else
 		{
-			if (start_game == 0)
+			healthBar.SetValue(playerStats.getHealth());
+			//The ennemies follow the player
+			// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
+			player_movement();
+			
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
-				// if (Input.GetKeyDown(KeyCode.E))
-				// {
-				// 	start_game = 1;
-				// }
-				start_game = 1;
+				isPaused = !isPaused;
 			}
-			else
-			{
-				healthBar.SetValue(playerStats.getHealth());
-				//The ennemies follow the player
-				// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
-				player_movement();
-				
-				if (Input.GetKeyDown(KeyCode.Space))
-				{
-					if(playerStats.getMana() >=  manaDecreased)
-					{
-						fire_ball();
-					}
-					else
-					{
-						manaLacking.enabled = true;
-					}
-				}
 
+			if(isPaused)
+			{
+				SceneManager.LoadScene(menuToLoad);
+				Time.timeScale = 0.0f;
+			}
+
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
 				if(playerStats.getMana() >=  manaDecreased)
 				{
-					manaLacking.enabled = false;
+					fire_ball();
 				}
-
-				manaBar.SetValue(playerStats.getMana());
-				playerStats.RegenerateMana(manaIncreased);
+				else
+				{
+					manaLacking.enabled = true;
+				}
 			}
+
+			if(playerStats.getMana() >=  manaDecreased)
+			{
+				manaLacking.enabled = false;
+			}
+
+			manaBar.SetValue(playerStats.getMana());
+			playerStats.RegenerateMana(manaIncreased);
 		}
 	}
 	
@@ -124,9 +123,5 @@ public class PlayerController : MonoBehaviour {
 		// 		count_ball = 0;
 		// 	}
 		// }
-	}
-	public float getStart_game()
-	{
-		return(start_game);
 	}
 }

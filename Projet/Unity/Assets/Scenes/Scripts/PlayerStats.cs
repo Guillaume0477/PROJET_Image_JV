@@ -69,5 +69,6 @@ public class PlayerStats : MonoBehaviour {
 	void Dead ()
 	{
         deathText.enabled = true;
+		Time.timeScale = 0;
 	}
 }
