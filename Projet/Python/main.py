@@ -7,6 +7,8 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from math import floor
+import os
+from datetime import datetime
 
 
 def main():
@@ -18,6 +20,7 @@ def main():
     colorHand, hueValue, [squareOffset, squareSize] = Calibrage.HandCalibrate(cap)
     found = True
 
+    memNum = 0
     # seginter = np.ones(squareSize)
 
     while play :
@@ -90,6 +93,21 @@ def main():
         key = cv2.waitKey(1)
         if key & 0xFF == ord('q'):
             play = False
+        
+        #Acquire new data
+        if key == ord('@'):
+            #Label of the position recorded (if several to be labeled later, set -1)
+            label = -1
+            #Path to write images
+            pathToWrite = "Images/"
+            #Current date and time
+            d = datetime.now()
+
+            #Check if path already exists
+            if not os.path.exists(pathToWrite):
+                os.mkdir(pathToWrite)
+            #Write segmentation as an image
+            cv2.imwrite(pathToWrite + "imTest_" + str(label) + "_" + str(d.date()) + '_' + str(d.time())[:8] + ".png", segR)
 
         #Show the frame
         cv2.imshow('Capture Video', frame)
