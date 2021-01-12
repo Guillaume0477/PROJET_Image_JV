@@ -6,12 +6,12 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	// Create public variables for player speed, and for the Text UI game objects
-	public float player_speed;
 	// public float ennemy_speed;
-	public float sensibility;
     public GameObject projectile;
-	public float force;
+	public PlayerStats playerStats;
+	public PlayerBar healthBar;
+	public PlayerBar manaBar;
+	public Text manaLacking;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	// private Rigidbody ennemy_cube1_rb;
@@ -19,13 +19,24 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody rb_player;
 	private GameObject balle;
 	private int count_ball = 0;
-	private Collider collider;
+	private float manaDecreased = 30;
+	private float manaIncreased = 0.1f;
+	// Create public variables for player speed, and for the Text UI game objects
+	private float player_speed = 10;
+	private float sensibility = 80;
+	private float force = 20;
+
+	//launch the game or not (for the menu)
+	private float start_game = 0;
 
 	// At the start of the game..
 	void Start ()
 	{
 		// Assign the Rigidbody component to our private rb variable
 		rb_player = GetComponent<Rigidbody>();
+
+		healthBar.SetMaxValue(playerStats.getHealthMax());
+		manaBar.SetMaxValue(playerStats.getManaMax());
 
         // //Ennemy cubes creation
         // ennemy_cube1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -37,7 +48,52 @@ public class PlayerController : MonoBehaviour {
 	// Each physics step..
 	void FixedUpdate ()
 	{
-        //Make the RB moving with Z Q S D
+		if(playerStats.getHealth() == 0)
+		{
+			healthBar.SetValue(0);
+		}
+		else
+		{
+			if (start_game == 0)
+			{
+				// if (Input.GetKeyDown(KeyCode.E))
+				// {
+				// 	start_game = 1;
+				// }
+				start_game = 1;
+			}
+			else
+			{
+				healthBar.SetValue(playerStats.getHealth());
+				//The ennemies follow the player
+				// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
+				player_movement();
+				
+				if (Input.GetKeyDown(KeyCode.Space))
+				{
+					if(playerStats.getMana() >=  manaDecreased)
+					{
+						fire_ball();
+					}
+					else
+					{
+						manaLacking.enabled = true;
+					}
+				}
+
+				if(playerStats.getMana() >=  manaDecreased)
+				{
+					manaLacking.enabled = false;
+				}
+				manaBar.SetValue(playerStats.getMana());
+				playerStats.RegenerateMana(manaIncreased);
+			}
+		}
+	}
+	
+	void player_movement()
+	{
+ 		//Make the RB moving with Z Q S D
 		// Set some local float variables equal to the value of our Horizontal and Vertical Inputs
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
@@ -46,45 +102,30 @@ public class PlayerController : MonoBehaviour {
 
 		Vector3 YRotation = Vector3.right + new Vector3(-1.0f, 1.0f, 0.0f);
 		transform.Rotate(YRotation * sensibility * Time.deltaTime * moveHorizontal);
-
-        //The ennemies follow the player
-        // ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
-		
-        if (Input.GetKeyDown(KeyCode.Space))
-		{
-			if(count_ball == 0){
-				balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
-				balle.tag = "Boule";
-				balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
-				
-				// if(collider.gameObject.tag == "Ennemy")
-				// {
-				// 	Destroy(balle);
-				// } else
-				// {
-				// 	Destroy(balle, 2.0f);
-				// }
-				
-				count_ball = 1;
-				Destroy(balle, 1.0f);
-			}
-			else{
-				if(balle == null){
-					count_ball = 0;
-				}
-			}
-		}
 	}
-	
-	// When this game object intersects a collider with 'is trigger' checked, 
-	// store a reference to that collider in a variable named 'other'..
-	void OnTriggerEnter(Collider other) 
+
+	public void fire_ball()
 	{
-		// ..and if the game object we intersect has the tag 'Pick Up' assigned to it..
-		if (other.gameObject.CompareTag ("Pick Up"))
-		{
-			// Make the other game object (the pick up) inactive, to make it disappear
-			other.gameObject.SetActive (false);
-		}
+		// if(count_ball == 0)
+		// {
+		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+		balle.tag = "Boule";
+		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
+
+		count_ball = 1;
+		Destroy(balle, 1.0f);
+		playerStats.ApplyMana(manaDecreased);
+		// }
+		// else
+		// {
+		// 	if(balle == null)
+		// 	{
+		// 		count_ball = 0;
+		// 	}
+		// }
+	}
+	public float getStart_game()
+	{
+		return(start_game);
 	}
 }

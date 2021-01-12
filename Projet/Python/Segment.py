@@ -1,21 +1,12 @@
 import numpy as np
 import cv2
 
-def getSegmentation(im, bounds, BGRColor, HSVColor):
 
-    segR = np.zeros(bounds[1]-bounds[0], bounds[3] - bounds[2])
-
-
-
-
-
-
-    return segR
-
-def getHSVColorSeg(im, bounds, refColor):
-    toleranceH = 10
+def getHSVColorSeg(im, bounds, refColor, toleranceH = 10):
+    # toleranceH = 10
     toleranceS = 60
-    toleranceV = 60
+    toleranceV = 100
+
 
     #Passage en HSV
     hsvIm = cv2.cvtColor(im[bounds[0]:bounds[1],bounds[2]:bounds[3],:], cv2.COLOR_BGR2HSV)
@@ -32,16 +23,18 @@ def getHSVColorSeg(im, bounds, refColor):
 
 
 def getBGRColorSeg(im, bounds, refColor):
-    tolerance = 30
+
+    tolerance = 60
 
     #Extraction de la zone d'intérêt
     frame = im[bounds[0]:bounds[1], bounds[2]:bounds[3],:]
 
     #Segmentation sur chaque canal
-    segR = np.array(cv2.inRange(frame, refColor[0]-tolerance, refColor[0]+tolerance))
-    segR *= np.array(cv2.inRange(frame, refColor[1]-tolerance, refColor[1]+tolerance))
-    segR *= np.array(cv2.inRange(frame, refColor[2]-tolerance, refColor[2]+tolerance))
-    
+
+    segR = np.array(cv2.inRange(frame[:,:,0], refColor[0]-tolerance, refColor[0]+tolerance))
+    segR *= np.array(cv2.inRange(frame[:,:,1], refColor[1]-tolerance, refColor[1]+tolerance))
+    segR *= np.array(cv2.inRange(frame[:,:,2], refColor[2]-tolerance, refColor[2]+tolerance))
+
     return segR
 
 def GetGradient(BWim):
