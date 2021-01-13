@@ -1,9 +1,8 @@
 using UnityEngine;
-
 // Include the namespace required to use Unity UI
 using UnityEngine.UI;
-
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 	// public float ennemy_speed;
@@ -12,6 +11,8 @@ public class PlayerController : MonoBehaviour {
 	public PlayerBar healthBar;
 	public PlayerBar manaBar;
 	public Text manaLacking;
+	public RectTransform pauseMenu;
+	public RectTransform deathMenu;
 
 	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
 	// private Rigidbody ennemy_cube1_rb;
@@ -25,9 +26,6 @@ public class PlayerController : MonoBehaviour {
 	private float player_speed = 10;
 	private float sensibility = 80;
 	private float force = 20;
-
-	//launch the game or not (for the menu)
-	private float start_game = 0;
 
 	// At the start of the game..
 	void Start ()
@@ -51,43 +49,33 @@ public class PlayerController : MonoBehaviour {
 		if(playerStats.getHealth() == 0)
 		{
 			healthBar.SetValue(0);
+			Dead();
 		}
 		else
 		{
-			if (start_game == 0)
+			healthBar.SetValue(playerStats.getHealth());
+			//The ennemies follow the player
+			// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
+			player_movement();
+			
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
-				// if (Input.GetKeyDown(KeyCode.E))
-				// {
-				// 	start_game = 1;
-				// }
-				start_game = 1;
+				pauseMenu.gameObject.SetActive(true);
+				Time.timeScale = 0.0f;
 			}
-			else
-			{
-				healthBar.SetValue(playerStats.getHealth());
-				//The ennemies follow the player
-				// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
-				player_movement();
-				
-				if (Input.GetKeyDown(KeyCode.Space))
-				{
-					if(playerStats.getMana() >=  manaDecreased)
-					{
-						fire_ball();
-					}
-					else
-					{
-						manaLacking.enabled = true;
-					}
-				}
 
-				if(playerStats.getMana() >=  manaDecreased)
-				{
-					manaLacking.enabled = false;
-				}
-				manaBar.SetValue(playerStats.getMana());
-				playerStats.RegenerateMana(manaIncreased);
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
+				fire_ball_if_possible();
 			}
+
+			if(playerStats.getMana() >=  manaDecreased)
+			{
+				manaLacking.enabled = false;
+			}
+
+			manaBar.SetValue(playerStats.getMana());
+			playerStats.RegenerateMana(manaIncreased);
 		}
 	}
 	
@@ -104,10 +92,20 @@ public class PlayerController : MonoBehaviour {
 		transform.Rotate(YRotation * sensibility * Time.deltaTime * moveHorizontal);
 	}
 
-	public void fire_ball()
+	public void fire_ball_if_possible()
 	{
-		// if(count_ball == 0)
-		// {
+		if(playerStats.getMana() >=  manaDecreased)
+		{
+			fire_ball();
+		}
+		else
+		{
+			manaLacking.enabled = true;
+		}
+	}
+
+	void fire_ball()
+	{
 		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
 		balle.tag = "Boule";
 		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
@@ -115,17 +113,11 @@ public class PlayerController : MonoBehaviour {
 		count_ball = 1;
 		Destroy(balle, 1.0f);
 		playerStats.ApplyMana(manaDecreased);
-		// }
-		// else
-		// {
-		// 	if(balle == null)
-		// 	{
-		// 		count_ball = 0;
-		// 	}
-		// }
 	}
-	public float getStart_game()
+
+	void Dead ()
 	{
-		return(start_game);
+        deathMenu.gameObject.SetActive(true);
+		Time.timeScale = 0;
 	}
 }

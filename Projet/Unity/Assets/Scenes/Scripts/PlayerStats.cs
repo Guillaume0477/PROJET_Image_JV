@@ -7,8 +7,6 @@ using System.Collections;
 
 public class PlayerStats : MonoBehaviour {
 	
-	public Text deathText;
-
 	// Create public variables for player speed, and for the Text UI game objects
     private float health = 100;
 	private float mana = 100;
@@ -21,7 +19,6 @@ public class PlayerStats : MonoBehaviour {
 
         if(health <= 0)
 		{
-            Dead();
 			health = 0;
         }
     }
@@ -65,9 +62,4 @@ public class PlayerStats : MonoBehaviour {
 	{
 		return(manaMax);
     }
-
-	void Dead ()
-	{
-        deathText.enabled = true;
-	}
 }

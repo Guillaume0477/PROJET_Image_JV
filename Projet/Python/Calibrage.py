@@ -34,6 +34,7 @@ def HandCalibrate(cap):
     #Color parameters
     color = [0,0,0]
     hueValue = [0,0,0]
+    YUV_Value =[0,0,0]
 
     while acq :
         #Get the frame
@@ -55,7 +56,8 @@ def HandCalibrate(cap):
             #get the mean hsv color
             hsvValue = np.mean(np.mean(cv2.cvtColor(frame[xmin:xmax, ymin:ymax,:], cv2.COLOR_BGR2HSV), axis = 0), axis = 0)
             #tolH = UpdateTol(frame[squareOffset[0]:squareOffset[0]+squareSize[0], squareOffset[1]:squareOffset[1]+squareSize[1],:], hsvValue)
-
+            YUV_Value = np.mean(np.mean(cv2.cvtColor(frame[xmin:xmax, ymin:ymax,:], cv2.COLOR_BGR2YUV), axis = 0), axis = 0)
+            
             #Transform the color from BGR to RGB
             #color[0], color[2] = color[2], color[0]
 
@@ -117,4 +119,4 @@ def HandCalibrate(cap):
     # cap.release()
     # cv2.destroyAllWindows()
 
-    return color, hsvValue, [squareOffset, squareSize]
+    return color, hsvValue, YUV_Value, [squareOffset, squareSize]
