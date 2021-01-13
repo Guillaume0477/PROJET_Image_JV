@@ -66,14 +66,7 @@ public class PlayerController : MonoBehaviour {
 
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				if(playerStats.getMana() >=  manaDecreased)
-				{
-					fire_ball();
-				}
-				else
-				{
-					manaLacking.enabled = true;
-				}
+				fire_ball_if_possible();
 			}
 
 			if(playerStats.getMana() >=  manaDecreased)
@@ -97,6 +90,18 @@ public class PlayerController : MonoBehaviour {
 
 		Vector3 YRotation = Vector3.right + new Vector3(-1.0f, 1.0f, 0.0f);
 		transform.Rotate(YRotation * sensibility * Time.deltaTime * moveHorizontal);
+	}
+
+	public void fire_ball_if_possible()
+	{
+		if(playerStats.getMana() >=  manaDecreased)
+		{
+			fire_ball();
+		}
+		else
+		{
+			manaLacking.enabled = true;
+		}
 	}
 
 	void fire_ball()
