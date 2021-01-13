@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Link_Python_Unity\For_Unity\PlayerControllerScript.cs" />
      <Compile Include="Assets\Scenes\Scripts\CollisionGround.cs" />
      <Compile Include="Assets\Scenes\Scripts\CommandsMenu.cs" />
      <Compile Include="Assets\Scenes\Scripts\EnnemyAI.cs" />
