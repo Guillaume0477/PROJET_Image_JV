@@ -89,7 +89,7 @@ def getnorm_0(ref, current, w):
     return frame_norm
 
 
-def getHSVBGRColorSeg(im, bounds, refColorBGR, refColorHSV, YUV_Value):
+def getHSVBGRYUVColorSeg(im, bounds, refColorBGR, refColorHSV, YUV_Value):
 
     seuil = 70
 
