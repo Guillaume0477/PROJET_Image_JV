@@ -10,7 +10,6 @@ public class EnnemyAI : MonoBehaviour {
     public PlayerStats Target;
     public EnnemyStats ennemyStats;
     public EnnemyBar ennemyBar;
-    public PlayerController player;
 
     private float Distance;
     private float attackTime = 1;
@@ -30,27 +29,17 @@ public class EnnemyAI : MonoBehaviour {
 	// Each physics step..
 	void Update ()
 	{
-        if(player.getStart_game() != 0)
-        {
-            if(Target.getHealth() > 0)
-            {
-                Distance = Vector3.Distance(Target.transform.position, transform.position);
+        Distance = Vector3.Distance(Target.transform.position, transform.position);
 
-                lookAt();
-                setHealthBar();
+        lookAt();
+        setHealthBar();
 
-                if(Distance < attackRange){
-                    attack();
-                }
+        if(Distance < attackRange){
+            attack();
+        }
 
-                else{
-                    chase();
-                }
-            }
-            else{
-                //Freeze la scene quand le personnage est mort
-                Time.timeScale = 0;
-            }
+        else{
+            chase();
         }
     }
 

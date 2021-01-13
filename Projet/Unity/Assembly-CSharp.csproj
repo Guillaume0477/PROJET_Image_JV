@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{62093105-6D8D-C1C8-FC8B-BD65E8F8919E}</ProjectGuid>
+    <ProjectGuid>{CD8C9303-404B-FB8D-6B9B-21988D5CAC0A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -53,25 +53,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Link_Python_Unity\For_Unity\PlayerControllerScript.cs" />
+     <Compile Include="Assets\Scenes\Scripts\CollisionGround.cs" />
+     <Compile Include="Assets\Scenes\Scripts\CommandsMenu.cs" />
      <Compile Include="Assets\Scenes\Scripts\EnnemyAI.cs" />
+     <Compile Include="Assets\Scenes\Scripts\EnnemyBar.cs" />
      <Compile Include="Assets\Scenes\Scripts\EnnemyStats.cs" />
+     <Compile Include="Assets\Scenes\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scenes\Scripts\PauseMenu.cs" />
+     <Compile Include="Assets\Scenes\Scripts\PlayerBar.cs" />
      <Compile Include="Assets\Scenes\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scenes\Scripts\PlayerStats.cs" />
-     <Compile Include="Assets\Scenes\Scripts\Projectile.cs" />
+     <Compile Include="Assets\Scenes\Scripts\SettingsMenu.cs" />
  <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.PackageManagerUI.Editor">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Analytics.DataPrivacy">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>/home/paul/Unity-2018.3.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -277,20 +284,20 @@
  <Reference Include="UnityEngine.SpatialTracking">
  <HintPath>/home/paul/Unity-2018.3.0f2/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
  </Reference>
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.Advertisements.Editor">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.Editor.dll</HintPath>
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.Editor.dll</HintPath>
  </Reference>
- <Reference Include="Unity.Analytics.Tracker">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Analytics.StandardEvents">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
+ <Reference Include="UnityEngine.Advertisements">
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/PackageCache/com.unity.ads@2.3.1/Runtime/UnityEngine.Advertisements.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Analytics.Editor">
- <HintPath>/home/paul/Documents/Unity/Projet Final/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Analytics.StandardEvents">
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Analytics.Tracker">
+ <HintPath>/home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
  </Reference>
  <Reference Include="netstandard">
  <HintPath>/home/paul/Unity-2018.3.0f2/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

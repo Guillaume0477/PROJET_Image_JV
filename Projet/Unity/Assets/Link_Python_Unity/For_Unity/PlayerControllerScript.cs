@@ -87,14 +87,14 @@ public class PlayerControllerScript: MonoBehaviour
 	public void Jump()
 	{
 
-	Player.fire_ball(); //1
+	Player.fire_ball_if_possible(); //1
 	//jumpSound.PlayDelayed(44100); // Play Jump Sound with a 1 second delay to match the animation
 	}
 
 	public void Fire2()
 	{
 
-	Player.fire_ball(); //1
+	Player.fire_ball_if_possible(); //1
 	//jumpSound.PlayDelayed(44100); // Play Jump Sound with a 1 second delay to match the animation
 	}
 
