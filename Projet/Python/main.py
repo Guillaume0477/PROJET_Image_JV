@@ -65,7 +65,7 @@ def main():
 
         #If hand has been found
         if found :
-            #Get the parameters of the position and shape of the hand
+            #Get the parameters of the position and shape of the hand 
             Params = DetectParams.getParameters(frame, segR)
 
             # #Display gravity center on screen
