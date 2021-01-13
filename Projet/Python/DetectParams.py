@@ -21,8 +21,11 @@ def getParameters(im, seg):
 
     grad = GetGradient(seg)
     if np.sum(grad) != 0 :
-        getConvexEnvelop(grad)
+        listPts = getConvexEnvelop(grad)
+        listPts = cleanConvex(listPts)
+        getNbFing(listPts, grad)
     
+
     return paramsSet
 
 def getGravityCenter(seg):
@@ -125,9 +128,8 @@ def getConvexEnvelop(gradIm):
         v1 = (former - current)/np.linalg.norm(former-current)
         v2s = (ids - current)
 
-        v2sN = np.reshape(np.sqrt(np.sum(np.square(v2s), axis = 1)), [v2s.shape[0],1])+0.00001
-
-        v2s = np.divide(v2s,v2sN)
+        v2sN = np.reshape(np.linalg.norm(v2s, axis = 1), [v2s.shape[0], 1])
+        v2s = np.divide(v2s,v2sN+0.00001)
 
         #Calcul du cos
         coss = np.dot(v2s,v1)
@@ -148,10 +150,89 @@ def getConvexEnvelop(gradIm):
 
     # cv2.imshow('im',gradIm)
 
-    return 0
+    return listPoints
 
-def getNbFing(listPts):
-
+def getNbFing(listPts, gradIm):
+    #Indexes vers gradient is nonzero
+    ids = np.argwhere(gradIm > 0)
     
+    p0 = listPts[0]
 
+    listDefects = []
+
+    for p in listPts[1:]:
+        #Creation of the vector and its norm
+        convexSeg = p-p0
+        convN = np.linalg.norm(convexSeg)
+
+
+        #Projection of contour points on the vector
+        vects = ids - p0
+
+        NVects = np.reshape(np.linalg.norm(vects, axis = 1), [vects.shape[0],1])
+        NProj = np.reshape(np.dot(vects,convexSeg/(convN+0.0001)), [vects.shape[0],1])
+        NDist = np.sqrt(np.square(NVects)-np.square(NProj))
+
+        #Seperate the vector in subsegments
+        numSub = 20            #Number of segments
+        inc = convN / numSub    #Increments (size of the subsegment)
+        maxi = 0                #Maximum distance
+        index = [0,0]           #Point distance
+
+        for k in range(numSub):
+
+            #Indexes of the points inside the projection of which is located inside the segment
+            a = np.argwhere(np.multiply((NProj > k*inc),(NProj <= (k+1)*inc)))
+            if len(a) < 1 :
+                continue
+            a = a[:,0]
+            # print('P', NProj[a], k*inc, (k+1)*inc)
+
+            #Minimum value distance from the envelop to the contour inside the segment
+            b = np.argwhere(np.min(NDist[a]) == NDist[a])[:,0]
+        
+            if (len(b) > 1) :
+                b = b[0]
+
+            # print('Ndist', NDist[a], NDist[a[b]])
+
+
+
+            #Get the distance
+            d = NDist[a[b]]
+
+            if d > maxi :
+                maxi = d
+                index = ids[a[b]]
+
+        if (maxi != 0):
+            listDefects.append(index)
+        p0 = p
+
+    print(listPts, np.shape(listPts))
+    print(listDefects, np.shape(listDefects))
+    
+    p0 = listPts[0]
+    for k in range(len(listDefects)) :
+        i = tuple(np.flip(listDefects[k])[0])
+        cv2.circle(gradIm, i, (20), (255,0,0))#, thickness=8)
+
+    for point in listPts[1:] :
+        cv2.line(gradIm, tuple(np.flip(p0)), tuple(np.flip(point)), (127), thickness=8)
+        p0 = point
+
+    cv2.imshow('defects', gradIm)
+
+    print()
+    print()
     return 0
+
+def cleanConvex(listPts):
+    listCleaned = [listPts[0]]
+
+    for p in listPts[1:]:
+        v = listCleaned[-1] - p
+        if (np.linalg.norm(v) > 50):
+            listCleaned.append(p)
+
+    return listCleaned

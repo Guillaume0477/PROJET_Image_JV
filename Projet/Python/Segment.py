@@ -70,7 +70,7 @@ def getnorm_0(ref, current, w):
 
 def getHSRBGRColorSeg(im, bounds, refColorBGR, refColorHSV):
 
-    seuil = 15
+    seuil = 30
 
     w=np.array([0.1,0.05,0.05,0.55,0.2,0.05])
 
