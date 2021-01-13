@@ -16,7 +16,7 @@ def trackHand(im, squareOffset, squareSize, fullSize):
     ymax = squareOffset[1] +  squareSize[1]
 
     #Get the number of 1s on the borders of the square
-    sumLines = np.array([np.sum(im[0,:]), np.sum(im[s[0]-1,:]), np.sum(im[:,0]), np.sum(im[:,s[1]-1])])/255
+    sumLines = np.array([np.sum(im[10,:]), np.sum(im[s[0]-10,:]), np.sum(im[:,10]), np.sum(im[:,s[1]-10])])/255
 
     #Check if there are to many border values or not enough
     checkVals = np.concatenate([sumLines[0:2] > float(s[0])/10.0, sumLines[2:4] > float(s[1])/10.0], axis = 0)

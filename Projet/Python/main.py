@@ -7,6 +7,8 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from math import floor
+import os
+from datetime import datetime
 
 
 def main():
@@ -34,11 +36,12 @@ def main():
         bounds = [xmin, xmax, ymin, ymax]
 
         #Segmentation of the hand inside the square according to hsv
-        #segR = Segment.getHSVColorSeg(frame, bounds, hueValue)
+        # segR = Segment.getHSVColorSeg(frame, bounds, hueValue)
         #segR = Segment.getBGRColorSeg(frame, bounds, colorHand)
 
-        segR, B, G, R, S, H, V, Y, U, V2 = Segment.getHSVBGRColorSeg(frame, bounds, colorHand, hueValue, YUV_Value)
+        #segR, B, G, R, S, H, V = Segment.getHSVBGRColorSeg(frame, bounds, colorHand, hueValue)
 
+        segR, B, G, R, S, H, V, Y, U, V2 = Segment.getHSVBGRColorSeg(frame, bounds, colorHand, hueValue, YUV_Value)
 
         # # Cleaning of the space to better segment hand
         #segR = utils.Cleaning(segR)
@@ -65,9 +68,9 @@ def main():
             #Get the parameters of the position and shape of the hand
             Params = DetectParams.getParameters(frame, segR)
 
-            #Display gravity center on screen
-            segR[int(Params[2][0]), :] = 127
-            segR[:, int(Params[2][1])] = 127
+            # #Display gravity center on screen
+            # segR[int(Params[2][0]), :] = 127
+            # segR[:, int(Params[2][1])] = 127
 
             # # Tests to update hsv channel while playing to be adaptative
             # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
@@ -97,6 +100,21 @@ def main():
         key = cv2.waitKey(1)
         if key & 0xFF == ord('q'):
             play = False
+        
+        #Acquire new data
+        if key == ord('@'):
+            #Label of the position recorded (if several to be labeled later, set -1)
+            label = 3
+            #Path to write images
+            pathToWrite = "TrainImages/"
+            #Current date and time
+            d = datetime.now()
+
+            #Check if path already exists
+            if not os.path.exists(pathToWrite):
+                os.mkdir(pathToWrite)
+            #Write segmentation as an image
+            cv2.imwrite(pathToWrite + "imTest_" + str(d.date()) + '_' + str(d.time())[:8] + "_" + str(label) +".png", segR)
 
         #Show the frame
         cv2.imshow('Capture Video', frame)
@@ -110,6 +128,9 @@ def main():
         cv2.imshow('U', U)
         cv2.imshow('V2', V2)
 
+
+
+        
 
         
 
