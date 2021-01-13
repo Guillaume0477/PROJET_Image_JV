@@ -90,7 +90,7 @@ def getnorm_0(ref, current, w):
 
 
 
-def getHSRBGRColorSeg(im, bounds, refColorBGR, refColorHSV):
+def getHSVBGRColorSeg(im, bounds, refColorBGR, refColorHSV):
 
     seuil = 30
 
