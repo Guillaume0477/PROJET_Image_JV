@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 def getParameters(im, seg):
     # List of relevant parameters
@@ -17,6 +18,10 @@ def getParameters(im, seg):
     # Include maximum signed distance
     SignDist = getSignedDistance(seg,Gcenter)
     paramsSet[:,5:7] = [SignDist[0]/shape[0], SignDist[1]/shape[1]]
+
+    grad = GetGradient(seg)
+    if np.sum(grad) != 0 :
+        getConvexEnvelop(grad)
     
     return paramsSet
 
@@ -76,7 +81,7 @@ def GetGradient(BWim):
     gradV = cv2.filter2D(np.int16(BWim/255), -1, SobelVcontours)
     #Norme du gradient
     im = (gradH*gradH + gradV*gradV)
-    im = (im+np.min(im))/(np.max(im)+np.min(im))*255
+    im = (im+np.min(im))/(np.max(im)+np.min(im)+0.00001)*255
 
     # cv2.imshow("extr", im)
     # cv2.imshow('H',np.abs(gradH)/np.max(np.abs(gradV))*255)
@@ -95,9 +100,58 @@ def GetGradient(BWim):
     return im
 
 def getConvexEnvelop(gradIm):
-
+    #Indexes vers gradient is nonzero
     ids = np.argwhere(gradIm > 0)
+    #minimum x value
+    xmin = np.argwhere(np.min(ids[:,0]) == ids[:,0])
+    #Initialization of the lists of the points of the convex envelop
+    listPoints = [ids[xmin[0][0],:]]
+
+    while True:
+
+        cosmax = 0
+
+        #Check si la liste ne contient qu'un point et considère le point précédent
+        if len(listPoints) <= 1:
+            former = np.copy(ids[xmin[0][0],:])
+            former[1] -= 1
+        else :
+            former = listPoints[-2]
+
+        #Récupère le point actuel
+        current = listPoints[-1]
+
+        #Normalisation des vecteurs
+        v1 = (former - current)/np.linalg.norm(former-current)
+        v2s = (ids - current)
+
+        v2sN = np.reshape(np.sqrt(np.sum(np.square(v2s), axis = 1)), [v2s.shape[0],1])+0.00001
+
+        v2s = np.divide(v2s,v2sN)
+
+        #Calcul du cos
+        coss = np.dot(v2s,v1)
+        coss[xmin] = 1
+
+        #Conservation du cos minimum
+        xmin = np.argwhere(coss == np.min(coss))[0][0]
+        listPoints.append(ids[xmin,:])
+
+        if np.linalg.norm(listPoints[0] - listPoints[-1]) == 0:
+            break
 
 
+    # p0 = listPoints[0]
+    # for point in listPoints[1:]:
+    #     cv2.line(gradIm, tuple(np.flip(p0)), tuple(np.flip(point)), (127), thickness=8)
+    #     p0 = point
+
+    # cv2.imshow('im',gradIm)
+
+    return 0
+
+def getNbFing(listPts):
+
+    
 
     return 0

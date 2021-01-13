@@ -1,10 +1,10 @@
 import numpy as np
 import cv2
 
-def getHSVColorSeg(im, bounds, refColor, toleranceH = 15):
+def getHSVColorSeg(im, bounds, refColor, toleranceH = 10):
     # toleranceH = 10
     toleranceS = 60
-    toleranceV = 60
+    toleranceV = 100
 
     #Passage en HSV
     hsvIm = cv2.cvtColor(im[bounds[0]:bounds[1],bounds[2]:bounds[3],:], cv2.COLOR_BGR2HSV)
@@ -70,18 +70,18 @@ def getnorm_0(ref, current, w):
 
 def getHSRBGRColorSeg(im, bounds, refColorBGR, refColorHSV):
 
-    seuil = 70
+    seuil = 15
 
-    w=np.array([0.2,0.05,0.05,0.6,0.25,0.05])
+    w=np.array([0.1,0.05,0.05,0.55,0.2,0.05])
 
-    print(type(refColorBGR))
-    print(refColorBGR)
-    print(type(refColorHSV))
-    print(refColorHSV)
+    # print(type(refColorBGR))
+    # print(refColorBGR)
+    # print(type(refColorHSV))
+    # print(refColorHSV)
 
 
     refcolor=np.concatenate([refColorBGR,refColorHSV],0)
-    print(refcolor)
+    # print(refcolor)
 
     #Extraction de la zone d'intérêt
     frame = im[bounds[0]:bounds[1], bounds[2]:bounds[3],:] #im;
@@ -91,17 +91,17 @@ def getHSRBGRColorSeg(im, bounds, refColorBGR, refColorHSV):
 
 
     current=np.concatenate([frame,hsvIm],2)
-    print(np.shape(current))
+    # print(np.shape(current))
 
 
     frame_norm = getnorm(refcolor,current,w)
-    print(np.shape(frame_norm))
+    # print(np.shape(frame_norm))
 
     #segR = cv2.equalizeHist(np.uint8(np.sqrt( getnorm(refcolor,current,w))))
     segR = np.sqrt( getnorm(refcolor,current,w))
 
-    print("MEAN", np.mean(np.mean(segR)))
-    print("MAX", np.max(np.max(segR)))
+    # print("MEAN", np.mean(np.mean(segR)))
+    # print("MAX", np.max(np.max(segR)))
 
 
     segR = np.array(cv2.inRange(segR, 0, seuil))
@@ -163,26 +163,3 @@ def getHSRBGRColorSeg(im, bounds, refColorBGR, refColorHSV):
 
 
 
-
-
-def GetGradient(BWim):
-    # Gradient à partir des filtres de Sobel
-    SobelHcontours = np.array([[-1,-1,-1], [0,0,0], [1,1,1]])
-    SobelVcontours = np.array([[-1,0,1], [-1,0,1], [-1,0,1]])
-
-    #Segmentation des contours horizontaux
-    gradH = cv2.filter2D(BWim, -1, SobelHcontours)
-    #Segmentation des contours verticaux
-    gradV = cv2.filter2D(BWim, -1, SobelVcontours)
-
-    # cv2.imshow('H',gradH)
-    # cv2.imshow('V', gradV)
-
-    # # Utilisation de gaussienne pour filtre passe bas
-    # gauss = cv2.GaussianBlur(BWim, (5, 5), 2)
-
-    # cv2.imshow('gauss', gauss)
-
-
-    return 0
-    

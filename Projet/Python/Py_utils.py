@@ -27,7 +27,7 @@ def Cleaning(im):
     # im = cv2.erode(im, structElemEro)
 
     # #Median filter
-    ksize = 9
+    ksize = 3
     im = cv2.medianBlur(im, ksize)
 
     # Dilation

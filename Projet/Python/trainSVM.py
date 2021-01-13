@@ -56,10 +56,6 @@ def main():
 
     Pred = mySVM.predict(ParamsTest)
 
-    print(LTest)
-    print(Pred)
-
-    print(metrics.classification_report(LTest, Pred))
 
     return 0
 
