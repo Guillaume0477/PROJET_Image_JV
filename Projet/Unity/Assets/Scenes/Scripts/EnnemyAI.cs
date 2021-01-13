@@ -13,7 +13,7 @@ public class EnnemyAI : MonoBehaviour {
 
     private float Distance;
     private float attackTime = 1;
-    private float ennemy_speed = 0;//5;    
+    private float ennemy_speed = 5;    
     private float attackRange = 2.2f;
     private float attackRepeatTime = 1;
     private float Damping = 6;
