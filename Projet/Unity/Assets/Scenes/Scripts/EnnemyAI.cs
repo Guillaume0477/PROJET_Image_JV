@@ -12,18 +12,18 @@ public class EnnemyAI : MonoBehaviour {
     public EnnemyBar ennemyBar;
 
     private float Distance;
-    private float attackTime = 1;
     private float ennemy_speed = 5;    
     private float attackRange = 2.2f;
     private float attackRepeatTime = 1;
     private float Damping = 6;
     private float TheDammage = 0;
     private Animator anim;
+    private bool isAttacked;
+    private bool isDead = false;
 
 	// At the start of the game..
 	void Start ()
 	{
-        attackTime = Time.time;
         ennemyBar.SetMaxValue(ennemyStats.getHealth());
         anim = GetComponent<Animator>();
     }
@@ -38,11 +38,15 @@ public class EnnemyAI : MonoBehaviour {
 
         if(ennemyStats.getHealth() > 0)
         {
-            if(Distance < attackRange){
-                StartCoroutine("attack");
-            }
-            else{
-                chase();
+            if ((!isAttacked) && (!ennemyStats.getIsTouched()))
+            {
+                if(Distance < attackRange)
+                {
+                    StartCoroutine("attack");
+                }
+                else{
+                    chase();
+                }
             }
         }
         else
@@ -65,18 +69,16 @@ public class EnnemyAI : MonoBehaviour {
 
     IEnumerator attack()
     {
-        if (Time.time > attackTime){
-            anim.Play("Base Layer.Attack 01");
-            // controller.Stop();
-            Target.ApplyDammage(TheDammage);
-            attackTime = Time.time + attackRepeatTime;
-            // yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length+anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-            yield return new WaitForSeconds(5f);
-        }
+        isAttacked = true;
+        anim.Play("Base Layer.Attack 01");
+        Target.ApplyDammage(TheDammage);
+        yield return new WaitForSeconds(attackRepeatTime);
+        isAttacked = false;
     }
 
     void Dead()
 	{
+        isDead = true;
         Destroy(ennemyBar);
         anim.Play("Base Layer.Die");
 		Destroy (gameObject, 3.0f);
@@ -84,5 +86,10 @@ public class EnnemyAI : MonoBehaviour {
 
     void setHealthBar(){
         ennemyBar.SetValue(ennemyStats.getHealth());
+    }
+
+    public bool getIsDead()
+    {
+        return(isDead);
     }
 }
