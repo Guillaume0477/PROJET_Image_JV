@@ -17,13 +17,15 @@ public class EnnemyAI : MonoBehaviour {
     private float attackRange = 2.2f;
     private float attackRepeatTime = 1;
     private float Damping = 6;
-    private float TheDammage = 20;
+    private float TheDammage = 0;
+    private Animator anim;
 
 	// At the start of the game..
 	void Start ()
 	{
         attackTime = Time.time;
         ennemyBar.SetMaxValue(ennemyStats.getHealth());
+        anim = GetComponent<Animator>();
     }
 
 	// Each physics step..
@@ -34,17 +36,24 @@ public class EnnemyAI : MonoBehaviour {
         lookAt();
         setHealthBar();
 
-        if(Distance < attackRange){
-            attack();
+        if(ennemyStats.getHealth() > 0)
+        {
+            if(Distance < attackRange){
+                StartCoroutine("attack");
+            }
+            else{
+                chase();
+            }
         }
-
-        else{
-            chase();
+        else
+        {
+            Dead();
         }
     }
 
     void chase()
     {
+        anim.Play("Base Layer.Run In Place");
         transform.position = Vector3.MoveTowards(transform.position, Target.transform.position, ennemy_speed * Time.deltaTime);
     }
 
@@ -54,13 +63,24 @@ public class EnnemyAI : MonoBehaviour {
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * Damping);
     }
 
-    void attack()
+    IEnumerator attack()
     {
         if (Time.time > attackTime){
+            anim.Play("Base Layer.Attack 01");
+            // controller.Stop();
             Target.ApplyDammage(TheDammage);
             attackTime = Time.time + attackRepeatTime;
+            // yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length+anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            yield return new WaitForSeconds(5f);
         }
     }
+
+    void Dead()
+	{
+        Destroy(ennemyBar);
+        anim.Play("Base Layer.Die");
+		Destroy (gameObject, 3.0f);
+	}
 
     void setHealthBar(){
         ennemyBar.SetValue(ennemyStats.getHealth());
