@@ -8,25 +8,21 @@ using System.Collections;
 public class EnnemyStats : MonoBehaviour 
 {
     private float ennemyHealth = 100;
+	private Animator anim;
 
+	void Start()
+	{
+		anim = GetComponent<Animator>();
+	}
+	
 	void OnCollisionEnter (Collision col)
 	{
         if(col.gameObject.tag == "Boule"){
-            ennemyHealth -= 50;
+			anim.Play("Base Layer.Take Damage");
+            ennemyHealth -= 0;
 			Destroy(col.gameObject);
         }
     }
-
-	void Update ()
-	{
-        if(ennemyHealth <= 0){
-			Dead();
-		}
-	}
-
-	void Dead(){
-		Destroy (gameObject, 0.001f);
-	}
 
 	public float getHealth ()
 	{
