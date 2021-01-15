@@ -41,11 +41,11 @@ def GetParametersFromDir(dirPath):
 
 
 def main():
-    parameters = {'estimator__C':[150, 200, 300]}
+    parameters = {'estimator__C':[100, 150,  200, 300], 'estimator__kernel':['linear', 'rbf']}
 
     #Path where images are located
-    pathToRead = "TrainImages2/"
-    pathToReadTest = "TestImages2/"
+    pathToRead = "TrainImages/"
+    pathToReadTest = "TestImages/"
 
     #Get the labels and parameters to train the SVM
     L, Params = GetParametersFromDir(pathToRead)
@@ -56,7 +56,7 @@ def main():
     ParamsTest = np.reshape(ParamsTest, [np.shape(ParamsTest)[0], np.shape(ParamsTest)[2]])
 
     #Creation de la SVM
-    mySVM = OneVsRestClassifier(svm.SVC(kernel = 'linear'))
+    mySVM = OneVsRestClassifier(svm.SVC())
     clf = GridSearchCV(mySVM, parameters, cv=5)
     # mySVM.fit(Params, L)
 
@@ -78,15 +78,15 @@ def main():
     # print(Pred)
     # print(metrics.classification_report(LTest, Pred))
 
-    filename = "svmModel.pkl"
-    with open(filename, 'wb') as file:
-        pickle.dump(clf.best_estimator_, file)
+    # filename = "svmModel.pkl"
+    # with open(filename, 'wb') as file:
+    #     pickle.dump(clf.best_estimator_, file)
 
 
     
 
-    pred = pickle_model.predict(ParamsTest)
-    print(metrics.classification_report(LTest, pred))
+    # pred = pickle_model.predict(ParamsTest)
+    # print(metrics.classification_report(LTest, pred))
     return 0
 
 main()

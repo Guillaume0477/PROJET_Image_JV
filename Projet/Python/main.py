@@ -24,7 +24,11 @@ def main():
     filename = "svmModel.pkl"
     with open(filename, 'rb') as file:
         svm = pickle.load(file)
+    
+    LabelFound = np.zeros([1,5])
 
+    nbFrame = 7
+    counterFrame = 0
     # seginter = np.ones(squareSize)
 
     while play :
@@ -73,7 +77,9 @@ def main():
 
             #Get the parameters of the position and shape of the hand 
             Params = DetectParams.getParameters(frame, segR)
-            print(svm.predict(Params))
+            LabelFound[:,svm.predict(Params)]+=1
+            # print(svm.predict(Params))
+            # print(LabelFound)
 
             # # #Display gravity center on screen
             # segR[int(Params[0][3]*segR.shape[0]), :] = 127
@@ -83,6 +89,13 @@ def main():
             # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
             pass
         
+        if nbFrame < counterFrame :
+            print(LabelFound)
+            labelToSend = np.argwhere(LabelFound == np.max(LabelFound))[0][1]
+            print(labelToSend)
+            counterFrame = 0
+            LabelFound = np.zeros([1,5])
+
         # Display the segmentation on screen 
         frame[xmin:xmax,ymin:ymax,0] = segR
         frame[xmin:xmax,ymin:ymax,1] = segR
@@ -138,7 +151,7 @@ def main():
         # cv2.imshow('V2', V2)
 
 
-
+        counterFrame += 1
         
 
         
