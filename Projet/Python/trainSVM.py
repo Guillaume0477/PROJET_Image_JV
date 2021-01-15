@@ -12,7 +12,7 @@ def GetParametersFromFiles(file):
     id1 = file.rfind('_')
     id2 = file.rfind('.')
     label = int(file[id1+1:id2])
-    print(label)
+    # print(label)
     #Get the parameters from the image
     params = DetectParams.getParameters(im, im)
 
