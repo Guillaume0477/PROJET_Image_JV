@@ -40,12 +40,12 @@ def GetParametersFromDir(dirPath):
 
 def main():
     #Path where images are located
-    pathToRead = "TrainImages/"
-    pathToReadTest = "TestImages/"
+    pathToRead = "TrainImages2/"
+    pathToReadTest = "TestImages2/"
 
     #Get the labels and parameters to train the SVM
     L, Params = GetParametersFromDir(pathToRead)
-    LTest, ParamsTest = GetParametersFromDir(pathToRead)
+    LTest, ParamsTest = GetParametersFromDir(pathToReadTest)
 
     #Reshape l'organisation des données
     Params = np.reshape(Params, [np.shape(Params)[0], np.shape(Params)[2]])

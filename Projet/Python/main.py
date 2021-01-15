@@ -69,8 +69,8 @@ def main():
             Params = DetectParams.getParameters(frame, segR)
 
             # #Display gravity center on screen
-            segR[int(Params[0][3]*segR.shape[0]), :] = 127
-            segR[:, int(Params[0][4]*segR.shape[1])] = 127
+            # segR[int(Params[0][3]*segR.shape[0]), :] = 127
+            # segR[:, int(Params[0][4]*segR.shape[1])] = 127
 
             # # Tests to update hsv channel while playing to be adaptative
             # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
@@ -106,7 +106,7 @@ def main():
             #Label of the position recorded (if several to be labeled later, set -1)
             label = 0
             #Path to write images
-            pathToWrite = "TrainImages2"
+            pathToWrite = "TrainImages4"
             #Current date and time
             d = datetime.now()
 
@@ -114,8 +114,8 @@ def main():
             if not os.path.exists(pathToWrite):
                 os.mkdir(pathToWrite)
             #Write segmentation as an image
-            print(os.path.join(pathToWrite , "imTest_" + str(d.date()) + '_' + str(d.time())[:8] + "_" + str(label) +".png"))
-            strUlt = os.path.join(pathToWrite , "imTest_" + str(d.date()) + '_' + str(d.time())[6:8] + "_" + str(label) +".png")
+            strUlt = os.path.join(pathToWrite , "imTest_" + str(d.date()) + '_' + str(d.time())[3:5] + '_' + str(d.time())[6:8] + "_" + str(label) +".png")
+            print(strUlt)
             cv2.imwrite(strUlt, segR)
 
         #Show the frame

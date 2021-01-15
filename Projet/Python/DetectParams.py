@@ -307,12 +307,12 @@ def getProjCaract(seg, dir):
     numP = np.argwhere(G > 0)
     numN = np.argwhere(G < 0)
 
-    print(np.size(numP))
-    print(np.size(numN))
-    print(numP)
-    print(numN)
-    print(np.shape(numP))
-    print(np.shape(numN))
+    # print(np.size(numP))
+    # print(np.size(numN))
+    # print(numP)
+    # print(numN)
+    # print(np.shape(numP))
+    # print(np.shape(numN))
 
     if ( (not(np.size(numP) == 0)) and ( not (np.size(numN) == 0)) ) :
         if not (numP[0]<numN[0]):
@@ -343,7 +343,7 @@ def getProjCaract(seg, dir):
     maxix /= sInit[0]
 
 
-    print(nbMaxis)
+    # §print(nbMaxis)
     # print(nbMaxis)
     # plt.figure(0)
     # plt.plot(projx)
