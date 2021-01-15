@@ -7,14 +7,15 @@ using UnityEngine.SceneManagement;
 public class MonsterGenerator : MonoBehaviour {
     public GameObject ennemy_prefab;
     public PlayerStats playerStats;
+    public Text death_counter;
 
     private bool isSpawned;
 
     void Start()
     {
-        EnnemyAI sn = ennemy_prefab.GetComponent<EnnemyAI>();
-		sn.Target = playerStats;
-		Instantiate(ennemy_prefab, transform.position, Quaternion.identity);
+        EnnemyAI EAI = ennemy_prefab.GetComponent<EnnemyAI>();
+		EAI.Target = playerStats;
+        EAI.count = death_counter;
     }
 
     void Update(){
@@ -26,8 +27,8 @@ public class MonsterGenerator : MonoBehaviour {
 
     IEnumerator MonsterGeneration(){
         isSpawned = true;
-        yield return new WaitForSeconds(5.0f);
         Instantiate(ennemy_prefab, transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(5.0f);
         isSpawned = false;
     }
 }

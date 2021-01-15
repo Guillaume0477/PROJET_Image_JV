@@ -10,22 +10,28 @@ public class EnnemyAI : MonoBehaviour {
     public PlayerStats Target;
     public EnnemyStats ennemyStats;
     public EnnemyBar ennemyBar;
+    public Text count;
 
     private float Distance;
-    private float ennemy_speed = 5;    
+    private float ennemy_speed = 5;
     private float attackRange = 2.2f;
     private float attackRepeatTime = 1;
     private float Damping = 6;
-    private float TheDammage = 0;
+    private float TheDammage = 50;
     private Animator anim;
     private bool isAttacked;
-    private bool isDead = false;
+    private bool isDead;
+
+    ////////////////////////////////////// ATTENTION AU STATIC ! //////////////////////////////////////
+    static private float count_death = 0;
+    ////////////////////////////////////// ATTENTION AU STATIC ! //////////////////////////////////////
 
 	// At the start of the game..
 	void Start ()
 	{
         ennemyBar.SetMaxValue(ennemyStats.getHealth());
         anim = GetComponent<Animator>();
+        count.text = count_death.ToString();
     }
 
 	// Each physics step..
@@ -36,7 +42,7 @@ public class EnnemyAI : MonoBehaviour {
         lookAt();
         setHealthBar();
 
-        if(ennemyStats.getHealth() > 0)
+        if (ennemyStats.getHealth() > 0)
         {
             if ((!isAttacked) && (!ennemyStats.getIsTouched()))
             {
@@ -51,7 +57,10 @@ public class EnnemyAI : MonoBehaviour {
         }
         else
         {
-            Dead();
+            if(!isDead)
+            {
+                Dead();
+            }
         }
     }
 
@@ -79,9 +88,13 @@ public class EnnemyAI : MonoBehaviour {
     void Dead()
 	{
         isDead = true;
+
+        count_death = count_death + 1;
+        count.text = count_death.ToString();
+
         Destroy(ennemyBar);
         anim.Play("Base Layer.Die");
-		Destroy (gameObject, 3.0f);
+		Destroy(gameObject, 3.0f);
 	}
 
     void setHealthBar(){
