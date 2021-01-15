@@ -7,29 +7,45 @@ using System.Collections;
 
 public class EnnemyStats : MonoBehaviour 
 {
-    private float ennemyHealth = 100;
+	public EnnemyAI ennemyAI;
 
+    private float ennemyHealth = 100;
+	private Animator anim;
+	private bool isTouched;
+
+	void Start()
+	{
+		anim = GetComponent<Animator>();
+	}
+	
 	void OnCollisionEnter (Collision col)
 	{
-        if(col.gameObject.tag == "Boule"){
-            ennemyHealth -= 50;
+        if(col.gameObject.tag == "Boule")
+		{
+			StartCoroutine("TakeDamageAnim");
+            ennemyHealth -= 0;
 			Destroy(col.gameObject);
         }
     }
 
-	void Update ()
+	IEnumerator TakeDamageAnim()
 	{
-        if(ennemyHealth <= 0){
-			Dead();
+		if(!ennemyAI.getIsDead())
+		{
+			isTouched = true;
+			anim.Play("Base Layer.Take Damage");
+			yield return new WaitForSeconds(0.5f);
+			isTouched = false;
 		}
-	}
-
-	void Dead(){
-		Destroy (gameObject, 0.001f);
 	}
 
 	public float getHealth ()
 	{
 		return(ennemyHealth);
+    }
+
+	public bool getIsTouched ()
+	{
+		return(isTouched);
     }
 }

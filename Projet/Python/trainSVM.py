@@ -44,8 +44,8 @@ def main():
     parameters = {'estimator__C':[150, 200, 300]}
 
     #Path where images are located
-    pathToRead = "TrainImages/"
-    pathToReadTest = "TestImages/"
+    pathToRead = "TrainImages2/"
+    pathToReadTest = "TestImages2/"
 
     #Get the labels and parameters to train the SVM
     L, Params = GetParametersFromDir(pathToRead)
