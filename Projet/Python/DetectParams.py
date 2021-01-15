@@ -54,11 +54,11 @@ def getParameters(im, seg):
         #TO BE DISCUSSED
         # getNbFing(listPts, grad)
     
-    ProjCaract = getProjCaract(seg)
+    vects = getPCADir(seg)    
+    ProjCaract = getProjCaract(seg, vects)
     paramsSet[:,0:2] = ProjCaract[0:2]
     paramsSet[:,11:15] = ProjCaract[2:]
 
-    getPCADir(seg)
     # print(np.array(paramsSet)[:,7:])
 
     return paramsSet
@@ -268,14 +268,14 @@ def cleanConvex(listPts):
 
     return listCleaned
 
-def getProjCaract(seg):
+def getProjCaract(seg, dir):
     sInit = seg.shape
-
+    
     projx = np.sum(seg, axis = 0)
     projy = np.sum(seg, axis = 1)
 
     #Size of the true bounding box compared to the square box
-    sx, sy = np.sum(projx != 0)/sInit[0], np.sum(projy != 0)/sInit[1]
+    sx, sy = np.sum(projx != 0)/projx.shape[0], np.sum(projy != 0)/projy.shape[0]
 
     #Mean value and standard Deviations
     argx = np.argwhere(projx>0)
@@ -283,12 +283,23 @@ def getProjCaract(seg):
     mux = np.sum(projx[argx]*argx)/np.sum(projx[argx])/sInit[0]
     muy = np.sum(projy[argy]*argy)/np.sum(projy[argy])/sInit[1]
 
-    maxix = np.argwhere(projx == np.max(projx))[0][0]
+    h0, h1 = getProjection(seg, dir)
+
+    plt.figure(0)
+    # plt.plot(h0)
+    plt.plot(h1)
+
+
+    maxix = np.argwhere(h1 == np.max(h1))[0][0]
     
-    maxiVal = projx[maxix]
+    maxiVal = h1[maxix]
     thresh = 3.0/4.0*maxiVal
 
-    PT = 1.0*(projx > thresh)
+    PT = 1.0*(h1 > thresh)
+    plt.plot(PT*maxiVal)
+    plt.plot(np.gradient(PT)*maxiVal)
+    # plt.show()
+
     G = np.gradient(PT)[range(0,PT.shape[0], 2)]
     
     nbMaxis = np.sum(G == 0.5)
@@ -301,6 +312,8 @@ def getProjCaract(seg):
 
     maxix /= sInit[0]
 
+
+    print(nbMaxis)
     # print(nbMaxis)
     # plt.figure(0)
     # plt.plot(projx)
@@ -313,13 +326,30 @@ def getProjCaract(seg):
 
     return [sx, sy, mux, muy, maxix, nbMaxis]
 
-def getPCADir(seg):
-    ids = np.argwhere(seg)
-    print(ids)
 
-################
-# NOT RELEVANT #
-################
+def getProjection(seg, dir):
+    ids = np.argwhere(seg)
+    segS = seg.shape
+
+    coss0 = np.floor(np.dot(ids, dir[0,:]))
+    coss1 = np.floor(np.dot(ids, dir[1,:]))
+
+    h0 = np.histogram(coss0, bins = floor(np.max(coss0)-np.min(coss0)))
+    h1 = np.histogram(coss1, bins = floor(np.max(coss1)-np.min(coss1)))
+
+    # plt.figure(0)
+    # plt.plot(h0[1][:-1], h0[0])
+    # plt.plot(h1[1][:-1], h1[0])
+    # plt.show()
+    # h1 = np.histogram(coss1, bin = [])
+
+    # print(coss0, coss1)
+    return h0[0], h1[0]
+
+
+######################################
+# NOT RELEVANT : TOO LONG TO COMPUTE #
+######################################
 def sortGradPts(listPts):
 
     for k in range(len(listPts)-1):
@@ -342,3 +372,23 @@ def sortGradPts(listPts):
         
 
     # print(listPts[0], listPts[-1])
+
+def getPCADir(seg):
+    ids = np.argwhere(seg)
+    mu = np.mean(ids, 0)
+
+    idsC = ids - mu
+    Px = np.matmul(np.transpose(idsC), (idsC))
+
+    lambd, vect = np.linalg.eig(Px)
+
+
+    cv2.line(seg, tuple([floor(seg.shape[0]/2), floor(seg.shape[1]/2)]), tuple([floor(seg.shape[0]/2 + 50*vect[0,0]), floor(seg.shape[1]/2 + 50*vect[0,1])]), 0)
+    cv2.line(seg, tuple([floor(seg.shape[0]/2), floor(seg.shape[1]/2)]), tuple([floor(seg.shape[0]/2 + 50*vect[1,0]), floor(seg.shape[1]/2 + 50*vect[1,1])]), 0)
+
+    cv2.imshow('.', seg)
+    # plt.figure(0)
+    # plt.plot([1,1])
+    # plt.show()
+    return vect
+
