@@ -14,9 +14,6 @@ public class PlayerController : MonoBehaviour {
 	public RectTransform pauseMenu;
 	public RectTransform deathMenu;
 
-	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
-	// private Rigidbody ennemy_cube1_rb;
-	// private GameObject ennemy_cube1;
 	private Rigidbody rb_player;
 	private GameObject balle;
 	private float manaDecreased = 0;
@@ -34,12 +31,6 @@ public class PlayerController : MonoBehaviour {
 
 		healthBar.SetMaxValue(playerStats.getHealthMax());
 		manaBar.SetMaxValue(playerStats.getManaMax());
-
-        // //Ennemy cubes creation
-        // ennemy_cube1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        // Vector3 ennemy_cube1_position_initiale = new Vector3(-23.20401f, 0.5124857f, -23.86554f);
-        // ennemy_cube1.transform.position = ennemy_cube1_position_initiale;
-		// ennemy_cube1_rb = ennemy_cube1.AddComponent<Rigidbody>();
 	}
 
 	// Each physics step..
@@ -53,8 +44,6 @@ public class PlayerController : MonoBehaviour {
 		else
 		{
 			healthBar.SetValue(playerStats.getHealth());
-			//The ennemies follow the player
-			// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
 			player_movement();
 			
 			if (Input.GetKeyDown(KeyCode.Escape))

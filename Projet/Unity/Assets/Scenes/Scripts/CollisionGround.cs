@@ -12,9 +12,4 @@ public class CollisionGround : MonoBehaviour
             Destroy(col.gameObject);
         }
     }
-
-    void Update ()
-	{
-        
-	}
 }

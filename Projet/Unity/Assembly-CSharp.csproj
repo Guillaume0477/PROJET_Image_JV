@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scenes\Scripts\EnnemyBar.cs" />
      <Compile Include="Assets\Scenes\Scripts\EnnemyStats.cs" />
      <Compile Include="Assets\Scenes\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scenes\Scripts\MonsterGenerator.cs" />
      <Compile Include="Assets\Scenes\Scripts\PauseMenu.cs" />
      <Compile Include="Assets\Scenes\Scripts\PlayerBar.cs" />
      <Compile Include="Assets\Scenes\Scripts\PlayerController.cs" />

@@ -23,7 +23,7 @@ public class EnnemyStats : MonoBehaviour
         if(col.gameObject.tag == "Boule")
 		{
 			StartCoroutine("TakeDamageAnim");
-            ennemyHealth -= 0;
+            ennemyHealth -= 50;
 			Destroy(col.gameObject);
         }
     }
