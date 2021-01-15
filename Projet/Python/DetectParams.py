@@ -306,7 +306,37 @@ def getProjCaract(seg, dir):
 
     numP = np.argwhere(G > 0)
     numN = np.argwhere(G < 0)
+
+    print(np.size(numP))
+    print(np.size(numN))
+    print(numP)
+    print(numN)
+    print(np.shape(numP))
+    print(np.shape(numN))
+
+    if ( (not(np.size(numP) == 0)) and ( not (np.size(numN) == 0)) ) :
+        if not (numP[0]<numN[0]):
+            print("numP impair %d", )
+            numN=numN[1:]
+            print(np.size(numP))
+            print("numP impair %d",np.size(numP)) 
+
+    if ( (not(np.size(numP) == 0)) and ( not (np.size(numN) == 0)) ) :
+        if not (numP[-1]<numN[-1]):
+
+            numP=numP[0:-1]
+            print("numN impair %d",np.size(numN))
+    
+
+
+
+
+
+
+
     sizeInt = (numN - numP)[:,0]
+
+
 
     nbMaxis -= np.sum(sizeInt < 5)
 
