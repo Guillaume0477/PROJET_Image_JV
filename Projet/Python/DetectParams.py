@@ -6,7 +6,7 @@ import time
 
 def getParameters(im, seg):
     # List of relevant parameters
-    paramsSet = np.zeros([1,14])
+    paramsSet = np.zeros([1,15])
 
     # Include bounding box size and covered area
     shape = np.shape(seg)
@@ -56,9 +56,9 @@ def getParameters(im, seg):
     
     ProjCaract = getProjCaract(seg)
     paramsSet[:,0:2] = ProjCaract[0:2]
-    paramsSet[:,11:14] = ProjCaract[2:]
+    paramsSet[:,11:15] = ProjCaract[2:]
 
-
+    getPCADir(seg)
     # print(np.array(paramsSet)[:,7:])
 
     return paramsSet
@@ -277,9 +277,6 @@ def getProjCaract(seg):
     #Size of the true bounding box compared to the square box
     sx, sy = np.sum(projx != 0)/sInit[0], np.sum(projy != 0)/sInit[1]
 
-
-
-
     #Mean value and standard Deviations
     argx = np.argwhere(projx>0)
     argy = np.argwhere(projy>0)
@@ -289,25 +286,36 @@ def getProjCaract(seg):
     maxix = np.argwhere(projx == np.max(projx))[0][0]
     
     maxiVal = projx[maxix]
+    thresh = 3.0/4.0*maxiVal
+
+    PT = 1.0*(projx > thresh)
+    G = np.gradient(PT)[range(0,PT.shape[0], 2)]
     
-    
-    
-    
+    nbMaxis = np.sum(G == 0.5)
+
+    numP = np.argwhere(G > 0)
+    numN = np.argwhere(G < 0)
+    sizeInt = (numN - numP)[:,0]
+
+    nbMaxis -= np.sum(sizeInt < 5)
+
     maxix /= sInit[0]
 
-
-
-
+    # print(nbMaxis)
     # plt.figure(0)
     # plt.plot(projx)
     # plt.plot(projy)
+    # plt.plot(PT)
+    # plt.plot(G*maxiVal)
     # plt.show()
     
     # print(sx, sy)
 
-    return [sx, sy, mux, muy, maxix]
+    return [sx, sy, mux, muy, maxix, nbMaxis]
 
-
+def getPCADir(seg):
+    ids = np.argwhere(seg)
+    print(ids)
 
 ################
 # NOT RELEVANT #
