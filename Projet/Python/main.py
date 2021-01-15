@@ -9,6 +9,7 @@ import numpy as np
 from math import floor
 import os
 from datetime import datetime
+import pickle
 
 
 def main():
@@ -19,6 +20,10 @@ def main():
     #Hand calibration
     colorHand, hueValue, YUV_Value, [squareOffset, squareSize] = Calibrage.HandCalibrate(cap)
     found = True
+
+    filename = "svmModel.pkl"
+    with open(filename, 'rb') as file:
+        svm = pickle.load(file)
 
     # seginter = np.ones(squareSize)
 
@@ -65,16 +70,18 @@ def main():
 
         #If hand has been found
         if found :
+
             #Get the parameters of the position and shape of the hand 
             Params = DetectParams.getParameters(frame, segR)
+            print(svm.predict(Params))
 
-            # #Display gravity center on screen
-            segR[int(Params[0][3]*segR.shape[0]), :] = 127
-            segR[:, int(Params[0][4]*segR.shape[1])] = 127
+            # # #Display gravity center on screen
+            # segR[int(Params[0][3]*segR.shape[0]), :] = 127
+            # segR[:, int(Params[0][4]*segR.shape[1])] = 127
 
             # # Tests to update hsv channel while playing to be adaptative
             # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
-
+            pass
         
         # Display the segmentation on screen 
         frame[xmin:xmax,ymin:ymax,0] = segR
@@ -104,7 +111,7 @@ def main():
         #Acquire new data
         if key == ord('@'):
             #Label of the position recorded (if several to be labeled later, set -1)
-            label = 3
+            label = 2
             #Path to write images
             pathToWrite = "TrainImages/"
             #Current date and time

@@ -4,6 +4,8 @@ import os
 import DetectParams
 from sklearn import svm, metrics
 from sklearn.multiclass import OneVsOneClassifier, OneVsRestClassifier
+from sklearn.model_selection import GridSearchCV
+import pickle
 
 def GetParametersFromFiles(file):
     #Read the image
@@ -39,13 +41,15 @@ def GetParametersFromDir(dirPath):
 
 
 def main():
+    parameters = {'estimator__C':[150, 200, 300]}
+
     #Path where images are located
     pathToRead = "TrainImages/"
     pathToReadTest = "TestImages/"
 
     #Get the labels and parameters to train the SVM
     L, Params = GetParametersFromDir(pathToRead)
-    LTest, ParamsTest = GetParametersFromDir(pathToRead)
+    LTest, ParamsTest = GetParametersFromDir(pathToReadTest)
 
     #Reshape l'organisation des données
     Params = np.reshape(Params, [np.shape(Params)[0], np.shape(Params)[2]])
@@ -53,14 +57,36 @@ def main():
 
     #Creation de la SVM
     mySVM = OneVsRestClassifier(svm.SVC(kernel = 'linear'))
-    mySVM.fit(Params, L)
+    clf = GridSearchCV(mySVM, parameters, cv=5)
+    # mySVM.fit(Params, L)
 
-    Pred = mySVM.predict(ParamsTest)
+    clf.fit(Params, L)
+    print(clf.best_score_)
+    print(clf.best_estimator_)
+    print(clf.score(ParamsTest, LTest))
+    print(clf.best_estimator_.get_params())
+    Pred = clf.predict(ParamsTest)
 
     print(LTest)
     print(Pred)
     print(metrics.classification_report(LTest, Pred))
 
+
+    # mySVM.set_params(**clf.best_estimator_.get_params())
+    # mySVM.predict(ParamsTest)
+    # print(LTest)
+    # print(Pred)
+    # print(metrics.classification_report(LTest, Pred))
+
+    filename = "svmModel.pkl"
+    with open(filename, 'wb') as file:
+        pickle.dump(clf.best_estimator_, file)
+
+
+    
+
+    pred = pickle_model.predict(ParamsTest)
+    print(metrics.classification_report(LTest, pred))
     return 0
 
 main()

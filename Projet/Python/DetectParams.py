@@ -306,6 +306,9 @@ def getProjCaract(seg, dir):
 
     numP = np.argwhere(G > 0)
     numN = np.argwhere(G < 0)
+
+    
+
     sizeInt = (numN - numP)[:,0]
 
     nbMaxis -= np.sum(sizeInt < 5)
@@ -313,7 +316,7 @@ def getProjCaract(seg, dir):
     maxix /= sInit[0]
 
 
-    print(nbMaxis)
+    # print(nbMaxis)
     # print(nbMaxis)
     # plt.figure(0)
     # plt.plot(projx)
