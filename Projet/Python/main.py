@@ -104,9 +104,9 @@ def main():
         #Acquire new data
         if key == ord('@'):
             #Label of the position recorded (if several to be labeled later, set -1)
-            label = 3
+            label = 0
             #Path to write images
-            pathToWrite = "TrainImages/"
+            pathToWrite = "TrainImages2"
             #Current date and time
             d = datetime.now()
 
@@ -114,7 +114,9 @@ def main():
             if not os.path.exists(pathToWrite):
                 os.mkdir(pathToWrite)
             #Write segmentation as an image
-            cv2.imwrite(pathToWrite + "imTest_" + str(d.date()) + '_' + str(d.time())[:8] + "_" + str(label) +".png", segR)
+            print(os.path.join(pathToWrite , "imTest_" + str(d.date()) + '_' + str(d.time())[:8] + "_" + str(label) +".png"))
+            strUlt = os.path.join(pathToWrite , "imTest_" + str(d.date()) + '_' + str(d.time())[6:8] + "_" + str(label) +".png")
+            cv2.imwrite(strUlt, segR)
 
         #Show the frame
         cv2.imshow('Capture Video', frame)
