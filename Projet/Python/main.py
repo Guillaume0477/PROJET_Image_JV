@@ -44,7 +44,7 @@ def main():
         # segR, B, G, R, S, H, V, Y, U, V2 = Segment.getHSVBGRYUVColorSeg(frame, bounds, colorHand, hueValue, YUV_Value)
 
         # # Cleaning of the space to better segment hand
-        #segR = utils.Cleaning(segR)
+        segR = utils.Cleaning(segR)
 
         # # Tests using distance transform
         # seginter = cv2.distanceTransform(segR, cv2.DIST_L2, 3)
@@ -69,8 +69,8 @@ def main():
             Params = DetectParams.getParameters(frame, segR)
 
             # #Display gravity center on screen
-            # segR[int(Params[2][0]), :] = 127
-            # segR[:, int(Params[2][1])] = 127
+            segR[int(Params[0][3]*segR.shape[0]), :] = 127
+            segR[:, int(Params[0][4]*segR.shape[1])] = 127
 
             # # Tests to update hsv channel while playing to be adaptative
             # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
