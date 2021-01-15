@@ -45,7 +45,7 @@ def main():
 
     #Get the labels and parameters to train the SVM
     L, Params = GetParametersFromDir(pathToRead)
-    LTest, ParamsTest = GetParametersFromDir(pathToReadTest)
+    LTest, ParamsTest = GetParametersFromDir(pathToRead)
 
     #Reshape l'organisation des données
     Params = np.reshape(Params, [np.shape(Params)[0], np.shape(Params)[2]])
