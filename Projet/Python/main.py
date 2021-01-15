@@ -90,9 +90,7 @@ def main():
             pass
         
         if nbFrame < counterFrame :
-            print(LabelFound)
             labelToSend = np.argwhere(LabelFound == np.max(LabelFound))[0][1]
-            print(labelToSend)
             counterFrame = 0
             LabelFound = np.zeros([1,5])
 
