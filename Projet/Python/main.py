@@ -10,9 +10,103 @@ from math import floor
 import os
 from datetime import datetime
 import pickle
+import socket
 
+def init_connexion_Unity():
+    
+    UDP_IP = "127.0.0.1"
+    UDP_PORT = 5065
+
+    return (socket.socket(socket.AF_INET, socket.SOCK_DGRAM),UDP_IP,UDP_PORT)
+
+def handle_pile(sock,UDP_IP,UDP_PORT,Pile,index,current_signe):
+
+    Pile[index] +=1
+    if (Pile[index] == 5):
+        print("inhandle")
+        Pile[0] = 0
+        Pile[1] = 0
+        Pile[2] = 0
+        Pile[3] = 0
+        Pile[4] = 0
+        #current_signe = index
+        print("current_signe",current_signe)
+        print("index",index)
+
+        #if not (current_signe==0): #si on est en possition neutre sinon on ne peux pas chager de signe
+        if (current_signe==0):
+            if index==0:q
+                return False
+            else:
+                sock.sendto( ("Signe_"+str(index)+"!").encode(), (UDP_IP, UDP_PORT) )
+                print("_"*10, "Signe_"+str(index)+"!", "_"*10)
+                current_signe = index
+                return True
+        else:
+            if index != 0 :
+                return False
+            else:
+                sock.sendto( ("Signe_"+str(index)+"!").encode(), (UDP_IP, UDP_PORT) )
+                print("_"*10, "Signe_"+str(index)+"!", "_"*10)
+                current_signe = index
+                return True
+
+            
+            
+        #      and index==0: #avant non 0 puis 0
+        #     sock.sendto( ("Signe_"+str(index)+"!").encode(), (UDP_IP, UDP_PORT) )
+        #     print("_"*10, "Signe_"+str(index)+"!", "_"*10)
+        #     current_signe = index
+
+        # elif (index==current_signe): #boucle en autre signe annulé
+        #     print("idem")
+
+        # elif (index==0) and (current_signe==0): #boucle en 0
+        #     sock.sendto( ("Signe_"+str(index)+"!").encode(), (UDP_IP, UDP_PORT) )
+        #     print("_"*10, "Signe_"+str(index)+"!", "_"*10)
+
+        # elif ((not (index==0)) and (current_signe==0)): #de 0 à autre signe
+        #     sock.sendto( ("Signe_"+str(index)+"!").encode(), (UDP_IP, UDP_PORT) )
+        #     print("_"*10, "Signe_"+str(index)+"!", "_"*10)
+
+        
+        print("current_signe2",current_signe)
+        return True
+    return False
+
+
+
+
+def handle_sending_Unity(sock,UDP_IP,UDP_PORT,svm_result,Pile,current_signe):
+    if (svm_result == 0):
+        if (handle_pile(sock,UDP_IP,UDP_PORT,Pile,0,current_signe)):
+            current_signe=0
+    if (svm_result == 1):
+        if handle_pile(sock,UDP_IP,UDP_PORT,Pile,1,current_signe):
+            current_signe=1
+    if (svm_result == 2):
+        if handle_pile(sock,UDP_IP,UDP_PORT,Pile,2,current_signe):
+            current_signe=2
+    if (svm_result == 3):
+        if handle_pile(sock,UDP_IP,UDP_PORT,Pile,3,current_signe):
+            current_signe=3
+    if (svm_result == 4):
+        if handle_pile(sock,UDP_IP,UDP_PORT,Pile,4,current_signe):
+            current_signe=4
+    return current_signe
 
 def main():
+
+    sock,UDP_IP,UDP_PORT = init_connexion_Unity()
+
+    nombre_signes=5
+    current_signe= 0
+
+    Pile=[0]*nombre_signes
+
+
+
+
     #Config cam
     cap = cv2.VideoCapture(0)
     play = True
@@ -73,7 +167,9 @@ def main():
 
             #Get the parameters of the position and shape of the hand 
             Params = DetectParams.getParameters(frame, segR)
-            print(svm.predict(Params))
+            #print(svm.predict(Params))
+
+            current_signe = handle_sending_Unity(sock,UDP_IP,UDP_PORT,svm.predict(Params),Pile,current_signe)
 
             # # #Display gravity center on screen
             # segR[int(Params[0][3]*segR.shape[0]), :] = 127
@@ -111,9 +207,9 @@ def main():
         #Acquire new data
         if key == ord('@'):
             #Label of the position recorded (if several to be labeled later, set -1)
-            label = 2
+            label = 3
             #Path to write images
-            pathToWrite = "TrainImages4"
+            pathToWrite = "TrainImagesULT2"
             #Current date and time
             d = datetime.now()
 
