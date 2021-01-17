@@ -1,30 +1,65 @@
 import numpy as np
 import cv2
+from math import sqrt, floor
+import matplotlib.pyplot as plt
+import time
 
 def getParameters(im, seg):
     # List of relevant parameters
-    paramsSet = np.zeros([1,7])
+    paramsSet = np.zeros([1,15])
 
     # Include bounding box size and covered area
     shape = np.shape(seg)
-    paramsSet[:,0:2] = np.array(shape)[0:2]
-    paramsSet[:,2] = np.sum(seg)/(shape[0]*shape[1])/255
+    # paramsSet[:,0:2] = np.array(shape)[0:2]
+    area = np.sum(seg)
+    paramsSet[:,2] = area/(shape[0]*shape[1])/255
 
     # Get gravity center
     Gcenter = getGravityCenter(seg)
     # Include gravity center
     paramsSet[:,3:5] = [Gcenter[0]/shape[0], Gcenter[1]/shape[1]]
 
+    #NOT RELEVANT
+    # #Surface above and under the gravity center
+    # ST = np.sum(seg[:floor(Gcenter[0]),:])/area
+    # SB = np.sum(seg[floor(Gcenter[0]):,:])/area
+    # print(SB, ST)
+
     # Include maximum signed distance
     SignDist = getSignedDistance(seg,Gcenter)
     paramsSet[:,5:7] = [SignDist[0]/shape[0], SignDist[1]/shape[1]]
 
     grad = GetGradient(seg)
+    # ids = np.argwhere(grad > 0)
     if np.sum(grad) != 0 :
-        listPts = getConvexEnvelop(grad)
-        listPts = cleanConvex(listPts)
-        getNbFing(listPts, grad)
+        listPts = np.array(getConvexEnvelop(grad))
+        
+        nbHT = np.sum(listPts[:,0] > Gcenter[0])
+        nbHB = listPts.shape[0] - nbHT
+        paramsSet[:,7] = nbHT
+        paramsSet[:,8] = nbHB
+        
+        listPts = np.array(cleanConvex(listPts))
+        nbHT = np.sum(listPts[:,0] > Gcenter[0])
+        nbHB = listPts.shape[0] - nbHT
+        paramsSet[:,9] = nbHT
+        paramsSet[:,10] = nbHB
+        
+        #NOT RELEVANT
+        # a = np.mean(np.linalg.norm(listPts[:-1] - listPts[1:], axis = 1))
+        # print(a/(sqrt(seg.shape[0]*seg.shape[0] + seg.shape[1]*seg.shape[1])))
+        #NOT REVLEVANT
+        # sortGradPts(ids)
+
+        #TO BE DISCUSSED
+        # getNbFing(listPts, grad)
     
+    vects = getPCADir(seg)    
+    ProjCaract = getProjCaract(seg, vects)
+    paramsSet[:,0:2] = ProjCaract[0:2]
+    paramsSet[:,11:15] = ProjCaract[2:]
+
+    # print(np.array(paramsSet)[:,7:])
 
     return paramsSet
 
@@ -143,12 +178,12 @@ def getConvexEnvelop(gradIm):
             break
 
 
-    # p0 = listPoints[0]
-    # for point in listPoints[1:]:
-    #     cv2.line(gradIm, tuple(np.flip(p0)), tuple(np.flip(point)), (127), thickness=8)
-    #     p0 = point
+    p0 = listPoints[0]
+    for point in listPoints[1:]:
+        cv2.line(gradIm, tuple(np.flip(p0)), tuple(np.flip(point)), (127), thickness=8)
+        p0 = point
 
-    # cv2.imshow('im',gradIm)
+    cv2.imshow('im',gradIm)
 
     return listPoints
 
@@ -194,10 +229,6 @@ def getNbFing(listPts, gradIm):
             if (len(b) > 1) :
                 b = b[0]
 
-            # print('Ndist', NDist[a], NDist[a[b]])
-
-
-
             #Get the distance
             d = NDist[a[b]]
 
@@ -209,8 +240,8 @@ def getNbFing(listPts, gradIm):
             listDefects.append(index)
         p0 = p
 
-    print(listPts, np.shape(listPts))
-    print(listDefects, np.shape(listDefects))
+    # print(listPts, np.shape(listPts))
+    # print(listDefects, np.shape(listDefects))
     
     p0 = listPts[0]
     for k in range(len(listDefects)) :
@@ -223,8 +254,8 @@ def getNbFing(listPts, gradIm):
 
     cv2.imshow('defects', gradIm)
 
-    print()
-    print()
+    # print()
+    # print()
     return 0
 
 def cleanConvex(listPts):
@@ -236,3 +267,158 @@ def cleanConvex(listPts):
             listCleaned.append(p)
 
     return listCleaned
+
+def getProjCaract(seg, dir):
+    sInit = seg.shape
+    
+    projx = np.sum(seg, axis = 0)
+    projy = np.sum(seg, axis = 1)
+
+    #Size of the true bounding box compared to the square box
+    sx, sy = np.sum(projx != 0)/projx.shape[0], np.sum(projy != 0)/projy.shape[0]
+
+    #Mean value and standard Deviations
+    argx = np.argwhere(projx>0)
+    argy = np.argwhere(projy>0)
+    mux = np.sum(projx[argx]*argx)/np.sum(projx[argx])/sInit[0]
+    muy = np.sum(projy[argy]*argy)/np.sum(projy[argy])/sInit[1]
+
+    h0, h1 = getProjection(seg, dir)
+
+    plt.figure(0)
+    # plt.plot(h0)
+    plt.plot(h1)
+
+
+    maxix = np.argwhere(h1 == np.max(h1))[0][0]
+    
+    maxiVal = h1[maxix]
+    thresh = 3.0/4.0*maxiVal
+
+    PT = 1.0*(h1 > thresh)
+    plt.plot(PT*maxiVal)
+    plt.plot(np.gradient(PT)*maxiVal)
+    # plt.show()
+
+    G = np.gradient(PT)[range(0,PT.shape[0], 2)]
+    
+    nbMaxis = np.sum(G == 0.5)
+
+    numP = np.argwhere(G > 0)
+    numN = np.argwhere(G < 0)
+
+    # print(np.size(numP))
+    # print(np.size(numN))
+    # print(numP)
+    # print(numN)
+    # print(np.shape(numP))
+    # print(np.shape(numN))
+
+    if ( (not(np.size(numP) == 0)) and ( not (np.size(numN) == 0)) ) :
+        if not (numP[0]<numN[0]):
+            print("numP impair %d", )
+            numN=numN[1:]
+            print(np.size(numP))
+            print("numP impair %d",np.size(numP)) 
+
+    if ( (not(np.size(numP) == 0)) and ( not (np.size(numN) == 0)) ) :
+        if not (numP[-1]<numN[-1]):
+
+            numP=numP[0:-1]
+            print("numN impair %d",np.size(numN))
+    
+
+
+
+
+
+
+
+    sizeInt = (numN - numP)[:,0]
+
+
+
+    nbMaxis -= np.sum(sizeInt < 5)
+
+    maxix /= sInit[0]
+
+
+    # print(nbMaxis)
+    # print(nbMaxis)
+    # plt.figure(0)
+    # plt.plot(projx)
+    # plt.plot(projy)
+    # plt.plot(PT)
+    # plt.plot(G*maxiVal)
+    # plt.show()
+    
+    # print(sx, sy)
+
+    return [sx, sy, mux, muy, maxix, nbMaxis]
+
+
+def getProjection(seg, dir):
+    ids = np.argwhere(seg)
+    segS = seg.shape
+
+    coss0 = np.floor(np.dot(ids, dir[0,:]))
+    coss1 = np.floor(np.dot(ids, dir[1,:]))
+
+    h0 = np.histogram(coss0, bins = floor(np.max(coss0)-np.min(coss0)))
+    h1 = np.histogram(coss1, bins = floor(np.max(coss1)-np.min(coss1)))
+
+    # plt.figure(0)
+    # plt.plot(h0[1][:-1], h0[0])
+    # plt.plot(h1[1][:-1], h1[0])
+    # plt.show()
+    # h1 = np.histogram(coss1, bin = [])
+
+    # print(coss0, coss1)
+    return h0[0], h1[0]
+
+
+######################################
+# NOT RELEVANT : TOO LONG TO COMPUTE #
+######################################
+def sortGradPts(listPts):
+
+    for k in range(len(listPts)-1):
+        #Point to compare
+        p = listPts[k]
+
+        #Norm of the vectors from p
+        L = np.linalg.norm(listPts[k+1:]-p, axis = 1)
+        
+        # print(L)
+        # print(p)
+        # exit()
+        #Index of the closer point(s)
+        i = np.argwhere(L == np.min(L))[0][0]
+
+        #Swap points
+        mem = np.copy(listPts[k+1])
+        listPts[k+1] = np.copy(listPts[k+1+i])
+        listPts[i+k+1] = mem
+        
+
+    # print(listPts[0], listPts[-1])
+
+def getPCADir(seg):
+    ids = np.argwhere(seg)
+    mu = np.mean(ids, 0)
+
+    idsC = ids - mu
+    Px = np.matmul(np.transpose(idsC), (idsC))
+
+    lambd, vect = np.linalg.eig(Px)
+
+
+    cv2.line(seg, tuple([floor(seg.shape[0]/2), floor(seg.shape[1]/2)]), tuple([floor(seg.shape[0]/2 + 50*vect[0,0]), floor(seg.shape[1]/2 + 50*vect[0,1])]), 0)
+    cv2.line(seg, tuple([floor(seg.shape[0]/2), floor(seg.shape[1]/2)]), tuple([floor(seg.shape[0]/2 + 50*vect[1,0]), floor(seg.shape[1]/2 + 50*vect[1,1])]), 0)
+
+    cv2.imshow('.', seg)
+    # plt.figure(0)
+    # plt.plot([1,1])
+    # plt.show()
+    return vect
+

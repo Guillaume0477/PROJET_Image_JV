@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour {
 	// private GameObject ennemy_cube1;
 	private Rigidbody rb_player;
 	private GameObject balle;
-	private int count_ball = 0;
 	private float manaDecreased = 0;
 	private float manaIncreased = 0.1f;
 	// Create public variables for player speed, and for the Text UI game objects
@@ -110,7 +109,6 @@ public class PlayerController : MonoBehaviour {
 		balle.tag = "Boule";
 		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
 
-		count_ball = 1;
 		Destroy(balle, 1.0f);
 		playerStats.ApplyMana(manaDecreased);
 	}
