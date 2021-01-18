@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 	private GameObject balle;
 	private GameObject onde;
 	private float manaDecreased = 0;
-	private float manaIncreased = 0.3f;
+	private float manaIncreased = 0.2f;
 
 	// Create public variables for player speed, and for the Text UI game objects
 	private float player_speed = 10;

@@ -45,7 +45,7 @@ MonoBehaviour:
     width: 1853
     height: 951
   m_MinSize: {x: 681, y: 498}
-  m_MaxSize: {x: 14002, y: 14048}
+  m_MaxSize: {x: 14004, y: 14048}
   vertical: 0
   controlID: 51
 --- !u!114 &3
@@ -67,8 +67,8 @@ MonoBehaviour:
     y: 0
     width: 605
     height: 951
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 74}
+  m_MaxSize: {x: 4002, y: 4024}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -94,8 +94,8 @@ MonoBehaviour:
     y: 0
     width: 220
     height: 663
-  m_MinSize: {x: 202, y: 224}
-  m_MaxSize: {x: 4002, y: 4024}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -216,7 +216,7 @@ MonoBehaviour:
     y: 0
     width: 1248
     height: 951
-  m_MinSize: {x: 406, y: 498}
+  m_MinSize: {x: 404, y: 498}
   m_MaxSize: {x: 10002, y: 14048}
   vertical: 1
   controlID: 52
@@ -241,8 +241,8 @@ MonoBehaviour:
     y: 0
     width: 1248
     height: 663
-  m_MinSize: {x: 406, y: 224}
-  m_MaxSize: {x: 8006, y: 4024}
+  m_MinSize: {x: 404, y: 224}
+  m_MaxSize: {x: 8004, y: 4024}
   vertical: 0
   controlID: 53
 --- !u!114 &11
@@ -449,20 +449,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/NatureStarterKit2/Scene
+    - Assets/Scenes/Prefabs
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/NatureStarterKit2/Scene
+  - Assets/Scenes/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: /home/paul/Documents/Unity/PROJET_Image_JV/Projet/Unity
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 165}
-    m_SelectedIDs: 300b0100
-    m_LastClickedID: 68400
-    m_ExpandedIDs: 000000008a090000a0090000ae0b0000040c0000e60c0000f40c00001a0d00004e0d0000f00d0000c42d0000c62d0000c82d00004e6c0000546c0000666c00002e0b010000ca9a3b
+    scrollPos: {x: 0, y: 245}
+    m_SelectedIDs: 44100000
+    m_LastClickedID: 4164
+    m_ExpandedIDs: 00000000980c0000080d0000c6130000da1400006e150000b01500003618000054180000a2180000f41800004c1a0000441b0000761c0000c0410000c2410000c441000034b8000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -490,7 +490,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000008a090000a0090000ae0b0000040c0000e60c0000f40c00001a0d00004e0d0000f00d0000c42d0000c62d0000c82d0000
+    m_ExpandedIDs: 00000000980c0000080d0000c6130000da1400006e150000b01500003618000054180000a2180000f41800004c1a0000441b0000761c0000c0410000c2410000c4410000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -609,20 +609,20 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: e0260100
-      m_LastClickedID: 75488
-      m_ExpandedIDs: 6c70fcff7895fcff9ea8fcffc296feff94e3ffff0cedffff22f5ffff36f5ffffd4fbffffda360000d0400000
+      m_SelectedIDs: c8cb0000
+      m_LastClickedID: 52168
+      m_ExpandedIDs: da41fdff4c56fdff4c69fdff6a6cfdff2a6dfdffe08bfdffe092fdff3e3affffbee5ffffd4fbffff1c420000bca500008cac000090bc00000acc000080cc0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Main Camera
-        m_OriginalName: Main Camera
+        m_Name: MonsterGenerator4
+        m_OriginalName: MonsterGenerator4
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 76122
+        m_UserData: 16898
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
         m_OriginalEventType: 0
@@ -666,9 +666,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -104.359375, y: -70.30078, z: -82.75781}
+    m_Target: {x: 22.180664, y: 0.28149414, z: -21.34082}
     speed: 2
-    m_Value: {x: -104.359375, y: -70.30078, z: -82.75781}
+    m_Value: {x: 22.180664, y: 0.28149414, z: -21.34082}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -688,21 +688,21 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
     yGrid:
-      m_Target: 1
+      m_Target: 0
       speed: 2
-      m_Value: 1
+      m_Value: 0
     zGrid:
       m_Target: 0
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: 0.056784764, y: -0.86160946, z: 0.09892277, w: 0.49458998}
+    m_Target: {x: 0.03587615, y: 0.90148854, z: -0.07618706, w: 0.42453158}
     speed: 2
-    m_Value: {x: 0.056784756, y: -0.86160934, z: 0.09892275, w: 0.49458992}
+    m_Value: {x: 0.035876147, y: 0.9014884, z: -0.07618705, w: 0.42453152}
   m_Size:
-    m_Target: 565.3167
+    m_Target: 6.9012403
     speed: 2
-    m_Value: 565.3167
+    m_Value: 6.9012403
   m_Ortho:
     m_Target: 1
     speed: 2

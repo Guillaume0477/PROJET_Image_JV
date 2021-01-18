@@ -8,9 +8,9 @@ public class MonsterGenerator : MonoBehaviour {
     public GameObject ennemy_prefab;
     public PlayerStats playerStats;
     public Text death_counter;
+    public float repop_time = 100.0f;
 
     private bool isSpawned;
-    private float repop_time = 100.0f;
 
     void Start()
     {
