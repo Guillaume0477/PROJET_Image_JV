@@ -22,7 +22,7 @@ def init_connexion_Unity():
 def handle_pile(sock,UDP_IP,UDP_PORT,Pile,index,current_signe):
 
     Pile[index] +=1
-    if (Pile[index] == 5):
+    if (Pile[index] == 10):
         print("inhandle")
         Pile[0] = 0
         Pile[1] = 0
@@ -35,7 +35,7 @@ def handle_pile(sock,UDP_IP,UDP_PORT,Pile,index,current_signe):
 
         #if not (current_signe==0): #si on est en possition neutre sinon on ne peux pas chager de signe
         if (current_signe==0):
-            if index==0:q
+            if index==0:
                 return False
             else:
                 sock.sendto( ("Signe_"+str(index)+"!").encode(), (UDP_IP, UDP_PORT) )

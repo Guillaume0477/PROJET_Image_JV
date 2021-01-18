@@ -18,7 +18,7 @@ public class EnnemyStats : MonoBehaviour
 		anim = GetComponent<Animator>();
 	}
 	
-	void OnCollisionEnter (Collision col)
+	void OnTriggerEnter (Collider col)
 	{
         if(col.gameObject.tag == "Boule")
 		{
