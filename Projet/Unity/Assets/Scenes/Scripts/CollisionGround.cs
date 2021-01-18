@@ -6,15 +6,10 @@ using UnityEngine.UI;
 using System.Collections;
 public class CollisionGround : MonoBehaviour 
 {
-    void OnCollisionEnter (Collision col)
+    void OnTriggerEnter (Collider col)
     {
         if(col.gameObject.tag == "Boule"){
             Destroy(col.gameObject);
         }
     }
-
-    void Update ()
-	{
-        
-	}
 }

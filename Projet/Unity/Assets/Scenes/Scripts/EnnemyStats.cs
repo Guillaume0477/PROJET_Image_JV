@@ -18,14 +18,19 @@ public class EnnemyStats : MonoBehaviour
 		anim = GetComponent<Animator>();
 	}
 	
-	void OnCollisionEnter (Collision col)
+	void OnTriggerEnter (Collider col)
 	{
         if(col.gameObject.tag == "Boule")
 		{
 			StartCoroutine("TakeDamageAnim");
-            ennemyHealth -= 0;
+            ennemyHealth -= col.gameObject.GetComponent<FireBall>().getEnnemyDamage() * 2.0f;
 			Destroy(col.gameObject);
         }
+
+		else if (col.gameObject.tag == "OndeChoc"){
+			StartCoroutine("TakeDamageAnim");
+            ennemyHealth -= col.gameObject.GetComponent<ShockWave>().getEnnemyDamage();	
+		}
     }
 
 	IEnumerator TakeDamageAnim()

@@ -13,18 +13,17 @@ public class PlayerController : MonoBehaviour {
 	public Text manaLacking;
 	public RectTransform pauseMenu;
 	public RectTransform deathMenu;
+	public GameObject shockWave;
 
-	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
-	// private Rigidbody ennemy_cube1_rb;
-	// private GameObject ennemy_cube1;
 	private Rigidbody rb_player;
 	private GameObject balle;
+	private GameObject onde;
 	private float manaDecreased = 0;
-	private float manaIncreased = 0.1f;
+	private float manaIncreased = 0.2f;
+
 	// Create public variables for player speed, and for the Text UI game objects
 	private float player_speed = 10;
 	private float sensibility = 80;
-	private float force = 20;
 
 	// At the start of the game..
 	void Start ()
@@ -34,17 +33,12 @@ public class PlayerController : MonoBehaviour {
 
 		healthBar.SetMaxValue(playerStats.getHealthMax());
 		manaBar.SetMaxValue(playerStats.getManaMax());
-
-        // //Ennemy cubes creation
-        // ennemy_cube1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        // Vector3 ennemy_cube1_position_initiale = new Vector3(-23.20401f, 0.5124857f, -23.86554f);
-        // ennemy_cube1.transform.position = ennemy_cube1_position_initiale;
-		// ennemy_cube1_rb = ennemy_cube1.AddComponent<Rigidbody>();
 	}
 
 	// Each physics step..
 	void FixedUpdate ()
 	{
+		bool action = true;
 		if(playerStats.getHealth() == 0)
 		{
 			healthBar.SetValue(0);
@@ -53,8 +47,6 @@ public class PlayerController : MonoBehaviour {
 		else
 		{
 			healthBar.SetValue(playerStats.getHealth());
-			//The ennemies follow the player
-			// ennemy_cube1.transform.localPosition = Vector3.MoveTowards(ennemy_cube1.transform.localPosition, rb_player.position, ennemy_speed * Time.deltaTime);
 			player_movement();
 			
 			if (Input.GetKeyDown(KeyCode.Escape))
@@ -68,13 +60,34 @@ public class PlayerController : MonoBehaviour {
 				fire_ball_if_possible();
 			}
 
-			if(playerStats.getMana() >=  manaDecreased)
+			if (Input.GetKey(KeyCode.C))
+			{
+				if (playerStats.getManaMax() > manaDecreased){
+					playerStats.ApplyMana(0.5f);
+					manaDecreased += 0.5f;
+				}
+				action = false;
+			}
+
+			if (Input.GetKeyUp(KeyCode.C))
+			{
+				onde = Instantiate(shockWave, transform.position, Quaternion.identity) as GameObject;
+				onde.transform.position = transform.position;
+				onde.GetComponent<ShockWave>().setEnnemyDamage(manaDecreased);
+				manaDecreased = 0.0f;
+
+			}
+
+			if(playerStats.getMana() >=  projectile.GetComponent<FireBall>().getEnnemyDamage())
 			{
 				manaLacking.enabled = false;
 			}
 
 			manaBar.SetValue(playerStats.getMana());
-			playerStats.RegenerateMana(manaIncreased);
+			if (action)
+			{
+				playerStats.RegenerateMana(manaIncreased);
+			}
 		}
 	}
 	
@@ -93,7 +106,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void fire_ball_if_possible()
 	{
-		if(playerStats.getMana() >=  manaDecreased)
+		if(playerStats.getMana() >= projectile.GetComponent<FireBall>().getEnnemyDamage())
 		{
 			fire_ball();
 		}
@@ -106,11 +119,10 @@ public class PlayerController : MonoBehaviour {
 	void fire_ball()
 	{
 		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
-		balle.tag = "Boule";
-		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
+		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * balle.GetComponent<FireBall>().getForce());
 
 		Destroy(balle, 1.0f);
-		playerStats.ApplyMana(manaDecreased);
+		playerStats.ApplyMana(balle.GetComponent<FireBall>().getEnnemyDamage());
 	}
 
 	void Dead ()
