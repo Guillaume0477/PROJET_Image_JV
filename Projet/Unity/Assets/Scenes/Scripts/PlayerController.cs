@@ -13,15 +13,17 @@ public class PlayerController : MonoBehaviour {
 	public Text manaLacking;
 	public RectTransform pauseMenu;
 	public RectTransform deathMenu;
+	public GameObject shockWave;
 
 	private Rigidbody rb_player;
 	private GameObject balle;
+	private GameObject onde;
 	private float manaDecreased = 0;
-	private float manaIncreased = 0.1f;
+	private float manaIncreased = 0.3f;
+
 	// Create public variables for player speed, and for the Text UI game objects
 	private float player_speed = 10;
 	private float sensibility = 80;
-	private float force = 20;
 
 	// At the start of the game..
 	void Start ()
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour {
 	// Each physics step..
 	void FixedUpdate ()
 	{
+		bool action = true;
 		if(playerStats.getHealth() == 0)
 		{
 			healthBar.SetValue(0);
@@ -57,13 +60,34 @@ public class PlayerController : MonoBehaviour {
 				fire_ball_if_possible();
 			}
 
-			if(playerStats.getMana() >=  manaDecreased)
+			if (Input.GetKey(KeyCode.C))
+			{
+				if (playerStats.getManaMax() > manaDecreased){
+					playerStats.ApplyMana(0.5f);
+					manaDecreased += 0.5f;
+				}
+				action = false;
+			}
+
+			if (Input.GetKeyUp(KeyCode.C))
+			{
+				onde = Instantiate(shockWave, transform.position, Quaternion.identity) as GameObject;
+				onde.transform.position = transform.position;
+				onde.GetComponent<ShockWave>().setEnnemyDamage(manaDecreased);
+				manaDecreased = 0.0f;
+
+			}
+
+			if(playerStats.getMana() >=  projectile.GetComponent<FireBall>().getEnnemyDamage())
 			{
 				manaLacking.enabled = false;
 			}
 
 			manaBar.SetValue(playerStats.getMana());
-			playerStats.RegenerateMana(manaIncreased);
+			if (action)
+			{
+				playerStats.RegenerateMana(manaIncreased);
+			}
 		}
 	}
 	
@@ -82,7 +106,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void fire_ball_if_possible()
 	{
-		if(playerStats.getMana() >=  manaDecreased)
+		if(playerStats.getMana() >= projectile.GetComponent<FireBall>().getEnnemyDamage())
 		{
 			fire_ball();
 		}
@@ -95,11 +119,10 @@ public class PlayerController : MonoBehaviour {
 	void fire_ball()
 	{
 		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
-		balle.tag = "Boule";
-		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * force);
+		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * balle.GetComponent<FireBall>().getForce());
 
 		Destroy(balle, 1.0f);
-		playerStats.ApplyMana(manaDecreased);
+		playerStats.ApplyMana(balle.GetComponent<FireBall>().getEnnemyDamage());
 	}
 
 	void Dead ()

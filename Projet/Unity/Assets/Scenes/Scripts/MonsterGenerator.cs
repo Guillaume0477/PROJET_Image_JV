@@ -10,6 +10,7 @@ public class MonsterGenerator : MonoBehaviour {
     public Text death_counter;
 
     private bool isSpawned;
+    private float repop_time = 10.0f;
 
     void Start()
     {
@@ -28,7 +29,7 @@ public class MonsterGenerator : MonoBehaviour {
     IEnumerator MonsterGeneration(){
         isSpawned = true;
         Instantiate(ennemy_prefab, transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(repop_time);
         isSpawned = false;
     }
 }

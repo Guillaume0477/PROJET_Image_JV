@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Boule
   - Ennemy
+  - OndeChoc
   layers:
   - Default
   - TransparentFX
