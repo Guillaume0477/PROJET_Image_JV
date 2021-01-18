@@ -11,6 +11,7 @@ public class EnnemyAI : MonoBehaviour {
     public EnnemyStats ennemyStats;
     public EnnemyBar ennemyBar;
     public Text count;
+    public Text vague;
 
     private float Distance;
     private float ennemy_speed = 5;
@@ -24,6 +25,7 @@ public class EnnemyAI : MonoBehaviour {
 
     ////////////////////////////////////// ATTENTION AU STATIC ! //////////////////////////////////////
     static private float count_death = 0;
+    static private float count_vague = 1;
     ////////////////////////////////////// ATTENTION AU STATIC ! //////////////////////////////////////
 
 	// At the start of the game..
@@ -32,6 +34,7 @@ public class EnnemyAI : MonoBehaviour {
         ennemyBar.SetMaxValue(ennemyStats.getHealth());
         anim = GetComponent<Animator>();
         count.text = count_death.ToString();
+        vague.text = count_vague.ToString();
     }
 
 	// Each physics step..
