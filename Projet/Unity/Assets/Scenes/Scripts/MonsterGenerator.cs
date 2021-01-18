@@ -8,7 +8,8 @@ public class MonsterGenerator : MonoBehaviour {
     public GameObject ennemy_prefab;
     public PlayerStats playerStats;
     public Text death_counter;
-    public float repop_time = 100.0f;
+    public Text vague_counter;
+    public float repop_time;
 
     private bool isSpawned;
 
@@ -17,6 +18,7 @@ public class MonsterGenerator : MonoBehaviour {
         EnnemyAI EAI = ennemy_prefab.GetComponent<EnnemyAI>();
 		EAI.Target = playerStats;
         EAI.count = death_counter;
+        EAI.vague = vague_counter;
     }
 
     void Update(){

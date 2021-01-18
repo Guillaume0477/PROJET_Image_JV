@@ -5,7 +5,6 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
-	// public float ennemy_speed;
     public GameObject projectile;
 	public PlayerStats playerStats;
 	public PlayerBar healthBar;
@@ -20,7 +19,6 @@ public class PlayerController : MonoBehaviour {
 	private GameObject onde;
 	private float manaDecreased = 0;
 	private float manaIncreased = 0.2f;
-
 	// Create public variables for player speed, and for the Text UI game objects
 	private float player_speed = 10;
 	private float sensibility = 80;
@@ -75,7 +73,6 @@ public class PlayerController : MonoBehaviour {
 				onde.transform.position = transform.position;
 				onde.GetComponent<ShockWave>().setEnnemyDamage(manaDecreased);
 				manaDecreased = 0.0f;
-
 			}
 
 			if(playerStats.getMana() >=  projectile.GetComponent<FireBall>().getEnnemyDamage())
