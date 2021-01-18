@@ -10,7 +10,7 @@ public class MonsterGenerator : MonoBehaviour {
     public Text death_counter;
 
     private bool isSpawned;
-    private float repop_time = 10.0f;
+    private float repop_time = 100.0f;
 
     void Start()
     {
