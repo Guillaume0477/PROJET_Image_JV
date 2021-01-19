@@ -10,15 +10,15 @@ public class EnnemyAI : MonoBehaviour {
     public PlayerStats Target;
     public EnnemyStats ennemyStats;
     public EnnemyBar ennemyBar;
-    public Text count;
-    public Text vague;
+    public CountEnnemyKilled count;
+    public VagueController vague;
 
     private float Distance;
     private float ennemy_speed = 5;
     private float attackRange = 2.2f;
     private float attackRepeatTime = 1;
     private float Damping = 6;
-    private float TheDammage = 0;
+    private float TheDammage = 10;
     private Animator anim;
     private bool isAttacked;
     private bool isDead;
@@ -33,17 +33,15 @@ public class EnnemyAI : MonoBehaviour {
 	// At the start of the game..
 	void Start ()
 	{
-        ennemyBar.SetMaxValue(ennemyStats.getHealth() * count_vague_series);
+        ennemyBar.SetMaxValue(ennemyStats.getHealth() * ((int)((vague.getCurrVague()-1)/3.0f) + 1));
         anim = GetComponent<Animator>();
-        count.text = count_death.ToString();
-        vague.text = count_vague.ToString();
+        // count.text = count_death.ToString();
+        // vague.text = count_vague.ToString();
     }
 
 	// Each physics step..
 	void Update ()
 	{
-
-        Debug.Log(ennemyStats.getHealth());
 
         Distance = Vector3.Distance(Target.transform.position, transform.position);
 
@@ -98,26 +96,7 @@ public class EnnemyAI : MonoBehaviour {
         isDead = true;
 
         count_death = count_death + 1;
-        count.text = count_death.ToString();
-        
-        if (count_death % 1 == 0)
-        {
-            if (!isCount)
-            {
-                count_vague = (count_vague + 1);
-                vague.text = count_vague.ToString();
-                isCount = true;
-            }
-        }
-        else
-        {
-            isCount = false;
-        }
-
-        if(count_vague % 2 == 0)
-        {
-            count_vague_series = count_vague_series + 1;
-        }
+    count.oneMore();
 
         Destroy(ennemyBar);
         anim.Play("Base Layer.Die");

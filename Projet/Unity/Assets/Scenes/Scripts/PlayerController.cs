@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour {
 
 			if (Input.GetKey(KeyCode.C))
 			{
-				if (playerStats.getManaMax() > manaDecreased){
+				if (playerStats.getMana() > 0.5){
 					playerStats.ApplyMana(0.5f);
 					manaDecreased += 0.5f;
 				}

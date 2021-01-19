@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4066997632453498104}
   - component: {fileID: 4066997632453498105}
   - component: {fileID: 4066997632453498106}
-  - component: {fileID: 1246820939615502218}
+  - component: {fileID: 2834746148208091205}
   m_Layer: 0
   m_Name: Boule
   m_TagString: Boule
@@ -110,7 +110,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
---- !u!114 &1246820939615502218
+--- !u!114 &2834746148208091205
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
