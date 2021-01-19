@@ -35,6 +35,7 @@ public class PlayerControllerTutorial : MonoBehaviour
 	private float player_speed = 10;
 	private float sensibility = 80;
 	private GameObject myMine;
+	private bool AlreadyPush = false;
 
 	static private float count_tutorial2 = 0;
 	static private float count_tutorial3 = 0;
@@ -73,10 +74,14 @@ public class PlayerControllerTutorial : MonoBehaviour
 				Time.timeScale = 0.0f;
 			}
 
-			if(Input.GetKeyDown(KeyCode.G))
+			if(!AlreadyPush)
 			{
-				Tutorial1.gameObject.SetActive(false);
-				Tutorial2.gameObject.SetActive(true);
+				if(Input.GetKeyDown(KeyCode.G))
+				{
+					AlreadyPush = true;
+					Tutorial1.gameObject.SetActive(false);
+					Tutorial2.gameObject.SetActive(true);
+				}
 			}
 
 			if (Input.GetKeyDown(KeyCode.Space))
@@ -86,8 +91,9 @@ public class PlayerControllerTutorial : MonoBehaviour
 					count_tutorial2 = count_tutorial2 + 1;
 					count_tutorial2_text.text = count_tutorial2.ToString();
 				}
-				else
+				if(count_tutorial2 == 3)
 				{
+					count_tutorial2 = count_tutorial2 + 1;
 					Tutorial2.gameObject.SetActive(false);
 					Tutorial3.gameObject.SetActive(true);
 				}
@@ -96,7 +102,6 @@ public class PlayerControllerTutorial : MonoBehaviour
 
 			if (Input.GetKeyUp(KeyCode.E))
 			{
-				
 				if(mine.GetComponent<Mine>().getManaNeeded() < playerStats.getMana())
 				{
 					if(count_tutorial3 < 3)
@@ -104,8 +109,9 @@ public class PlayerControllerTutorial : MonoBehaviour
 						count_tutorial3 = count_tutorial3 + 1;
 						count_tutorial3_text.text = count_tutorial3.ToString();
 					}
-					else
+					if (count_tutorial3 == 3)
 					{
+						count_tutorial3 = count_tutorial3 + 1;
 						Tutorial3.gameObject.SetActive(false);
 						Tutorial4.gameObject.SetActive(true);
 					}
@@ -132,8 +138,9 @@ public class PlayerControllerTutorial : MonoBehaviour
 					count_tutorial4 = count_tutorial4 + 1;
 					count_tutorial4_text.text = count_tutorial4.ToString();
 				}
-				else
+				if (count_tutorial4 == 3)
 				{
+					count_tutorial4 = count_tutorial4 + 1;
 					Tutorial4.gameObject.SetActive(false);
 					Tutorial5.gameObject.SetActive(true);
 				}
