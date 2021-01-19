@@ -4,8 +4,9 @@ using UnityEngine;
  
 public class FireBall : MonoBehaviour
 {
- private float ennemyDamage = 30;
+ private float ennemyDamage = 0;
  private float force = 20;
+
  // Start is called before the first frame update
  void Start()
  {

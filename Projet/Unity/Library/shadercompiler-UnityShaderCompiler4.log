@@ -1,87 +1,25 @@
 Base path: /home/paul/Unity-2018.3.0f2/Editor/Data
 Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
-Cmd: initializeCompiler
+Cmd: compileComputeKernel
+  api=18 insize=2059 outsize=7133 ok=1
+Cmd: compileComputeKernel
+  api=18 insize=2780 outsize=198945 ok=1
+Cmd: compileComputeKernel
+  api=18 insize=4845 outsize=15653 ok=1
+Cmd: compileComputeKernel
+  api=18 insize=3396 outsize=9925 ok=1
+Cmd: compileComputeKernel
+  api=15 insize=18299 outsize=16185 ok=1
+Cmd: compileComputeKernel
+  api=18 insize=18299 outsize=32865 ok=1
+Cmd: compileComputeKernel
+  api=18 insize=18299 outsize=34697 ok=1
+Cmd: compileComputeKernel
+  api=18 insize=5435 outsize=25001 ok=1
+Cmd: compileComputeKernel
+  api=15 insize=1454 outsize=1777 ok=1
+Cmd: compileComputeKernel
+  api=15 insize=2044 outsize=1873 ok=1
 Cmd: initializeCompiler
 Cmd: initializeCompiler
 Cmd: initializeCompiler

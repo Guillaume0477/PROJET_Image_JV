@@ -16,6 +16,7 @@ public class EnnemyStats : MonoBehaviour
 	void Start()
 	{
 		anim = GetComponent<Animator>();
+		ennemyHealth = 100 * ennemyAI.getCount_Series();
 	}
 	
 	void OnTriggerEnter (Collider col)
@@ -23,7 +24,7 @@ public class EnnemyStats : MonoBehaviour
         if(col.gameObject.tag == "Boule")
 		{
 			StartCoroutine("TakeDamageAnim");
-            ennemyHealth -= col.gameObject.GetComponent<FireBall>().getEnnemyDamage() * 2.0f;
+            ennemyHealth -= 50; //col.gameObject.GetComponent<FireBall>().getEnnemyDamage() * 2.0f;
 			Destroy(col.gameObject);
         }
 
@@ -31,7 +32,18 @@ public class EnnemyStats : MonoBehaviour
 			StartCoroutine("TakeDamageAnim");
             ennemyHealth -= col.gameObject.GetComponent<ShockWave>().getEnnemyDamage();	
 		}
+		
+		else if (col.gameObject.tag == "Mine"){
+			col.gameObject.transform.parent.GetComponent<Mine>().Explosion();
+		}
     }
+
+	void OnCollisionEnter (Collision col)
+	{
+		if(col.gameObject.tag == "Mine"){
+			ennemyHealth -= col.gameObject.transform.parent.GetComponent<Mine>().getEnnemyDamage();
+		}
+	}
 
 	IEnumerator TakeDamageAnim()
 	{
