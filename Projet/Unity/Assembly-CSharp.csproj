@@ -79,6 +79,9 @@
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
       <HintPath>D:/DOSSIER/CPE_LYON/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.VisualEffectGraph.Runtime">
+      <HintPath>D:/DOSSIER/CPE_LYON/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.VisualEffectGraph.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Purchasing">
       <HintPath>D:/DOSSIER/CPE_LYON/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
@@ -106,6 +109,9 @@
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>D:/DOSSIER/CPE_LYON/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.VisualEffectGraph.Editor">
+      <HintPath>D:/DOSSIER/CPE_LYON/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.VisualEffectGraph.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.ShaderGraph.Editor">
       <HintPath>D:/DOSSIER/CPE_LYON/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll</HintPath>
     </Reference>
@@ -117,12 +123,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>D:/DOSSIER/CPE_LYON/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualEffectGraph.Runtime">
-      <HintPath>D:/DOSSIER/CPE_LYON/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.VisualEffectGraph.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VisualEffectGraph.Editor">
-      <HintPath>D:/DOSSIER/CPE_LYON/PROJET_Image_JV/Projet/Unity/Library/ScriptAssemblies/Unity.VisualEffectGraph.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/DOSSIER/APPLI/2018.4.30f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
