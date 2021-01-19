@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
 	public RectTransform pauseMenu;
 	public RectTransform deathMenu;
 	public GameObject shockWave;
+	public GameObject mine;
 
 	private Rigidbody rb_player;
 	private GameObject balle;
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour {
 	// Create public variables for player speed, and for the Text UI game objects
 	private float player_speed = 10;
 	private float sensibility = 80;
+	private GameObject myMine;
 
 	// At the start of the game..
 	void Start ()
@@ -56,6 +58,16 @@ public class PlayerController : MonoBehaviour {
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				fire_ball_if_possible();
+			}
+
+			if (Input.GetKeyUp(KeyCode.E))
+			{
+				if(mine.GetComponent<Mine>().getManaNeeded() < playerStats.getMana())
+				{
+					myMine = Instantiate(mine, transform.position, Quaternion.identity) as GameObject;
+					myMine.transform.position = new Vector3(transform.position.x, transform.position.y - (myMine.transform.localScale.y)/2.0f, transform.position.z);
+					playerStats.ApplyMana(myMine.GetComponent<Mine>().getManaNeeded());
+				}				
 			}
 
 			if (Input.GetKey(KeyCode.C))
@@ -126,5 +138,11 @@ public class PlayerController : MonoBehaviour {
 	{
         deathMenu.gameObject.SetActive(true);
 		Time.timeScale = 0;
+	}
+
+	void OnCollisionEnter(Collision col){
+		if (col.gameObject.tag == "Mine"){
+			playerStats.ApplyDammage(col.gameObject.transform.parent.GetComponent<Mine>().getEnnemyDamage());
+		}
 	}
 }

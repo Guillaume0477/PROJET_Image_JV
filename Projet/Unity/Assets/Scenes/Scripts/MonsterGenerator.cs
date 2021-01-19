@@ -9,9 +9,10 @@ public class MonsterGenerator : MonoBehaviour {
     public PlayerStats playerStats;
     public Text death_counter;
     public Text vague_counter;
-    public float repop_time;
 
     private bool isSpawned;
+    private int ennemy_number;
+    private float repop_time = 10.0f;
 
     void Start()
     {
@@ -29,9 +30,13 @@ public class MonsterGenerator : MonoBehaviour {
     }
 
     IEnumerator MonsterGeneration(){
-        isSpawned = true;
-        Instantiate(ennemy_prefab, transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(repop_time);
-        isSpawned = false;
+        if(ennemy_number <= 10)
+        {
+            isSpawned = true;
+            Instantiate(ennemy_prefab, transform.position, Quaternion.identity);
+            ennemy_number += 1;
+            yield return new WaitForSeconds(repop_time);
+            isSpawned = false;
+        }
     }
 }
