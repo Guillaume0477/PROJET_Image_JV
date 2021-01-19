@@ -115,7 +115,6 @@
      <Compile Include="Assets\Scenes\ScriptsTutorial\FireBallTutorial.cs" />
      <Compile Include="Assets\Scenes\ScriptsTutorial\FlipNormalsTutorial.cs" />
      <Compile Include="Assets\Scenes\ScriptsTutorial\MineTutorial.cs" />
-     <Compile Include="Assets\Scenes\ScriptsTutorial\MonsterGeneratorTutorial.cs" />
      <Compile Include="Assets\Scenes\ScriptsTutorial\PauseMenuTutorial.cs" />
      <Compile Include="Assets\Scenes\ScriptsTutorial\PlayerBarTutorial.cs" />
      <Compile Include="Assets\Scenes\ScriptsTutorial\PlayerControllerTutorial.cs" />

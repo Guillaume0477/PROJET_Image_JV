@@ -12,6 +12,7 @@ public class PlayerStatsTutorial : MonoBehaviour {
 	private float mana = 100;
 	private float healthMax = 100;
 	private float manaMax = 100;
+	
 
 	public void ApplyDammage (float TheDammage)
 	{

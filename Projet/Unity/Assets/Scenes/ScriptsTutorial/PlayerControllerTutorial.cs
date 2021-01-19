@@ -4,25 +4,42 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class PlayerControllerTutorial : MonoBehaviour {
+public class PlayerControllerTutorial : MonoBehaviour 
+{
     public GameObject projectile;
 	public PlayerStatsTutorial playerStats;
 	public PlayerBarTutorial healthBar;
 	public PlayerBarTutorial manaBar;
 	public Text manaLacking;
-	public RectTransform pauseMenu;
+	public RectTransform pauseMenu2;
 	public GameObject shockWave;
 	public GameObject mine;
+
+	//Didacticiel
+	public RectTransform Tutorial1;
+	public RectTransform Tutorial2;
+	public RectTransform Tutorial3;
+	public RectTransform Tutorial4;
+	public RectTransform Tutorial5;
+	public Text count_tutorial2_text;
+	public Text count_tutorial3_text;
+	public Text count_tutorial4_text;
+	public Text count_tutorial5_text;	
 
 	private Rigidbody rb_player;
 	private GameObject balle;
 	private GameObject onde;
 	private float manaDecreased = 0;
-	private float manaIncreased = 0.2f;
+	private float manaIncreased = 0.5f;
 	// Create public variables for player speed, and for the Text UI game objects
 	private float player_speed = 10;
 	private float sensibility = 80;
 	private GameObject myMine;
+
+	static private float count_tutorial2 = 0;
+	static private float count_tutorial3 = 0;
+	static private float count_tutorial4 = 0;
+	static private float count_tutorial5 = 0;
 
 	// At the start of the game..
 	void Start ()
@@ -32,6 +49,9 @@ public class PlayerControllerTutorial : MonoBehaviour {
 
 		healthBar.SetMaxValue(playerStats.getHealthMax());
 		manaBar.SetMaxValue(playerStats.getManaMax());
+
+		Tutorial1.gameObject.SetActive(true);
+
 	}
 
 	// Each physics step..
@@ -49,19 +69,47 @@ public class PlayerControllerTutorial : MonoBehaviour {
 			
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
-				pauseMenu.gameObject.SetActive(true);
+				pauseMenu2.gameObject.SetActive(true);
 				Time.timeScale = 0.0f;
+			}
+
+			if(Input.GetKeyDown(KeyCode.G))
+			{
+				Tutorial1.gameObject.SetActive(false);
+				Tutorial2.gameObject.SetActive(true);
 			}
 
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				fire_ball_if_possible();
+				if(count_tutorial2 < 3)
+				{
+					count_tutorial2 = count_tutorial2 + 1;
+					count_tutorial2_text.text = count_tutorial2.ToString();
+				}
+				else
+				{
+					Tutorial2.gameObject.SetActive(false);
+					Tutorial3.gameObject.SetActive(true);
+				}
+				fire_ball();
 			}
 
 			if (Input.GetKeyUp(KeyCode.E))
 			{
+				
 				if(mine.GetComponent<Mine>().getManaNeeded() < playerStats.getMana())
 				{
+					if(count_tutorial3 < 3)
+					{
+						count_tutorial3 = count_tutorial3 + 1;
+						count_tutorial3_text.text = count_tutorial3.ToString();
+					}
+					else
+					{
+						Tutorial3.gameObject.SetActive(false);
+						Tutorial4.gameObject.SetActive(true);
+					}
+
 					myMine = Instantiate(mine, transform.position, Quaternion.identity) as GameObject;
 					myMine.transform.position = new Vector3(transform.position.x, transform.position.y - (myMine.transform.localScale.y)/2.0f, transform.position.z);
 					playerStats.ApplyMana(myMine.GetComponent<Mine>().getManaNeeded());
@@ -79,9 +127,20 @@ public class PlayerControllerTutorial : MonoBehaviour {
 
 			if (Input.GetKeyUp(KeyCode.C))
 			{
+				if(count_tutorial4 < 3)
+				{
+					count_tutorial4 = count_tutorial4 + 1;
+					count_tutorial4_text.text = count_tutorial4.ToString();
+				}
+				else
+				{
+					Tutorial4.gameObject.SetActive(false);
+					Tutorial5.gameObject.SetActive(true);
+				}
+
 				onde = Instantiate(shockWave, transform.position, Quaternion.identity) as GameObject;
 				onde.transform.position = transform.position;
-				onde.GetComponent<ShockWave>().setEnnemyDamage(manaDecreased);
+				onde.GetComponent<ShockWave>().setEnnemyDamage(0.0f);
 				manaDecreased = 0.0f;
 			}
 
@@ -111,18 +170,6 @@ public class PlayerControllerTutorial : MonoBehaviour {
 		transform.Rotate(YRotation * sensibility * Time.deltaTime * moveHorizontal);
 	}
 
-	public void fire_ball_if_possible()
-	{
-		if(playerStats.getMana() >= projectile.GetComponent<FireBall>().getEnnemyDamage())
-		{
-			fire_ball();
-		}
-		else
-		{
-			manaLacking.enabled = true;
-		}
-	}
-
 	void fire_ball()
 	{
 		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
@@ -134,7 +181,7 @@ public class PlayerControllerTutorial : MonoBehaviour {
 
 	void OnCollisionEnter(Collision col){
 		if (col.gameObject.tag == "Mine"){
-			playerStats.ApplyDammage(col.gameObject.transform.parent.GetComponent<Mine>().getEnnemyDamage());
+			playerStats.ApplyDammage(0.0f);
 		}
 	}
 }

@@ -8,6 +8,7 @@ public class ShockWaveTutorial : MonoBehaviour
 {
     private Vector3 incrementScale = new Vector3(10, 10, 10);
     private float ennemyDamage = 0;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +18,8 @@ public class ShockWaveTutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.localScale.x <= 20){
+        if (transform.localScale.x <= 20)
+        {
             transform.localScale += Time.deltaTime*incrementScale;
         } 
         else {

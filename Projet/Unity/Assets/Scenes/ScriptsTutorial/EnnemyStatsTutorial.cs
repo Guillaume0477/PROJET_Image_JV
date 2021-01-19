@@ -23,7 +23,7 @@ public class EnnemyStatsTutorial : MonoBehaviour
         if(col.gameObject.tag == "Boule")
 		{
 			StartCoroutine("TakeDamageAnim");
-            ennemyHealth -= 50; //col.gameObject.GetComponent<FireBall>().getEnnemyDamage() * 2.0f;
+            ennemyHealth -= col.gameObject.GetComponent<FireBall>().getEnnemyDamage() * 2.0f;
 			Destroy(col.gameObject);
         }
 
@@ -40,7 +40,7 @@ public class EnnemyStatsTutorial : MonoBehaviour
 	void OnCollisionEnter (Collision col)
 	{
 		if(col.gameObject.tag == "Mine"){
-			ennemyHealth -= col.gameObject.transform.parent.GetComponent<Mine>().getEnnemyDamage();
+			ennemyHealth -= 0.0f;//col.gameObject.transform.parent.GetComponent<Mine>().getEnnemyDamage();
 		}
 	}
 

@@ -20,9 +20,10 @@ public class MineTutorial : MonoBehaviour
         if (transform.GetChild(1).gameObject.activeSelf){
             if(transform.GetChild(1).gameObject.transform.localScale.x >= 7){
                 Destroy(gameObject);
-            } else {
+            } 
+            else {
                 transform.GetChild(1).gameObject.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
-                ennemyDammage -= 80.0f/(7.0f*5.0f);
+                ennemyDammage -= 0;//80.0f/(7.0f*5.0f);
             }
         }
 
