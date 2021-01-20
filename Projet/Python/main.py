@@ -22,7 +22,7 @@ def init_connexion_Unity():
 def handle_pile(sock,UDP_IP,UDP_PORT,Pile,index,current_signe):
 
     Pile[index] +=1
-    if (Pile[index] == 5):
+    if (Pile[index] == 7):
         print("inhandle")
         Pile[0] = 0
         Pile[1] = 0
@@ -100,7 +100,7 @@ def main():
     sock,UDP_IP,UDP_PORT = init_connexion_Unity()
 
     nombre_signes=5
-    current_signe= 0
+    current_signe= -1
 
     Pile=[0]*nombre_signes
 
@@ -182,6 +182,9 @@ def main():
             # # Tests to update hsv channel while playing to be adaptative
             # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
             pass
+        else:
+            current_signe = -1
+
         
         # if nbFrame < counterFrame :
         #     labelToSend = np.argwhere(LabelFound == np.max(LabelFound))[0][1]

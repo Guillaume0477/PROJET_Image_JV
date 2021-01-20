@@ -32,12 +32,6 @@ public class PlayerControllerScript: MonoBehaviour
 	void Start () 
 	{
 	port = 5065; //1 
-	Initial = true;
-	Shield = false; //2 
-	FireBall = false;
-	WaveShock = false; //2 
-	SetUpBombe = false;
-	ActiveBombe = false;
 
 	InitUDP(); //4
 	}

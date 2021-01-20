@@ -78,52 +78,19 @@ public class PlayerControllerTutorial : MonoBehaviour
 				Time.timeScale = 0.0f;
 			}
 
-			if(!AlreadyPush)
+			if(Input.GetKeyDown(KeyCode.G))
 			{
-				if(Input.GetKeyDown(KeyCode.G))
-				{
-					AlreadyPush = true;
-					Tutorial1.gameObject.SetActive(false);
-					Tutorial2.gameObject.SetActive(true);
-				}
+				initial();
 			}
 
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				if(count_tutorial2 < 3)
-				{
-					count_tutorial2 = count_tutorial2 + 1;
-					count_tutorial2_text.text = count_tutorial2.ToString();
-				}
-				if(count_tutorial2 == 3)
-				{
-					count_tutorial2 = count_tutorial2 + 1;
-					Tutorial2.gameObject.SetActive(false);
-					Tutorial3.gameObject.SetActive(true);
-				}
 				fire_ball();
 			}
 
 			if (Input.GetKeyUp(KeyCode.E))
 			{
-				if(mine.GetComponent<Mine>().getManaNeeded() < playerStats.getMana())
-				{
-					if(count_tutorial3 < 3)
-					{
-						count_tutorial3 = count_tutorial3 + 1;
-						count_tutorial3_text.text = count_tutorial3.ToString();
-					}
-					if (count_tutorial3 == 3)
-					{
-						count_tutorial3 = count_tutorial3 + 1;
-						Tutorial3.gameObject.SetActive(false);
-						Tutorial4.gameObject.SetActive(true);
-					}
-
-					myMine = Instantiate(mine, transform.position, Quaternion.identity) as GameObject;
-					myMine.transform.position = new Vector3(transform.position.x, transform.position.y - (myMine.transform.localScale.y)/2.0f, transform.position.z);
-					playerStats.ApplyMana(0.0f);//myMine.GetComponent<Mine>().getManaNeeded());
-				}				
+				set_up_bombe_if_possible();				
 			}
 
 			if (Input.GetKey(KeyCode.C))
@@ -133,19 +100,6 @@ public class PlayerControllerTutorial : MonoBehaviour
 
 			if (Input.GetKeyUp(KeyCode.C))
 			{
-				if(count_tutorial4 < 3)
-				{
-					count_tutorial4 = count_tutorial4 + 1;
-					count_tutorial4_text.text = count_tutorial4.ToString();
-				}
-
-				if (count_tutorial4 == 3)
-				{
-					count_tutorial4 = count_tutorial4 + 1;
-					Tutorial4.gameObject.SetActive(false);
-					Tutorial5.gameObject.SetActive(true);
-				}
-
 				release_wave_shock();
 			}
 
@@ -156,19 +110,6 @@ public class PlayerControllerTutorial : MonoBehaviour
 
 			if (Input.GetKeyUp(KeyCode.X))
 			{
-				if(count_tutorial5 < 3)
-				{
-					count_tutorial5 = count_tutorial5 + 1;
-					count_tutorial5_text.text = count_tutorial5.ToString();
-				}
-				if (count_tutorial5 == 3)
-				{
-					count_tutorial5 = count_tutorial5 + 1;
-					Tutorial5.gameObject.SetActive(false);
-					fight_text.gameObject.SetActive(true);
-					fight_text.enabled = true;
-				}
-
 				release_shield();
 			}
 
@@ -198,6 +139,15 @@ public class PlayerControllerTutorial : MonoBehaviour
 		transform.Rotate(YRotation * sensibility * Time.deltaTime * moveHorizontal);
 	}
 
+	public void initial(){
+		if(!AlreadyPush)
+		{
+			AlreadyPush = true;
+			Tutorial1.gameObject.SetActive(false);
+			Tutorial2.gameObject.SetActive(true);
+		}
+	}
+
 	public void charge_wave_shock()
 	{
 		if (playerStats.getMana() > 1.0f){
@@ -210,6 +160,20 @@ public class PlayerControllerTutorial : MonoBehaviour
 
 	public void release_wave_shock()
 	{
+		if (count_tutorial3 >=3){
+			if(count_tutorial4 < 3)
+			{
+				count_tutorial4 = count_tutorial4 + 1;
+				count_tutorial4_text.text = count_tutorial4.ToString();
+			}
+
+			if (count_tutorial4 == 3)
+			{
+				count_tutorial4 = count_tutorial4 + 1;
+				Tutorial4.gameObject.SetActive(false);
+				Tutorial5.gameObject.SetActive(true);
+			}
+		}
 		onde = Instantiate(shockWave, transform.position, Quaternion.identity) as GameObject;
 		onde.transform.position = transform.position;
 		onde.GetComponent<ShockWave>().setEnnemyDamage(manaDecreased);
@@ -224,23 +188,47 @@ public class PlayerControllerTutorial : MonoBehaviour
 			playerStats.ApplyMana(0.5f);
 			manaDecreased += 0.5f;
 			shield.SetActive(true);
-			action = false;
-			charge = true;
 		}
 		else{
 			shield.SetActive(false);
-			charge = false;
 		}
 	}
 
 	public void release_shield()
 	{
+		if (count_tutorial4 >=3){
+			if(count_tutorial5 < 3)
+			{
+				count_tutorial5 = count_tutorial5 + 1;
+				count_tutorial5_text.text = count_tutorial5.ToString();
+			}
+			if (count_tutorial5 == 3)
+			{
+				count_tutorial5 = count_tutorial5 + 1;
+				Tutorial5.gameObject.SetActive(false);
+				fight_text.gameObject.SetActive(true);
+				fight_text.enabled = true;
+			}
+		}
 		shield.SetActive(false) ;
 		charge = false;
 	}
 
-	void fire_ball()
+	public void fire_ball()
 	{
+		if (AlreadyPush){
+			if(count_tutorial2 < 3)
+			{
+				count_tutorial2 = count_tutorial2 + 1;
+				count_tutorial2_text.text = count_tutorial2.ToString();
+			}
+			if(count_tutorial2 == 3)
+			{
+				count_tutorial2 = count_tutorial2 + 1;
+				Tutorial2.gameObject.SetActive(false);
+				Tutorial3.gameObject.SetActive(true);
+			}
+		}
 		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
 		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * balle.GetComponent<FireBall>().getForce());
 
@@ -248,6 +236,25 @@ public class PlayerControllerTutorial : MonoBehaviour
 		playerStats.ApplyMana(0.0f);//balle.GetComponent<FireBall>().getEnnemyDamage());
 	}
 
+	public void set_up_bombe_if_possible()
+	{
+
+		if(count_tutorial3 < 3)
+		{
+			count_tutorial3 = count_tutorial3 + 1;
+			count_tutorial3_text.text = count_tutorial3.ToString();
+		}
+		if (count_tutorial3 == 3)
+		{
+			count_tutorial3 = count_tutorial3 + 1;
+			Tutorial3.gameObject.SetActive(false);
+			Tutorial4.gameObject.SetActive(true);
+		}
+
+		myMine = Instantiate(mine, transform.position, Quaternion.identity) as GameObject;
+		myMine.transform.position = new Vector3(transform.position.x, transform.position.y - (myMine.transform.localScale.y)/2.0f, transform.position.z);
+		playerStats.ApplyMana(0.0f);//myMine.GetComponent<Mine>().getManaNeeded());
+	}
 	void OnCollisionEnter(Collision col){
 		if (col.gameObject.tag == "Mine"){
 			playerStats.ApplyDammage(0.0f);
