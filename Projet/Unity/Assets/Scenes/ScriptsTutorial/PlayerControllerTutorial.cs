@@ -14,6 +14,7 @@ public class PlayerControllerTutorial : MonoBehaviour
 	public RectTransform pauseMenu2;
 	public GameObject shockWave;
 	public GameObject mine;
+	public GameObject shield;
 
 	//Didacticiel
 	public RectTransform Tutorial1;
@@ -24,7 +25,8 @@ public class PlayerControllerTutorial : MonoBehaviour
 	public Text count_tutorial2_text;
 	public Text count_tutorial3_text;
 	public Text count_tutorial4_text;
-	public Text count_tutorial5_text;	
+	public Text count_tutorial5_text;
+	public Text fight_text;
 
 	private Rigidbody rb_player;
 	private GameObject balle;
@@ -36,6 +38,8 @@ public class PlayerControllerTutorial : MonoBehaviour
 	private float sensibility = 80;
 	private GameObject myMine;
 	private bool AlreadyPush = false;
+	private bool action;
+	private bool charge;
 
 	static private float count_tutorial2 = 0;
 	static private float count_tutorial3 = 0;
@@ -52,7 +56,7 @@ public class PlayerControllerTutorial : MonoBehaviour
 		manaBar.SetMaxValue(playerStats.getManaMax());
 
 		Tutorial1.gameObject.SetActive(true);
-
+		fight_text.enabled = false;
 	}
 
 	// Each physics step..
@@ -118,17 +122,13 @@ public class PlayerControllerTutorial : MonoBehaviour
 
 					myMine = Instantiate(mine, transform.position, Quaternion.identity) as GameObject;
 					myMine.transform.position = new Vector3(transform.position.x, transform.position.y - (myMine.transform.localScale.y)/2.0f, transform.position.z);
-					playerStats.ApplyMana(myMine.GetComponent<Mine>().getManaNeeded());
+					playerStats.ApplyMana(0.0f);//myMine.GetComponent<Mine>().getManaNeeded());
 				}				
 			}
 
 			if (Input.GetKey(KeyCode.C))
 			{
-				if (playerStats.getManaMax() > manaDecreased){
-					playerStats.ApplyMana(0.5f);
-					manaDecreased += 0.5f;
-				}
-				action = false;
+				charge_wave_shock();
 			}
 
 			if (Input.GetKeyUp(KeyCode.C))
@@ -138,6 +138,7 @@ public class PlayerControllerTutorial : MonoBehaviour
 					count_tutorial4 = count_tutorial4 + 1;
 					count_tutorial4_text.text = count_tutorial4.ToString();
 				}
+
 				if (count_tutorial4 == 3)
 				{
 					count_tutorial4 = count_tutorial4 + 1;
@@ -145,10 +146,30 @@ public class PlayerControllerTutorial : MonoBehaviour
 					Tutorial5.gameObject.SetActive(true);
 				}
 
-				onde = Instantiate(shockWave, transform.position, Quaternion.identity) as GameObject;
-				onde.transform.position = transform.position;
-				onde.GetComponent<ShockWave>().setEnnemyDamage(0.0f);
-				manaDecreased = 0.0f;
+				release_wave_shock();
+			}
+
+			if (Input.GetKey(KeyCode.X))
+			{
+				active_shield();
+			}
+
+			if (Input.GetKeyUp(KeyCode.X))
+			{
+				if(count_tutorial5 < 3)
+				{
+					count_tutorial5 = count_tutorial5 + 1;
+					count_tutorial5_text.text = count_tutorial5.ToString();
+				}
+				if (count_tutorial5 == 3)
+				{
+					count_tutorial5 = count_tutorial5 + 1;
+					Tutorial5.gameObject.SetActive(false);
+					fight_text.gameObject.SetActive(true);
+					fight_text.enabled = true;
+				}
+
+				release_shield();
 			}
 
 			if(playerStats.getMana() >=  projectile.GetComponent<FireBall>().getEnnemyDamage())
@@ -177,13 +198,54 @@ public class PlayerControllerTutorial : MonoBehaviour
 		transform.Rotate(YRotation * sensibility * Time.deltaTime * moveHorizontal);
 	}
 
+	public void charge_wave_shock()
+	{
+		if (playerStats.getMana() > 1.0f){
+			playerStats.ApplyMana(1.0f);
+			manaDecreased += 1.0f;
+		}
+		action = false;
+		charge = true;
+	}
+
+	public void release_wave_shock()
+	{
+		onde = Instantiate(shockWave, transform.position, Quaternion.identity) as GameObject;
+		onde.transform.position = transform.position;
+		onde.GetComponent<ShockWave>().setEnnemyDamage(manaDecreased);
+		manaDecreased = 0.0f;
+
+		charge = false;
+	}
+
+	public void active_shield()
+	{
+		if (playerStats.getMana() > 0.5f){
+			playerStats.ApplyMana(0.5f);
+			manaDecreased += 0.5f;
+			shield.SetActive(true);
+			action = false;
+			charge = true;
+		}
+		else{
+			shield.SetActive(false);
+			charge = false;
+		}
+	}
+
+	public void release_shield()
+	{
+		shield.SetActive(false) ;
+		charge = false;
+	}
+
 	void fire_ball()
 	{
 		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
 		balle.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * balle.GetComponent<FireBall>().getForce());
 
 		Destroy(balle, 1.0f);
-		playerStats.ApplyMana(balle.GetComponent<FireBall>().getEnnemyDamage());
+		playerStats.ApplyMana(0.0f);//balle.GetComponent<FireBall>().getEnnemyDamage());
 	}
 
 	void OnCollisionEnter(Collision col){

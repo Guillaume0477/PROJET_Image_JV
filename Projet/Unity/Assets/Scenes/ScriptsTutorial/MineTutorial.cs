@@ -6,7 +6,7 @@ public class MineTutorial : MonoBehaviour
 {   
     private bool exploded = false;
     private float ennemyDammage = 80;
-    private float manaNeeded = 30;
+    private float manaNeeded = 0;
 
     // Start is called before the first frame update
     void Start()

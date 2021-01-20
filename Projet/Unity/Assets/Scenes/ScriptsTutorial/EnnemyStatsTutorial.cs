@@ -23,13 +23,13 @@ public class EnnemyStatsTutorial : MonoBehaviour
         if(col.gameObject.tag == "Boule")
 		{
 			StartCoroutine("TakeDamageAnim");
-            ennemyHealth -= col.gameObject.GetComponent<FireBall>().getEnnemyDamage() * 2.0f;
+            ennemyHealth -= 0.0f;//col.gameObject.GetComponent<FireBall>().getEnnemyDamage() * 2.0f;
 			Destroy(col.gameObject);
         }
 
 		else if (col.gameObject.tag == "OndeChoc"){
 			StartCoroutine("TakeDamageAnim");
-            ennemyHealth -= col.gameObject.GetComponent<ShockWave>().getEnnemyDamage();	
+            ennemyHealth -= 0.0f;//col.gameObject.GetComponent<ShockWave>().getEnnemyDamage();	
 		}
 		
 		else if (col.gameObject.tag == "Mine"){

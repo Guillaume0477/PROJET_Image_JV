@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 using System.Collections;
 
-public class PlayerStatsTutorial : MonoBehaviour {
+public class PlayerStatsTutorial : MonoBehaviour 
+{
 	
 	// Create public variables for player speed, and for the Text UI game objects
     private float health = 100;
