@@ -89,7 +89,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -136,7 +136,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87216018}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 177.40625, y: 191.85938, z: -5.5}
+  m_LocalPosition: {x: 237, y: 191.85938, z: -5.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1601387745}
@@ -527,10 +527,10 @@ RectTransform:
   m_Father: {fileID: 1858774788}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -153.9, y: -590}
-  m_SizeDelta: {x: 296.21997, y: 71.72}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -153.9, y: 36}
+  m_SizeDelta: {x: 296.21997, y: 71.71997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &235942397
 GameObject:
