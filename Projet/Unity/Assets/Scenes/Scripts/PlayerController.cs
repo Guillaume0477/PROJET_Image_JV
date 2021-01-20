@@ -90,7 +90,6 @@ public class PlayerController : MonoBehaviour {
 			if (Input.GetKeyUp(KeyCode.X))
 			{
 				release_shield();
-
 			}
 
 			if(playerStats.getMana() >=  projectile.GetComponent<FireBall>().getEnnemyDamage())
