@@ -6,7 +6,7 @@ import time
 
 def getParameters(im, seg):
     # List of relevant parameters
-    paramsSet = np.zeros([1,15])
+    paramsSet = np.zeros([1,17])
 
     # Include bounding box size and covered area
     shape = np.shape(seg)
@@ -57,7 +57,7 @@ def getParameters(im, seg):
     vects = getPCADir(seg)    
     ProjCaract = getProjCaract(seg, vects)
     paramsSet[:,0:2] = ProjCaract[0:2]
-    paramsSet[:,11:15] = ProjCaract[2:]
+    paramsSet[:,11:17] = ProjCaract[2:]
 
     # print(np.array(paramsSet)[:,7:])
 
@@ -268,28 +268,7 @@ def cleanConvex(listPts):
 
     return listCleaned
 
-def getProjCaract(seg, dir):
-    sInit = seg.shape
-    
-    projx = np.sum(seg, axis = 0)
-    projy = np.sum(seg, axis = 1)
-
-    #Size of the true bounding box compared to the square box
-    sx, sy = np.sum(projx != 0)/projx.shape[0], np.sum(projy != 0)/projy.shape[0]
-
-    #Mean value and standard Deviations
-    argx = np.argwhere(projx>0)
-    argy = np.argwhere(projy>0)
-    mux = np.sum(projx[argx]*argx)/np.sum(projx[argx])/sInit[0]
-    muy = np.sum(projy[argy]*argy)/np.sum(projy[argy])/sInit[1]
-
-    h0, h1 = getProjection(seg, dir)
-
-    plt.figure(0)
-    # plt.plot(h0)
-    plt.plot(h1)
-
-
+def getCaractDir(h1):
     maxix = np.argwhere(h1 == np.max(h1))[0][0]
     
     maxiVal = h1[maxix]
@@ -326,22 +305,83 @@ def getProjCaract(seg, dir):
 
             numP=numP[0:-1]
             print("numN impair %d",np.size(numN))
-    
-
-
-
-
-
-
 
     sizeInt = (numN - numP)[:,0]
 
-
-
     nbMaxis -= np.sum(sizeInt < 5)
 
-    maxix /= sInit[0]
+    # maxix /= sInit[0]
 
+    return maxix, nbMaxis
+
+
+def getProjCaract(seg, dir):
+    sInit = seg.shape
+    
+    projx = np.sum(seg, axis = 0)
+    projy = np.sum(seg, axis = 1)
+
+    #Size of the true bounding box compared to the square box
+    sx, sy = np.sum(projx != 0)/projx.shape[0], np.sum(projy != 0)/projy.shape[0]
+
+    #Mean value and standard Deviations
+    argx = np.argwhere(projx>0)
+    argy = np.argwhere(projy>0)
+    mux = np.sum(projx[argx]*argx)/np.sum(projx[argx])/sInit[0]
+    muy = np.sum(projy[argy]*argy)/np.sum(projy[argy])/sInit[1]
+
+    h0, h1 = getProjection(seg, dir)
+
+    plt.figure(0)
+    plt.plot(h0)
+    plt.plot(h1)
+
+
+    # maxix = np.argwhere(h1 == np.max(h1))[0][0]
+    
+    # maxiVal = h1[maxix]
+    # thresh = 3.0/4.0*maxiVal
+
+    # PT = 1.0*(h1 > thresh)
+    # plt.plot(PT*maxiVal)
+    # plt.plot(np.gradient(PT)*maxiVal)
+    # # plt.show()
+
+    # G = np.gradient(PT)[range(0,PT.shape[0], 2)]
+    
+    # nbMaxis = np.sum(G == 0.5)
+
+    # numP = np.argwhere(G > 0)
+    # numN = np.argwhere(G < 0)
+
+    # # print(np.size(numP))
+    # # print(np.size(numN))
+    # # print(numP)
+    # # print(numN)
+    # # print(np.shape(numP))
+    # # print(np.shape(numN))
+
+    # if ( (not(np.size(numP) == 0)) and ( not (np.size(numN) == 0)) ) :
+    #     if not (numP[0]<numN[0]):
+    #         print("numP impair %d", )
+    #         numN=numN[1:]
+    #         print(np.size(numP))
+    #         print("numP impair %d",np.size(numP)) 
+
+    # if ( (not(np.size(numP) == 0)) and ( not (np.size(numN) == 0)) ) :
+    #     if not (numP[-1]<numN[-1]):
+
+    #         numP=numP[0:-1]
+    #         print("numN impair %d",np.size(numN))
+
+    # sizeInt = (numN - numP)[:,0]
+
+    # nbMaxis -= np.sum(sizeInt < 5)
+
+    maxix, nbMaxis = getCaractDir(h0)
+    maxiy, nbMaxisy = getCaractDir(h1)
+    maxix /= sInit[0]
+    maxiy /= sInit[1]
 
     # print(nbMaxis)
     # print(nbMaxis)
@@ -354,7 +394,7 @@ def getProjCaract(seg, dir):
     
     # print(sx, sy)
 
-    return [sx, sy, mux, muy, maxix, nbMaxis]
+    return [sx, sy, mux, muy, maxix, nbMaxis, maxiy, nbMaxisy]
 
 
 def getProjection(seg, dir):

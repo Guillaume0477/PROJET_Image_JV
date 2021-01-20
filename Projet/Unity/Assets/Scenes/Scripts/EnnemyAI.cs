@@ -18,7 +18,7 @@ public class EnnemyAI : MonoBehaviour {
     private float attackRange = 2.2f;
     private float attackRepeatTime = 1;
     private float Damping = 6;
-    private float TheDammage = 10;
+    private float TheDammage = 0;
     private Animator anim;
     private bool isAttacked;
     private bool isDead;
