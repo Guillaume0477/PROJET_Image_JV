@@ -238,23 +238,25 @@ public class PlayerControllerTutorial : MonoBehaviour
 
 	public void set_up_bombe_if_possible()
 	{
-
-		if(count_tutorial3 < 3)
-		{
-			count_tutorial3 = count_tutorial3 + 1;
-			count_tutorial3_text.text = count_tutorial3.ToString();
-		}
-		if (count_tutorial3 == 3)
-		{
-			count_tutorial3 = count_tutorial3 + 1;
-			Tutorial3.gameObject.SetActive(false);
-			Tutorial4.gameObject.SetActive(true);
+		if (count_tutorial2 >=3){
+			if(count_tutorial3 < 3)
+			{
+				count_tutorial3 = count_tutorial3 + 1;
+				count_tutorial3_text.text = count_tutorial3.ToString();
+			}
+			if (count_tutorial3 == 3)
+			{
+				count_tutorial3 = count_tutorial3 + 1;
+				Tutorial3.gameObject.SetActive(false);
+				Tutorial4.gameObject.SetActive(true);
+			}
 		}
 
 		myMine = Instantiate(mine, transform.position, Quaternion.identity) as GameObject;
 		myMine.transform.position = new Vector3(transform.position.x, transform.position.y - (myMine.transform.localScale.y)/2.0f, transform.position.z);
 		playerStats.ApplyMana(0.0f);//myMine.GetComponent<Mine>().getManaNeeded());
 	}
+
 	void OnCollisionEnter(Collision col){
 		if (col.gameObject.tag == "Mine"){
 			playerStats.ApplyDammage(0.0f);
