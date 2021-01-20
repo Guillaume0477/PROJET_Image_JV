@@ -16,7 +16,7 @@ public class EnnemyStats : MonoBehaviour
 	void Start()
 	{
 		anim = GetComponent<Animator>();
-		ennemyHealth = 100 * ennemyAI.getCount_Series();
+		ennemyHealth = 100 * ((int)((ennemyAI.vague.getCurrVague()-1) / 3) +1);
 	}
 	
 	void OnTriggerEnter (Collider col)
@@ -60,7 +60,10 @@ public class EnnemyStats : MonoBehaviour
 	{
 		return(ennemyHealth);
     }
-
+	public void setHealth(float initHealth)
+	{
+		ennemyHealth = initHealth;
+	}
 	public bool getIsTouched ()
 	{
 		return(isTouched);

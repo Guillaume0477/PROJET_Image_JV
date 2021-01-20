@@ -7,12 +7,12 @@ using UnityEngine.SceneManagement;
 public class MonsterGenerator : MonoBehaviour {
     public GameObject ennemy_prefab;
     public PlayerStats playerStats;
-    public Text death_counter;
-    public Text vague_counter;
+    public CountEnnemyKilled death_counter;
+    public VagueController vague_counter;
 
     private bool isSpawned;
     private int ennemy_number;
-    private float repop_time = 10.0f;
+    // private float repop_time = 10.0f;
 
     void Start()
     {
@@ -23,19 +23,25 @@ public class MonsterGenerator : MonoBehaviour {
     }
 
     void Update(){
-        if(!isSpawned)
+        if((!isSpawned)&&(vague_counter.play))
         {
             StartCoroutine("MonsterGeneration");
+        }
+
+        if (!(vague_counter.play))
+        {
+            ennemy_number = 0;
+            isSpawned = false;
         }
     }
 
     IEnumerator MonsterGeneration(){
-        if(ennemy_number <= 10)
+        if(ennemy_number < 3)
         {
             isSpawned = true;
             Instantiate(ennemy_prefab, transform.position, Quaternion.identity);
             ennemy_number += 1;
-            yield return new WaitForSeconds(repop_time);
+            yield return new WaitForSeconds(vague_counter.getRepopTime());
             isSpawned = false;
         }
     }

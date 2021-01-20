@@ -14,7 +14,7 @@ public class PlayerControllerScript: MonoBehaviour
 	// 1. Declare Variables
 
 	Thread receiveThread; //1
-	UdpClient client; //2
+	public UdpClient client; //2
 	int port; //3
 
 	public PlayerController Player; //4
