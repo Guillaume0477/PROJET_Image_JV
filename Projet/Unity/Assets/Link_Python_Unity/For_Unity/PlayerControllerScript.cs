@@ -8,8 +8,6 @@ using System.Threading;
 
 public class PlayerControllerScript: MonoBehaviour 
 {
-	// 1. Declare Variables
-
 
 	// 1. Declare Variables
 
@@ -21,6 +19,12 @@ public class PlayerControllerScript: MonoBehaviour
 	AudioSource jumpSound; //5
 	bool jump; //6
 	bool fire2;
+	bool Initial = true;
+	bool Shield = false; //2 
+	bool FireBall = false;
+	bool WaveShock = false; //2 
+	bool SetUpBombe = false;
+	bool ActiveBombe = false;
 
 
 	// 2. Initialize variables
@@ -28,9 +32,6 @@ public class PlayerControllerScript: MonoBehaviour
 	void Start () 
 	{
 	port = 5065; //1 
-	jump = false; //2 
-	fire2 = false;
-	jumpSound = gameObject.GetComponent<AudioSource>(); //3
 
 	InitUDP(); //4
 	}
@@ -61,13 +62,35 @@ public class PlayerControllerScript: MonoBehaviour
 
 		//print(data);
 
-		string text = Encoding.UTF8.GetString(data); //5
-		if (text == "JUMP!"){
-			print (">> " + text);
-			jump = true;
+		string Signe = Encoding.UTF8.GetString(data); //5
+		if (Signe == "Signe_0!"){
+			print (">> " + Signe);
+			print("Position Initiale");
+			Initial = true;
 		}
-		if (text == "FIRE!"){
-			print (">> " + text);
+		if (Signe == "Signe_1!"){
+			print (">> " + Signe);
+			Shield = true;
+			Initial = false;
+		}
+		if (Signe == "Signe_2!"){
+			print (">> " + Signe);
+			SetUpBombe = true;
+			Initial = false;
+
+		}
+		if (Signe == "Signe_3!"){
+			print (">> " + Signe);
+			FireBall = true;
+			Initial = false;
+		}
+		if (Signe == "Signe_4!"){
+			print (">> " + Signe);
+			WaveShock = true;
+			Initial = false;
+		}
+		if (Signe == "FIRE!"){
+			print (">> " + Signe);
 			fire2 = true;
 		}
 
@@ -102,16 +125,49 @@ public class PlayerControllerScript: MonoBehaviour
 
 
 	void Update () 
+
 	{
-	if(jump == true)
-	{
-		Jump ();
-		jump = false;
+
+	if(Initial == true){
+		if (Shield==true){
+			print (">> " + "desactive shield");
+			Player.release_shield();
+			Shield=false;
+		}
+		if (WaveShock==true){
+			print (">> " + "release wave_shock");
+			Player.release_wave_shock();
+			WaveShock=false;
+		}
+		if (SetUpBombe==true){
+			print (">> " + "active bombe");
+			//active bombe
+			SetUpBombe=false;
+		}
 	}
-	if(fire2 == true)
-	{
+
+
+	if(FireBall == true){ //ok
 		Fire2 ();
-		fire2 = false;
+		print (">> " + "FIRE");
+		FireBall = false;
+	}
+
+	if(WaveShock == true){ //ok
+		print (">> " + "charge waveshock");
+		Player.charge_wave_shock();
+	}
+
+	if(Shield == true) //ok
+	{
+		print (">> " + "active shield");
+		Player.active_shield();
+	}
+	if(SetUpBombe == true)
+	{
+		print (">> " + "set up bombe");
+		Player.set_up_bombe_if_possible();
+		SetUpBombe = false;
 	}
 	}
 

@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void charge_wave_shock()
 	{
-		if (playerStats.getMana() > 0.5){
+		if (playerStats.getMana() >= 0.5){
 			playerStats.ApplyMana(0.5f);
 			manaDecreased += 0.5f;
 		}
@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void active_shield()
 	{
-		if (playerStats.getMana() > 0.5){
+		if (playerStats.getMana() >= 0.5){
 			playerStats.ApplyMana(0.5f);
 			manaDecreased += 0.5f;
 			shield.SetActive(true) ;

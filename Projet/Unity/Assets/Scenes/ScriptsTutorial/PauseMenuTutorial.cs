@@ -9,6 +9,7 @@ public class PauseMenuTutorial : MonoBehaviour
     public string sceneToLoad;
     public RectTransform menu;
 
+    public PlayerControllerScriptTutorial PlayerScript;
 
     public void GoBackToGame()
     {
@@ -18,6 +19,7 @@ public class PauseMenuTutorial : MonoBehaviour
 
     public void GoBackToMainMenu()
     {
+        PlayerScript.client.Close();
         SceneManager.LoadScene(sceneToLoad);
     }
 
