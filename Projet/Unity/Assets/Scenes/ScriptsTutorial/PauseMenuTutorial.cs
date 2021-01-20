@@ -9,6 +9,7 @@ public class PauseMenuTutorial : MonoBehaviour
     public string sceneToLoad;
     public RectTransform menu;
 
+
     public void GoBackToGame()
     {
         menu.gameObject.SetActive(false);
