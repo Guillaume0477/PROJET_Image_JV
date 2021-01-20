@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
 	public RectTransform deathMenu;
 	public GameObject shockWave;
 	public GameObject mine;
+	public GameObject shield;
 
 	private Rigidbody rb_player;
 	private GameObject balle;
@@ -24,6 +25,8 @@ public class PlayerController : MonoBehaviour {
 	private float player_speed = 10;
 	private float sensibility = 80;
 	private GameObject myMine;
+	private bool action;
+	private bool charge;
 
 	// At the start of the game..
 	void Start ()
@@ -38,7 +41,10 @@ public class PlayerController : MonoBehaviour {
 	// Each physics step..
 	void FixedUpdate ()
 	{
-		bool action = true;
+		if (charge==false){
+			action = true;
+		}		
+		
 		if(playerStats.getHealth() == 0)
 		{
 			healthBar.SetValue(0);
@@ -62,29 +68,29 @@ public class PlayerController : MonoBehaviour {
 
 			if (Input.GetKeyUp(KeyCode.E))
 			{
-				if(mine.GetComponent<Mine>().getManaNeeded() < playerStats.getMana())
-				{
-					myMine = Instantiate(mine, transform.position, Quaternion.identity) as GameObject;
-					myMine.transform.position = new Vector3(transform.position.x, transform.position.y - (myMine.transform.localScale.y)/2.0f, transform.position.z);
-					playerStats.ApplyMana(myMine.GetComponent<Mine>().getManaNeeded());
-				}				
+				set_up_bombe_if_possible();
+			
 			}
 
 			if (Input.GetKey(KeyCode.C))
 			{
-				if (playerStats.getMana() > 0.5){
-					playerStats.ApplyMana(0.5f);
-					manaDecreased += 0.5f;
-				}
-				action = false;
+				charge_wave_shock();
 			}
 
 			if (Input.GetKeyUp(KeyCode.C))
 			{
-				onde = Instantiate(shockWave, transform.position, Quaternion.identity) as GameObject;
-				onde.transform.position = transform.position;
-				onde.GetComponent<ShockWave>().setEnnemyDamage(manaDecreased);
-				manaDecreased = 0.0f;
+				release_wave_shock();
+			}
+
+			if (Input.GetKey(KeyCode.X))
+			{
+				active_shield();
+			}
+
+			if (Input.GetKeyUp(KeyCode.X))
+			{
+				release_shield();
+
 			}
 
 			if(playerStats.getMana() >=  projectile.GetComponent<FireBall>().getEnnemyDamage())
@@ -124,7 +130,62 @@ public class PlayerController : MonoBehaviour {
 			manaLacking.enabled = true;
 		}
 	}
+	
+	public void set_up_bombe_if_possible()
+	{
 
+		if(mine.GetComponent<Mine>().getManaNeeded() < playerStats.getMana())
+		{
+			myMine = Instantiate(mine, transform.position, Quaternion.identity) as GameObject;
+			myMine.transform.position = new Vector3(transform.position.x, transform.position.y - (myMine.transform.localScale.y)/2.0f, transform.position.z);
+			playerStats.ApplyMana(myMine.GetComponent<Mine>().getManaNeeded());
+		}
+		else
+		{
+			manaLacking.enabled = true;
+		}
+	}
+
+	public void charge_wave_shock()
+	{
+		if (playerStats.getMana() > 0.5){
+			playerStats.ApplyMana(0.5f);
+			manaDecreased += 0.5f;
+		}
+		action = false;
+		charge = true;
+	}
+
+	public void active_shield()
+	{
+		if (playerStats.getMana() > 0.5){
+			playerStats.ApplyMana(0.5f);
+			manaDecreased += 0.5f;
+			shield.SetActive(true) ;
+			action = false;
+			charge = true;
+		}
+		else{
+			shield.SetActive(false) ;
+			charge = false;
+		}
+	}
+
+	public void release_shield()
+	{
+		shield.SetActive(false) ;
+		charge = false;
+	}
+
+	public void release_wave_shock()
+	{
+		onde = Instantiate(shockWave, transform.position, Quaternion.identity) as GameObject;
+		onde.transform.position = transform.position;
+		onde.GetComponent<ShockWave>().setEnnemyDamage(manaDecreased);
+		manaDecreased = 0.0f;
+
+		charge = false;
+	}
 	void fire_ball()
 	{
 		balle = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;

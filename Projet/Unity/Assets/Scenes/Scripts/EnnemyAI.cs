@@ -35,8 +35,6 @@ public class EnnemyAI : MonoBehaviour {
 	{
         ennemyBar.SetMaxValue(ennemyStats.getHealth() * ((int)((vague.getCurrVague()-1)/3.0f) + 1));
         anim = GetComponent<Animator>();
-        // count.text = count_death.ToString();
-        // vague.text = count_vague.ToString();
     }
 
 	// Each physics step..
