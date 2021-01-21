@@ -44,7 +44,7 @@ def main():
     parameters = {'estimator__C':[1, 20, 50, 100, 150], 'estimator__kernel':['linear', 'rbf']}
 
     #Path where images are located
-    pathToRead = "ULT1et2et3/"
+    pathToRead = "TrainImages/"
     pathToReadTest = "TrainImages/"
 
     #Get the labels and parameters to train the SVM

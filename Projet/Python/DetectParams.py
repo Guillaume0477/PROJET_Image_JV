@@ -40,6 +40,15 @@ def getParameters(im, seg):
         paramsSet[:,8] = nbHB
         
         listPts = np.array(cleanConvex(listPts))
+
+
+        # p0 = listPts[0]
+        # for point in listPts[1:]:
+        #     cv2.line(seg, tuple(np.flip(p0)), tuple(np.flip(point)), (255), thickness=8)
+        #     p0 = point
+
+        # cv2.imshow('im1',seg)
+
         nbHT = np.sum(listPts[:,0] > Gcenter[0])
         nbHB = listPts.shape[0] - nbHT
         paramsSet[:,9] = nbHT
@@ -266,18 +275,21 @@ def cleanConvex(listPts):
         if (np.linalg.norm(v) > 50):
             listCleaned.append(p)
 
+    
+
     return listCleaned
 
 def getCaractDir(h1):
+    plt.plot(h1)
     maxix = np.argwhere(h1 == np.max(h1))[0][0]
     
     maxiVal = h1[maxix]
     thresh = 3.0/4.0*maxiVal
 
     PT = 1.0*(h1 > thresh)
-    plt.plot(PT*maxiVal)
-    plt.plot(np.gradient(PT)*maxiVal)
-    # plt.show()
+    # plt.plot(PT*maxiVal)
+    # plt.plot(np.gradient(PT)*maxiVal)
+    plt.show()
 
     G = np.gradient(PT)[range(0,PT.shape[0], 2)]
     
@@ -345,7 +357,7 @@ def getProjCaract(seg, dir):
     # PT = 1.0*(h1 > thresh)
     # plt.plot(PT*maxiVal)
     # plt.plot(np.gradient(PT)*maxiVal)
-    # # plt.show()
+    # plt.show()
 
     # G = np.gradient(PT)[range(0,PT.shape[0], 2)]
     

@@ -176,8 +176,8 @@ def main():
             current_signe = handle_sending_Unity(sock,UDP_IP,UDP_PORT,svm.predict(Params),Pile,current_signe)
 
             # # #Display gravity center on screen
-            # segR[int(Params[0][3]*segR.shape[0]), :] = 127
-            # segR[:, int(Params[0][4]*segR.shape[1])] = 127
+            segR[int(Params[0][3]*segR.shape[0]), :] = 127
+            segR[:, int(Params[0][4]*segR.shape[1])] = 127
 
             # # Tests to update hsv channel while playing to be adaptative
             # hueValue = utils.UpdateColor(segR, frame[xmin:xmax, ymin:ymax, :])
@@ -192,9 +192,9 @@ def main():
         #     LabelFound = np.zeros([1,5])
 
         # Display the segmentation on screen 
-        # frame[xmin:xmax,ymin:ymax,0] = segR
-        # frame[xmin:xmax,ymin:ymax,1] = segR
-        # frame[xmin:xmax,ymin:ymax,2] = segR
+        frame[xmin:xmax,ymin:ymax,0] = segR
+        frame[xmin:xmax,ymin:ymax,1] = segR
+        frame[xmin:xmax,ymin:ymax,2] = segR
         
         
         
@@ -225,7 +225,7 @@ def main():
             #Label of the position recorded (if several to be labeled later, set -1)
             label = 3
             #Path to write images
-            pathToWrite = "TrainImagesULT2"
+            pathToWrite = "Others"
             #Current date and time
             d = datetime.now()
 
